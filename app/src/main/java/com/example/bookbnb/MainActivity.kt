@@ -1,23 +1,30 @@
 package com.example.bookbnb
 
+import android.content.Intent
 import android.os.Bundle
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import android.widget.EditText
+import android.widget.Toast
+import com.android.volley.Request
+import com.android.volley.Response
+import com.android.volley.toolbox.JsonArrayRequest
+import com.android.volley.toolbox.JsonObjectRequest
+import com.android.volley.toolbox.StringRequest
+import com.android.volley.toolbox.Volley
+import java.time.Duration
+
+const val EXTRA_MESSAGE = "com.example.bookbnb.MESSAGE"
 
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        setSupportActionBar(findViewById(R.id.toolbar))
-
-        findViewById<FloatingActionButton>(R.id.fab).setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
-        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -34,5 +41,30 @@ class MainActivity : AppCompatActivity() {
             R.id.action_settings -> true
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    /** Called when the user taps the Send button */
+    fun pingServer(view: View) {
+        // Instantiate the RequestQueue.
+        val queue = Volley.newRequestQueue(this)
+        val url = "https://bookbnb-develop.herokuapp.com/v1/users"
+
+        // Request a string response from the provided URL.
+        val jsonRequest = JsonArrayRequest(
+            Request.Method.GET, url, null,
+            Response.Listener{ response ->
+                // Display the first 500 characters of the response string.
+                val message = "Response: %s".format(response.toString())
+                val intent = Intent(this, DisplayMessageActivity::class.java).apply {
+                    putExtra(EXTRA_MESSAGE, message)
+                }
+                startActivity(intent)
+            },
+            Response.ErrorListener { error ->
+                val message = error.message.toString()
+                Toast.makeText(this, message, Toast.LENGTH_LONG).show()
+            })
+        // Add the request to the RequestQueue.
+        queue.add(jsonRequest)
     }
 }
