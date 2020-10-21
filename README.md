@@ -1,4 +1,4 @@
-# android-app
+# BookBnB
 Repositorio para el código de la app en android.
 
 # Instalación
