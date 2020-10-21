@@ -2,25 +2,21 @@ package com.example.bookbnb
 
 import android.content.Intent
 import android.os.Bundle
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.snackbar.Snackbar
-import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.EditText
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonArrayRequest
-import com.android.volley.toolbox.JsonObjectRequest
-import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
-import java.time.Duration
 
 const val EXTRA_MESSAGE = "com.example.bookbnb.MESSAGE"
 
 class MainActivity : AppCompatActivity() {
+
+    private val SERVER_URL: String = BuildConfig.SERVER_URL
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,7 +43,8 @@ class MainActivity : AppCompatActivity() {
     fun pingServer(view: View) {
         // Instantiate the RequestQueue.
         val queue = Volley.newRequestQueue(this)
-        val url = "https://bookbnb-develop.herokuapp.com/v1/users"
+        val url = "%sv1/users".format(SERVER_URL)
+        Toast.makeText(this, url, Toast.LENGTH_LONG).show()
 
         // Request a string response from the provided URL.
         val jsonRequest = JsonArrayRequest(
