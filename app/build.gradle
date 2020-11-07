@@ -6,7 +6,7 @@ apply plugin: 'androidx.navigation.safeargs'
 
 android {
     compileSdkVersion 30
-    buildToolsVersion "30.0.2"
+    buildToolsVersion '30.0.2'
 
     defaultConfig {
         applicationId "com.example.bookbnb"
@@ -85,4 +85,7 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+
+    //Auth
+    implementation 'com.auth0.android:jwtdecode:2.0.0'
 }

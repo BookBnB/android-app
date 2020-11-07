@@ -13,7 +13,7 @@ import com.example.bookbnb.network.ResultWrapper
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-class LoginViewModel(application: Application) : AndroidViewModel(application) {
+class LoginViewModel(application: Application) : BaseAndroidViewModel(application) {
 
     private val _username = MutableLiveData<String>("")
     val username: MutableLiveData<String>
@@ -31,14 +31,6 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
     val navigateToRegister: LiveData<Boolean>
         get() = _navigateToRegister
 
-    private val _showLoadingSpinner = MutableLiveData<Boolean>(false)
-    val showLoadingSpinner: LiveData<Boolean>
-        get() = _showLoadingSpinner
-
-    private val _snackbarMessage = MutableLiveData<String?>(null)
-    val snackbarMessage: LiveData<String?>
-        get() = _snackbarMessage
-
     fun onNavigateToRegister(){
         _navigateToRegister.value = true //Trigger navigate to main activity
     }
@@ -54,15 +46,7 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
                 when (val loginResponse = BookBnBApi.authenticate(username.value!!, password.value!!)) {
                     is ResultWrapper.NetworkError -> showSnackbarMessage(getApplication<Application>().getString(R.string.network_error_msg))
                     is ResultWrapper.GenericError -> showGenericError(loginResponse)
-                    is ResultWrapper.Success -> {
-                        val pref: SharedPreferences = getApplication<Application>()
-                            .applicationContext
-                            .getSharedPreferences("UserPrefs", 0) // 0 - for private mode
-                        val editor = pref.edit()
-                        editor.putString("UserToken", loginResponse.value.token)
-                        editor.commit()
-                        _navigateToMainActivity.value = true //Trigger navigate to main activity
-                    }
+                    is ResultWrapper.Success -> onLoginSuccess(loginResponse)
                 }
             }
             finally {
@@ -71,16 +55,14 @@ class LoginViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    private fun showGenericError(loginResponse: ResultWrapper.GenericError){
-        showSnackbarMessage(loginResponse.error!!.message)
-    }
-
-    fun showSnackbarMessage(msg: String){
-        _snackbarMessage.value = msg
-    }
-
-    fun onDoneShowingSnackbarMessage(){
-        _snackbarMessage.value = null
+    private fun onLoginSuccess(loginResponse: ResultWrapper.Success<LoginResponse>) {
+        val pref: SharedPreferences = getApplication<Application>()
+            .applicationContext
+            .getSharedPreferences("UserPrefs", 0) // 0 - for private mode
+        val editor = pref.edit()
+        editor.putString("UserToken", loginResponse.value.token)
+        editor.commit()
+        _navigateToMainActivity.value = true
     }
 }
 

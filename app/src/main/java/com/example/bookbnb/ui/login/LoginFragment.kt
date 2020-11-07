@@ -96,6 +96,7 @@ class LoginFragment : Fragment(){
         viewModel.navigateToMainActivity.observe(viewLifecycleOwner, Observer {
             if (it) {
                 startActivity(Intent(context, MainActivity::class.java))
+                requireActivity().finish()
             }
         })
     }

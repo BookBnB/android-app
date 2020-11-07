@@ -33,11 +33,26 @@ private val retrofit = Retrofit.Builder()
 interface BookBnBApiService {
     @POST("sesiones")
     suspend fun authenticate(@Body usuarioDTO: LoginDTO) : LoginResponse
+
+    @POST("users")
+    suspend fun register(@Body registerDTO: RegisterDTO) : RegisterResponse
 }
 
 object BookBnBApi {
     val retrofitService : BookBnBApiService by lazy {
         retrofit.create(BookBnBApiService::class.java) }
+
+    suspend fun register(email: String,
+                         password: String,
+                         nombre: String,
+                         apellido: String,
+                         telefono: String?,
+                         ciudad: String?,
+                         rol: String) : ResultWrapper<RegisterResponse>{
+        val registracion =  RegisterDTO(email, password, nombre, apellido, telefono, ciudad, rol)
+        val response = safeApiCall(Dispatchers.IO) { retrofitService.register(registracion) }
+        return response
+    }
 
     suspend fun authenticate(username: String, password: String) : ResultWrapper<LoginResponse>{
         val user = LoginDTO(username, password)
@@ -46,6 +61,7 @@ object BookBnBApi {
             return response
         }
         catch (e: Exception){
+            //TODO: ???
             var error = e.message
             throw (e)
         }

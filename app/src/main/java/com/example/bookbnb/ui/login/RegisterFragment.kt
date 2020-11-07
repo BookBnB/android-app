@@ -11,6 +11,7 @@ import android.widget.AutoCompleteTextView
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.NavHostFragment
 import com.example.bookbnb.MainActivity
 import com.example.bookbnb.R
 import com.example.bookbnb.databinding.FragmentLoginBinding
@@ -48,6 +49,7 @@ class RegisterFragment : Fragment() {
         binding.registerViewModel = viewModel
 
         setPossibleUserTypes()
+
 
         return binding.root
     }

@@ -1,13 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.recyclerview.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/list"
-    android:name="com.example.bookbnb.ui.publicaciones.PublicacionesFragment"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_marginLeft="16dp"
-    android:layout_marginRight="16dp"
-    app:layoutManager="LinearLayoutManager"
-    tools:context=".ui.publicaciones.PublicacionesFragment"
-    tools:listitem="@layout/fragment_publicaciones" />
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="viewModel"
+            type="com.example.bookbnb.viewmodels.PublicacionesViewModel" />
+    </data>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/publicaciones_list"
+        android:name="com.example.bookbnb.ui.publicaciones.PublicacionesFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="@dimen/margin_small"
+        app:layoutManager="LinearLayoutManager"
+        app:publicacionesListData="@{viewModel.publicaciones}"
+        tools:context=".ui.publicaciones.PublicacionesFragment"
+        tools:listitem="@layout/publicacion_item" />
+</layout>

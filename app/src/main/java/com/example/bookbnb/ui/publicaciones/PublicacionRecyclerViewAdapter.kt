@@ -2,41 +2,38 @@ package com.example.bookbnb.ui.publicaciones
 
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import com.example.bookbnb.R
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
+import com.example.bookbnb.databinding.PublicacionItemBinding
+import com.example.bookbnb.models.Publicacion
 
-import com.example.bookbnb.ui.publicaciones.dummy.DummyContent.DummyItem
+class PublicacionRecyclerViewAdapter : ListAdapter<Publicacion, PublicacionRecyclerViewAdapter.PublicacionViewHolder>(DiffCallback){
 
-/**
- * [RecyclerView.Adapter] that can display a [DummyItem].
- * TODO: Replace the implementation with code for your data type.
- */
-class PublicacionRecyclerViewAdapter(
-    private val values: List<DummyItem>
-) : RecyclerView.Adapter<PublicacionRecyclerViewAdapter.ViewHolder>() {
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.fragment_publicaciones, parent, false)
-        return ViewHolder(view)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PublicacionRecyclerViewAdapter.PublicacionViewHolder {
+        return PublicacionViewHolder(PublicacionItemBinding.inflate(
+            LayoutInflater.from(parent.context), parent, false))
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = values[position]
-        //holder.idView.text = item.id
-        holder.contentView.text = item.content
+    override fun onBindViewHolder(holder: PublicacionViewHolder, position: Int) {
+        val publicacion = getItem(position)
+        holder.bind(publicacion)
     }
 
-    override fun getItemCount(): Int = values.size
+    class PublicacionViewHolder(private var binding: PublicacionItemBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(publicacion: Publicacion) {
+            binding.property = publicacion
+            binding.executePendingBindings()
+        }
+    }
 
-    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        //val idView: TextView = view.findViewById(R.id.item_number)
-        val contentView: TextView = view.findViewById(R.id.content)
+    companion object DiffCallback : DiffUtil.ItemCallback<Publicacion>() {
+        override fun areItemsTheSame(oldItem: Publicacion, newItem: Publicacion): Boolean {
+            return oldItem === newItem
+        }
 
-        override fun toString(): String {
-            return super.toString() + " '" + contentView.text + "'"
+        override fun areContentsTheSame(oldItem: Publicacion, newItem: Publicacion): Boolean {
+            return oldItem.id == newItem.id
         }
     }
 }
