@@ -194,7 +194,7 @@
                 android:layout_marginEnd="@dimen/margin_normal"
                 android:ems="10"
                 android:hint="@string/contraseña_lbl"
-                app:errorText='@{registerViewModel.formErrors.contains(FormErrors.INVALID_PASSWORD) ? "Ingrese una contraseña válida" : ""}'
+                app:errorText='@{registerViewModel.formErrors.contains(FormErrors.INVALID_PASSWORD) ? "La contraseña debe tener al menos 8 caracteres." : ""}'
                 app:helperText="@string/required_helper_text"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

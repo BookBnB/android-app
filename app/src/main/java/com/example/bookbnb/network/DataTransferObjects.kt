@@ -9,14 +9,13 @@ data class RegisterDTO(
     var email: String,
     var password: String,
     var name: String,
-    var apellido: String,
-    var telefono: String?,
-    var ciudad: String?,
+    var surname: String,
+    var phone: String?,
+    var city: String?,
     var role: String)
 
 data class RegisterResponse(
     var email: String,
-    var password: String,
     val role: String
 )
 

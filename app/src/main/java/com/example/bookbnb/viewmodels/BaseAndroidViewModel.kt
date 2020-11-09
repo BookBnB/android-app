@@ -1,9 +1,11 @@
 package com.example.bookbnb.viewmodels
 
 import android.app.Application
+import android.text.TextUtils
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.example.bookbnb.R
 import com.example.bookbnb.network.ResultWrapper
 
 open class BaseAndroidViewModel(application: Application) : AndroidViewModel(application) {
@@ -20,7 +22,12 @@ open class BaseAndroidViewModel(application: Application) : AndroidViewModel(app
         get() = _toastMessage
 
     fun showGenericError(response: ResultWrapper.GenericError){
-        showSnackbarMessage(response.error!!.message)
+        if (response.error != null){
+            showSnackbarMessage("Error: ${response.error.message}")
+        }
+        else{
+            showSnackbarMessage("Error: ${getApplication<Application>().getString(R.string.error_inesperado_txt)}")
+        }
     }
 
     fun showSnackbarMessage(msg: String){

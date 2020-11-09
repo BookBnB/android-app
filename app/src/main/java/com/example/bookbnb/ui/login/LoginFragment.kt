@@ -57,19 +57,22 @@ class LoginFragment : Fragment(){
         setNavigateToMainActivityObserver()
         setNavigateToRegisterObserver()
         setSpinnerObserver()
+        setSnackbarMessageObserver()
 
+        return binding.root
+    }
+
+    private fun setSnackbarMessageObserver() {
         viewModel.snackbarMessage.observe(viewLifecycleOwner, Observer { msg ->
             msg?.let {
                 Snackbar.make(
-                    requireActivity().findViewById(R.id.login_layout),
-                    msg,
+                    requireActivity().findViewById(R.id.login_activity_layout),
+                    it,
                     Snackbar.LENGTH_LONG
                 ).show()
                 viewModel.onDoneShowingSnackbarMessage()
             }
         })
-
-        return binding.root
     }
 
     private fun setSpinnerObserver() {

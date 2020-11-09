@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity"
-    android:id="@+id/login_layout">
+    android:id="@+id/login_activity_layout">
 
     <fragment
         android:id="@+id/login_nav_host_fragment"

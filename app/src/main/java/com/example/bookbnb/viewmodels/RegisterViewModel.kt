@@ -17,6 +17,7 @@ import kotlinx.coroutines.launch
 
 
 class RegisterViewModel(application: Application) : BaseAndroidViewModel(application) {
+    private val MIN_PASS_LENGTH = 8
     private val _email = MutableLiveData<String>("")
     val email: MutableLiveData<String>
         get() = _email
@@ -85,7 +86,7 @@ class RegisterViewModel(application: Application) : BaseAndroidViewModel(applica
         ) {
             formErrors.add(FormErrors.INVALID_EMAIL)
         }
-        if (_password.value.isNullOrEmpty()) {
+        if (_password.value.isNullOrEmpty() || _password.value!!.length < MIN_PASS_LENGTH) {
             formErrors.add(FormErrors.INVALID_PASSWORD)
         }
         if (_password.value != _confirmPassword.value) {
@@ -99,6 +100,7 @@ class RegisterViewModel(application: Application) : BaseAndroidViewModel(applica
             try {
                 _showLoadingSpinner.value = true
                 if (isFormValid()) {
+                    val role = if (_userType.value!! == getApplication<Application>().getString(R.string.user_type_anfitrion)) "host" else "guest"
                     val registerResponse =
                         BookBnBApi.register(
                             _email.value!!,
@@ -107,7 +109,7 @@ class RegisterViewModel(application: Application) : BaseAndroidViewModel(applica
                             _apellido.value!!,
                             _telefono.value,
                             _ciudad.value,
-                            _userType.value!!)
+                            role)
                     when (registerResponse) {
                         is ResultWrapper.NetworkError -> showSnackbarMessage(
                             getApplication<Application>().getString(
@@ -125,8 +127,8 @@ class RegisterViewModel(application: Application) : BaseAndroidViewModel(applica
     }
 
     private fun onRegisterSuccess(registerResponse: ResultWrapper.Success<RegisterResponse>) {
-        _snackbarMessage.value = "Registro completado. Por favor, ingrese sus crendeciales en el login."
-        _navigateToLogin.value = true
+        _snackbarMessage.value = getApplication<Application>().getString(R.string.completed_register_txt)
+        onNavigateToLogin()
     }
 }
 

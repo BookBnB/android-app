@@ -49,4 +49,6 @@
     <string name="correo_helper_txt">Este será su usuario para ingresar al sistema.</string>
     <string name="tipo_de_usuario_lbl">Tipo de Usuario</string>
     <string name="title_activity_anfitrion">AnfitrionActivity</string>
+    <string name="error_inesperado_txt">Ocurrió un error inesperado. Por favor, vuelva a intentarlo nuevamente. En caso de persistir, pongase en contacto con un administrador.</string>
+    <string name="completed_register_txt">Registro completado. Por favor, ingrese sus crendeciales en el login.</string>
 </resources>
