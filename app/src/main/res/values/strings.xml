@@ -51,4 +51,16 @@
     <string name="title_activity_anfitrion">AnfitrionActivity</string>
     <string name="error_inesperado_txt">Ocurrió un error inesperado. Por favor, vuelva a intentarlo nuevamente. En caso de persistir, pongase en contacto con un administrador.</string>
     <string name="completed_register_txt">Registro completado. Por favor, ingrese sus crendeciales en el login.</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="nueva_publicacion_txt">Nueva publicación</string>
+    <string name="continue_txt">Continuar</string>
+    <string name="new_publicacion_first_step_txt">Primer paso: Ingrese el título de su alojamiento, una breve descripción del mismo y el precio por noche (en ETH) que se cobrará por su uso</string>
+    <string name="titulo_lbl">Título</string>
+    <string name="descripcion_lbl">Descripción</string>
+    <string name="eth_shortname">ETH Por Noche</string>
+    <string name="price_lbl">Precio</string>
+    <string name="ubicacion_lbl">Ubicación</string>
+    <string name="fotos_lbl">Fotografías</string>
+    <string name="no_location_selected_txt">Error: No seleccionó una ubicación. Ingrese una ubicación para continuar.</string>
 </resources>

@@ -10,6 +10,7 @@ import com.example.bookbnb.R
 import com.example.bookbnb.network.BookBnBApi
 import com.example.bookbnb.network.LoginResponse
 import com.example.bookbnb.network.ResultWrapper
+import com.example.bookbnb.utils.SessionManager
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -43,7 +44,7 @@ class LoginViewModel(application: Application) : BaseAndroidViewModel(applicatio
         viewModelScope.launch {
             try {
                 _showLoadingSpinner.value = true
-                when (val loginResponse = BookBnBApi.authenticate(username.value!!, password.value!!)) {
+                when (val loginResponse = BookBnBApi(getApplication()).authenticate(username.value!!, password.value!!)) {
                     is ResultWrapper.NetworkError -> showSnackbarMessage(getApplication<Application>().getString(R.string.network_error_msg))
                     is ResultWrapper.GenericError -> showGenericError(loginResponse)
                     is ResultWrapper.Success -> onLoginSuccess(loginResponse)
@@ -56,12 +57,8 @@ class LoginViewModel(application: Application) : BaseAndroidViewModel(applicatio
     }
 
     private fun onLoginSuccess(loginResponse: ResultWrapper.Success<LoginResponse>) {
-        val pref: SharedPreferences = getApplication<Application>()
-            .applicationContext
-            .getSharedPreferences("UserPrefs", 0) // 0 - for private mode
-        val editor = pref.edit()
-        editor.putString("UserToken", loginResponse.value.token)
-        editor.commit()
+        val sessionManager = SessionManager(getApplication())
+        sessionManager.saveAuthToken(loginResponse.value.token)
         _navigateToMainActivity.value = true
     }
 }

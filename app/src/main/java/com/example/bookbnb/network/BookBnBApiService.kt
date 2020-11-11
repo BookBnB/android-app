@@ -1,20 +1,19 @@
 package com.example.bookbnb.network
 
 
-import android.widget.Toast
-import com.example.bookbnb.R
+import android.content.Context
+import com.example.bookbnb.models.CustomLocation
+import com.example.bookbnb.utils.SessionManager
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import okhttp3.ResponseBody
-import org.json.JSONObject
 import retrofit2.HttpException
-import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.Body
+import retrofit2.http.Header
 import retrofit2.http.POST
 import java.io.IOException
 import java.lang.Exception
@@ -37,11 +36,23 @@ interface BookBnBApiService {
 
     @POST("users")
     suspend fun register(@Body registerDTO: RegisterDTO) : RegisterResponse
+
+    @POST("lugares/direcciones/consulta")
+    suspend fun getLocations(@Header("Authorization") token: String, @Body registerDTO: LocationDTO) : List<CustomLocation>
 }
 
-object BookBnBApi {
+class BookBnBApi(var context: Context) {
     val retrofitService : BookBnBApiService by lazy {
         retrofit.create(BookBnBApiService::class.java) }
+
+    suspend fun getLocations(location: String) : ResultWrapper<List<CustomLocation>>{
+        val locationDTO = LocationDTO(location, 5)
+        val token = SessionManager(context).fetchAuthToken()
+        if (token.isNullOrEmpty()){
+            throw Exception("No hay una sesión establecida")
+        }
+        return safeApiCall(Dispatchers.IO) { retrofitService.getLocations(token, locationDTO) }
+    }
 
     suspend fun register(email: String,
                          password: String,
@@ -55,7 +66,7 @@ object BookBnBApi {
         return response
     }
 
-    suspend fun authenticate(username: String, password: String) : ResultWrapper<LoginResponse>{
+    suspend fun authenticate(username: String, password: String) : ResultWrapper<LoginResponse> {
         val user = LoginDTO(username, password)
         try{
             val response = safeApiCall(Dispatchers.IO) { retrofitService.authenticate(user) }
@@ -91,7 +102,7 @@ object BookBnBApi {
     private fun convertErrorBody(throwable: HttpException): ErrorResponse? {
         return try {
             throwable.response()?.errorBody()?.source()?.let {
-                val moshiAdapter = Moshi.Builder().add(KotlinJsonAdapterFactory()).build().adapter(ErrorResponse::class.java)
+                val moshiAdapter = moshi.adapter(ErrorResponse::class.java)
                 moshiAdapter.fromJson(it)
             }
         } catch (exception: Exception) {

@@ -5,7 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -13,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.bookbnb.R
 import com.example.bookbnb.databinding.FragmentPublicacionesListBinding
 import com.example.bookbnb.models.Publicacion
+import com.example.bookbnb.ui.login.RegisterFragmentDirections
 import com.example.bookbnb.viewmodels.PublicacionesViewModel
 
 
@@ -44,21 +47,15 @@ class PublicacionesFragment : Fragment() {
             )
         )
 
-        return binding.root
-    }
-
-    companion object {
-
-        // TODO: Customize parameter argument names
-        const val ARG_COLUMN_COUNT = "column-count"
-
-        // TODO: Customize parameter initialization
-        @JvmStatic
-        fun newInstance(columnCount: Int) =
-            PublicacionesFragment().apply {
-                arguments = Bundle().apply {
-                    putInt(ARG_COLUMN_COUNT, columnCount)
-                }
+        viewModel.navigateToNewPublicacion.observe(viewLifecycleOwner, Observer {
+            if (it){
+                NavHostFragment.findNavController(this).navigate(
+                    PublicacionesFragmentDirections.actionNavPublicacionesToNuevaPublicacionFragment()
+                )
+                viewModel.onDoneNavigatingToNuevaPublicacion()
             }
+        })
+
+        return binding.root
     }
 }

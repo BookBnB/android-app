@@ -14,6 +14,7 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.auth0.android.jwt.JWT
+import com.example.bookbnb.utils.SessionManager
 import com.google.android.material.navigation.NavigationView
 
 class AnfitrionActivity : AppCompatActivity() {
@@ -23,9 +24,8 @@ class AnfitrionActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val pref: SharedPreferences =
-            applicationContext.getSharedPreferences("UserPrefs",0) // 0 - for private mode
-        val token = pref.getString("UserToken", "")
+        val sessionManager = SessionManager(this)
+        val token = sessionManager.fetchAuthToken()
         if (token.isNullOrEmpty()) {
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)

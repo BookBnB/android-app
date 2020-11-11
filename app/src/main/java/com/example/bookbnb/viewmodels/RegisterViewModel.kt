@@ -102,7 +102,7 @@ class RegisterViewModel(application: Application) : BaseAndroidViewModel(applica
                 if (isFormValid()) {
                     val role = if (_userType.value!! == getApplication<Application>().getString(R.string.user_type_anfitrion)) "host" else "guest"
                     val registerResponse =
-                        BookBnBApi.register(
+                        BookBnBApi(getApplication()).register(
                             _email.value!!,
                             _password.value!!,
                             _nombre.value!!,
