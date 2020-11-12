@@ -21,6 +21,7 @@ import androidx.preference.PreferenceManager
 import com.example.bookbnb.R
 import com.example.bookbnb.databinding.FragmentNuevaPublicacionLocationBinding
 import com.example.bookbnb.models.CustomLocation
+import com.example.bookbnb.ui.BaseFragment
 import com.example.bookbnb.viewmodels.NuevaPublicacionViewModel
 import com.example.bookbnb.viewmodels.NuevaPublicacionViewModelFactory
 import org.osmdroid.config.Configuration
@@ -30,7 +31,7 @@ import org.osmdroid.views.CustomZoomButtonsController
 import org.osmdroid.views.overlay.Marker
 
 
-class NuevaPublicacionLocationFragment : Fragment() {
+class NuevaPublicacionLocationFragment : BaseFragment() {
     companion object {
         private const val ZOOM_START = 9.5
         private const val ZOOM_SELECTION = 17.5
@@ -75,6 +76,7 @@ class NuevaPublicacionLocationFragment : Fragment() {
         setLocationTextObserver()
         setSuggestionOnClick()
         setNavigateToNextStepObserver()
+        setSnackbarMessageObserver(viewModel, binding.root)
 
         return binding.root
     }
@@ -186,14 +188,5 @@ class NuevaPublicacionLocationFragment : Fragment() {
     override fun onPause() {
         super.onPause()
         binding.map.onPause() //needed for compass, my location overlays, v6.0.0 and up
-    }
-
-    private fun Fragment.hideKeyboard() {
-        view?.let { activity?.hideKeyboard(it) }
-    }
-
-    private fun Context.hideKeyboard(view: View) {
-        val inputMethodManager = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
-        inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
     }
 }

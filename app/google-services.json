@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "418830182119",
+    "firebase_url": "https://bookbnb-taller2.firebaseio.com",
+    "project_id": "bookbnb-taller2",
+    "storage_bucket": "bookbnb-taller2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:418830182119:android:ba0fc58c5b25ac07d5e442",
+        "android_client_info": {
+          "package_name": "com.example.bookbnb"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "418830182119-afhvtl7s4954u06b618uo158p5ng52qm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBqixGgdOx69_Lpc48mH9A32xcUseX6igo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "418830182119-afhvtl7s4954u06b618uo158p5ng52qm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

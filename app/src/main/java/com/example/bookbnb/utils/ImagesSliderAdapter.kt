@@ -48,7 +48,7 @@ class ImagesSliderAdapter(private val context: Context) : SliderViewAdapter<Imag
         position: Int
     ) {
         val sliderItem: CustomImage = mSliderItems[position]
-        viewHolder.textViewDescription.text = "Test"
+        //viewHolder.textViewDescription.text = "Test"
         viewHolder.textViewDescription.textSize = 16f
         viewHolder.textViewDescription.setTextColor(Color.WHITE)
         viewHolder.imageViewBackground.setImageURI(sliderItem.getImageUri())

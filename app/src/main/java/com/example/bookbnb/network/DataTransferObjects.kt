@@ -5,6 +5,22 @@ import com.example.bookbnb.models.CustomLocation
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
+
+class CustomImage(var url: String)
+@JsonClass(generateAdapter = true)
+class PublicacionDTO(var id: String? = null,
+                     var titulo: String,
+                     var descripcion: String,
+                     var precioPorNoche: Float,
+                     var direccion: CustomLocation,
+                     var cantidadDeHuespedes: Int,
+                     var imagenes: List<CustomImage>
+)
+
+data class CrearPublicacionResponse(
+    var id: String
+)
+
 @JsonClass(generateAdapter = true)
 data class LocationDTO(var consulta: String, var limite: Int)
 

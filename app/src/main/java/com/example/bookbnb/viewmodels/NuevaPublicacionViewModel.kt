@@ -5,21 +5,28 @@ import android.content.ClipData
 import android.net.Uri
 import android.widget.ArrayAdapter
 import androidx.databinding.ObservableArrayList
-import androidx.lifecycle.*
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
 import com.example.bookbnb.R
 import com.example.bookbnb.models.CustomLocation
 import com.example.bookbnb.network.BookBnBApi
 import com.example.bookbnb.network.ResultWrapper
+import com.example.bookbnb.utils.FileUtils
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 import java.lang.Float.parseFloat
 
-
+//TODO: Embed different classes for parts of the viewmodel (i.e. one for info, one for location, etc.)
 class NuevaPublicacionViewModel(application: Application) : BaseAndroidViewModel(application) {
     private val _titulo = MutableLiveData<String>("")
     val titulo: MutableLiveData<String>
         get() = _titulo
 
-    private val _desc  = MutableLiveData<String>("")
+    private val _desc = MutableLiveData<String>("")
     val desc: MutableLiveData<String>
         get() = _desc
 
@@ -37,7 +44,7 @@ class NuevaPublicacionViewModel(application: Application) : BaseAndroidViewModel
 
     private val _selectedPhotosUri: MutableLiveData<List<Uri>> = MutableLiveData()
     val selectedPhotosUri: MutableLiveData<List<Uri>>
-    get() = _selectedPhotosUri
+        get() = _selectedPhotosUri
 
     private val _autocompleteLocationAdapter = MutableLiveData<ArrayAdapter<CustomLocation?>>()
     val autocompleteLocationAdapter: MutableLiveData<ArrayAdapter<CustomLocation?>>
@@ -50,6 +57,14 @@ class NuevaPublicacionViewModel(application: Application) : BaseAndroidViewModel
     private val _navigateToImagesStep = MutableLiveData<Boolean>(false)
     val navigateToImagesStep: MutableLiveData<Boolean>
         get() = _navigateToImagesStep
+
+    private val _navigateToPreviewStep = MutableLiveData<Boolean>(false)
+    val navigateToPreviewStep: MutableLiveData<Boolean>
+        get() = _navigateToPreviewStep
+
+    private val _navigateToPublicaciones = MutableLiveData<Boolean>(false)
+    val navigateToPublicaciones: MutableLiveData<Boolean>
+        get() = _navigateToPublicaciones
 
     private val _initiatePhotoSelection = MutableLiveData<Boolean>(false)
     val initiatePhotoSelection: MutableLiveData<Boolean>
@@ -67,14 +82,15 @@ class NuevaPublicacionViewModel(application: Application) : BaseAndroidViewModel
         INVALID_PRICE
     }
 
-    fun setSelectedLocation(location: CustomLocation?){
+    fun setSelectedLocation(location: CustomLocation?) {
         _selectedLocation.value = location
     }
 
     fun searchLocation(name: String) {
         viewModelScope.launch {
             try {
-                when (val locationsResponse = BookBnBApi(getApplication()).getLocations(_locationText.value!!)) {
+                when (val locationsResponse =
+                    BookBnBApi(getApplication()).getLocations(_locationText.value!!)) {
                     is ResultWrapper.NetworkError -> showSnackbarMessage(
                         getApplication<Application>().getString(
                             R.string.network_error_msg
@@ -97,7 +113,7 @@ class NuevaPublicacionViewModel(application: Application) : BaseAndroidViewModel
         )
     }
 
-    private fun isFirstStepFormValid(): Boolean{
+    private fun isFirstStepFormValid(): Boolean {
         formErrors.clear()
         if (_titulo.value.isNullOrEmpty()) {
             formErrors.add(FormErrors.MISSING_TITULO)
@@ -105,10 +121,9 @@ class NuevaPublicacionViewModel(application: Application) : BaseAndroidViewModel
         if (_desc.value.isNullOrEmpty()) {
             formErrors.add(FormErrors.MISSING_DESC)
         }
-        try{
+        try {
             parseFloat(_price.value!!)
-        }
-        catch(e: Exception){
+        } catch (e: Exception) {
             formErrors.add(FormErrors.INVALID_PRICE)
         }
         return formErrors.isEmpty()
@@ -120,19 +135,18 @@ class NuevaPublicacionViewModel(application: Application) : BaseAndroidViewModel
         }
     }
 
-    fun onDoneNavigatingToMapStep(){
+    fun onDoneNavigatingToMapStep() {
         _navigateToMapStep.value = false
     }
 
-    fun onDoneShowingPhotosError(){
+    fun onDoneShowingPhotosError() {
         _selectPhotosError.value = ""
     }
 
-    fun onNavigateToImagesStep(){
-        if (_selectedLocation.value != null){
+    fun onNavigateToImagesStep() {
+        if (_selectedLocation.value != null) {
             _navigateToImagesStep.value = true
-        }
-        else{
+        } else {
             showSnackbarMessage(
                 getApplication<Application>().getString(
                     R.string.no_location_selected_txt
@@ -141,15 +155,15 @@ class NuevaPublicacionViewModel(application: Application) : BaseAndroidViewModel
         }
     }
 
-    fun onDoneNavigatingToImagesStep(){
+    fun onDoneNavigatingToImagesStep() {
         _navigateToImagesStep.value = false
     }
 
-    fun onInitiatePhotoSelection(){
+    fun onInitiatePhotoSelection() {
         _initiatePhotoSelection.value = true
     }
 
-    fun onDoneInitiatingPhotoSelection(){
+    fun onDoneInitiatingPhotoSelection() {
         _initiatePhotoSelection.value = false
     }
 
@@ -162,11 +176,11 @@ class NuevaPublicacionViewModel(application: Application) : BaseAndroidViewModel
         // When user clipData is null and dataUri is not null, user has selected only one image
         if (clipData == null && dataUri != null) {
             selectedPhotos.add(dataUri)
-        }
-        else {
+        } else {
             val totalPhotos = clipData!!.itemCount
             if (!isTotalPhotosOnLimits(totalPhotos)) {
-                _selectPhotosError.value = "Debe seleccionar al menos 1 y como máximo 5 fotografías de su alojamiento"
+                _selectPhotosError.value =
+                    "Debe seleccionar al menos 1 y como máximo 5 fotografías de su alojamiento"
                 return
             }
             for (i in 0 until totalPhotos) {
@@ -177,12 +191,68 @@ class NuevaPublicacionViewModel(application: Application) : BaseAndroidViewModel
         _selectedPhotosUri.value = selectedPhotos
     }
 
-    private fun isTotalPhotosOnLimits(totalPhotos: Int) : Boolean{
+    private fun isTotalPhotosOnLimits(totalPhotos: Int): Boolean {
         return totalPhotos in 1..5
     }
 
-    fun hasSelectedPhotos() : Boolean{
+    fun hasSelectedPhotos(): Boolean {
         return _selectedPhotosUri.value != null && _selectedPhotosUri.value!!.isNotEmpty()
+    }
+
+    fun onPublicar() {
+        viewModelScope.launch {
+            try {
+                _showLoadingSpinner.value = true
+                val imagesUrls = FileUtils.uploadImagesToFirebase(getApplication<Application>().applicationContext, _selectedPhotosUri.value!!)
+                //Send publicacion to server
+                val response = BookBnBApi(getApplication()).createPublicacion(
+                    _titulo.value!!,
+                    _desc.value!!,
+                    parseFloat(_price.value!!),
+                    _selectedLocation.value!!,
+                    2,//TODO: Agregar cantidad de huespedes al form.
+                    imagesUrls
+                )
+                when (response) {
+                    is ResultWrapper.NetworkError -> showSnackbarMessage(
+                        getApplication<Application>().getString(
+                            R.string.network_error_msg
+                        )
+                    )
+                    is ResultWrapper.GenericError -> showGenericError(response)
+                    is ResultWrapper.Success -> {
+                        showSnackbarMessage("Su publicación fue creada correctamente.")
+                        _navigateToPublicaciones.value = true
+                    }
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                showSnackbarMessage("Error: ${e.message.toString()}")
+            }
+            finally{
+                _showLoadingSpinner.value = false
+            }
+        }
+    }
+
+    fun onNavigateToPreviewStep(){
+        if (selectedPhotosUri.value!!.isEmpty()) {
+            showSnackbarMessage(
+                getApplication<Application>().getString(
+                    R.string.no_images_selected_txt
+                ))
+        }
+        else{
+            _navigateToPreviewStep.value = true
+        }
+    }
+
+    fun onDoneNavigateToPreviewStep(){
+        _navigateToPreviewStep.value = false
+    }
+
+    fun onDoneNavigatingToPublicaciones(){
+        _navigateToPublicaciones.value = false
     }
 }
 

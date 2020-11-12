@@ -12,15 +12,17 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.NavHostFragment
 import com.example.bookbnb.R
 import com.example.bookbnb.databinding.FragmentNuevaPublicacionImagesBinding
+import com.example.bookbnb.ui.BaseFragment
 import com.example.bookbnb.utils.CustomImage
 import com.example.bookbnb.utils.ImagesSliderAdapter
 import com.example.bookbnb.viewmodels.NuevaPublicacionViewModel
 import com.example.bookbnb.viewmodels.NuevaPublicacionViewModelFactory
 import com.smarteist.autoimageslider.SliderView
 
-class NuevaPublicacionImagesFragment : Fragment() {
+class NuevaPublicacionImagesFragment : BaseFragment() {
     private val PHOTOS_REQUEST_CODE = 10
 
     private val viewModel: NuevaPublicacionViewModel by lazy {
@@ -54,21 +56,44 @@ class NuevaPublicacionImagesFragment : Fragment() {
 
         setPhotosErrorObserver()
 
+        setSelectedPhotosObserver()
+
+        setInitiatePhotoSelectionObserver()
+
+        setSnackbarMessageObserver(viewModel, binding.root)
+
+        setNavigateToPreviewObserver()
+
+        return binding.root
+    }
+
+    private fun setNavigateToPreviewObserver() {
+        viewModel.navigateToPreviewStep.observe(viewLifecycleOwner, Observer { navigate ->
+            if (navigate) {
+                NavHostFragment.findNavController(this).navigate(
+                    NuevaPublicacionImagesFragmentDirections.actionNuevaPublicacionImagesFragmentToNuevaPublicacionPreviewFragment()
+                )
+                viewModel.onDoneNavigateToPreviewStep()
+            }
+        })
+    }
+
+    private fun setSelectedPhotosObserver() {
         //TODO: Show photos using bindings with selectedPhotosUri
-        viewModel.selectedPhotosUri.observe(viewLifecycleOwner, Observer {imgUris ->
+        viewModel.selectedPhotosUri.observe(viewLifecycleOwner, Observer { imgUris ->
             val adapter = ImagesSliderAdapter(requireContext())
             adapter.renewItems(imgUris.map { CustomImage(it) }.toMutableList())
             binding.imageSlider.setSliderAdapter(adapter)
         })
+    }
 
-        viewModel.initiatePhotoSelection.observe(viewLifecycleOwner, Observer {initiate->
-            if (initiate){
+    private fun setInitiatePhotoSelectionObserver() {
+        viewModel.initiatePhotoSelection.observe(viewLifecycleOwner, Observer { initiate ->
+            if (initiate) {
                 startSelectPhotos()
                 viewModel.onDoneInitiatingPhotoSelection()
             }
         })
-
-        return binding.root
     }
 
     private fun setPhotosErrorObserver() {
