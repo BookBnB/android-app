@@ -7,17 +7,6 @@ import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
 data class LocationDTO(var consulta: String, var limite: Int)
-/*consulta": "string",
-  "limite": 0,
-  "lenguaje": "string",
-  "paises": [
-    "string"
-  ],
-  "alrededorDeLatitudLongitud": "string",
-  "alrededorRadio": 0,
-  "conInfoDeRanking": true*/
-
-data class LocationsResponse(var locations: List<CustomLocation>)
 
 @JsonClass(generateAdapter = true)
 data class RegisterDTO(

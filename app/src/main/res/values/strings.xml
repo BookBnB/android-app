@@ -63,4 +63,8 @@
     <string name="ubicacion_lbl">Ubicación</string>
     <string name="fotos_lbl">Fotografías</string>
     <string name="no_location_selected_txt">Error: No seleccionó una ubicación. Ingrese una ubicación para continuar.</string>
+    <string name="gallery_dialog_title">Selección de fotos</string>
+    <string name="gallery_dialog_instructions1">¡Agregá hasta 5 fotos de tu alojamiento para que los huespedes las vean!</string>
+    <string name="gallery_dialog_instructions2">Asegurate de que se vean claras y describan los distintos ambientes/servicios que posee tu alojamiento.</string>
+    <string name="new_publicacion_step3_explanation">Paso 3: Seleccione las fotografías más importantes de su alojamiento para que los futuros huespedes puedan verlas.</string>
 </resources>

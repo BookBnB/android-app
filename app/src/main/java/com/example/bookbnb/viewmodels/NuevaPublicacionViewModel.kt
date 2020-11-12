@@ -1,6 +1,8 @@
 package com.example.bookbnb.viewmodels
 
 import android.app.Application
+import android.content.ClipData
+import android.net.Uri
 import android.widget.ArrayAdapter
 import androidx.databinding.ObservableArrayList
 import androidx.lifecycle.*
@@ -9,8 +11,8 @@ import com.example.bookbnb.models.CustomLocation
 import com.example.bookbnb.network.BookBnBApi
 import com.example.bookbnb.network.ResultWrapper
 import kotlinx.coroutines.launch
-import java.lang.Exception
 import java.lang.Float.parseFloat
+
 
 class NuevaPublicacionViewModel(application: Application) : BaseAndroidViewModel(application) {
     private val _titulo = MutableLiveData<String>("")
@@ -33,6 +35,10 @@ class NuevaPublicacionViewModel(application: Application) : BaseAndroidViewModel
     val locationText: MutableLiveData<String>
         get() = _locationText
 
+    private val _selectedPhotosUri: MutableLiveData<List<Uri>> = MutableLiveData()
+    val selectedPhotosUri: MutableLiveData<List<Uri>>
+    get() = _selectedPhotosUri
+
     private val _autocompleteLocationAdapter = MutableLiveData<ArrayAdapter<CustomLocation?>>()
     val autocompleteLocationAdapter: MutableLiveData<ArrayAdapter<CustomLocation?>>
         get() = _autocompleteLocationAdapter
@@ -44,6 +50,14 @@ class NuevaPublicacionViewModel(application: Application) : BaseAndroidViewModel
     private val _navigateToImagesStep = MutableLiveData<Boolean>(false)
     val navigateToImagesStep: MutableLiveData<Boolean>
         get() = _navigateToImagesStep
+
+    private val _initiatePhotoSelection = MutableLiveData<Boolean>(false)
+    val initiatePhotoSelection: MutableLiveData<Boolean>
+        get() = _initiatePhotoSelection
+
+    private val _selectPhotosError = MutableLiveData<String>("")
+    val selectPhotosError: MutableLiveData<String>
+        get() = _selectPhotosError
 
     val formErrors = ObservableArrayList<FormErrors>()
 
@@ -110,6 +124,10 @@ class NuevaPublicacionViewModel(application: Application) : BaseAndroidViewModel
         _navigateToMapStep.value = false
     }
 
+    fun onDoneShowingPhotosError(){
+        _selectPhotosError.value = ""
+    }
+
     fun onNavigateToImagesStep(){
         if (_selectedLocation.value != null){
             _navigateToImagesStep.value = true
@@ -125,6 +143,46 @@ class NuevaPublicacionViewModel(application: Application) : BaseAndroidViewModel
 
     fun onDoneNavigatingToImagesStep(){
         _navigateToImagesStep.value = false
+    }
+
+    fun onInitiatePhotoSelection(){
+        _initiatePhotoSelection.value = true
+    }
+
+    fun onDoneInitiatingPhotoSelection(){
+        _initiatePhotoSelection.value = false
+    }
+
+    fun handlePhotoFinishSelection(clipData: ClipData?, dataUri: Uri?) {
+        if (clipData == null && dataUri == null) {
+            _selectPhotosError.value = "Debe seleccionar al menos una foto de su alojamiento."
+            return
+        }
+        var selectedPhotos: MutableList<Uri> = ArrayList()
+        // When user clipData is null and dataUri is not null, user has selected only one image
+        if (clipData == null && dataUri != null) {
+            selectedPhotos.add(dataUri)
+        }
+        else {
+            val totalPhotos = clipData!!.itemCount
+            if (!isTotalPhotosOnLimits(totalPhotos)) {
+                _selectPhotosError.value = "Debe seleccionar al menos 1 y como máximo 5 fotografías de su alojamiento"
+                return
+            }
+            for (i in 0 until totalPhotos) {
+                val uri = clipData.getItemAt(i).uri
+                selectedPhotos.add(uri)
+            }
+        }
+        _selectedPhotosUri.value = selectedPhotos
+    }
+
+    private fun isTotalPhotosOnLimits(totalPhotos: Int) : Boolean{
+        return totalPhotos in 1..5
+    }
+
+    fun hasSelectedPhotos() : Boolean{
+        return _selectedPhotosUri.value != null && _selectedPhotosUri.value!!.isNotEmpty()
     }
 }
 

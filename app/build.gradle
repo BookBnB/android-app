@@ -89,8 +89,10 @@ dependencies {
     //Auth
     implementation 'com.auth0.android:jwtdecode:2.0.0'
 
-
     //Maps
     implementation 'org.osmdroid:osmdroid-android:6.1.8'
     implementation 'androidx.preference:preference-ktx:1.1.1'
+
+    //Image slider
+    implementation 'com.github.smarteist:autoimageslider:1.4.0'
 }
