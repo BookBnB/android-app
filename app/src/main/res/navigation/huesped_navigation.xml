@@ -8,37 +8,15 @@
         android:id="@+id/nav_home_huesped"
         android:name="com.example.bookbnb.ui.home.HomeHuespedFragment"
         android:label="@string/home_label"
-        tools:layout="@layout/fragment_home_huesped" />
-    <fragment
-        android:id="@+id/nav_publicaciones"
-        android:name="com.example.bookbnb.ui.publicaciones.PublicacionesFragment"
-        android:label="@string/publicaciones_label"
-        tools:layout="@layout/fragment_publicaciones_list" >
+        tools:layout="@layout/fragment_home_huesped" >
         <action
-            android:id="@+id/action_nav_publicaciones_to_nuevaPublicacionFragment"
-            app:destination="@id/nuevaPublicacionFragment" />
+            android:id="@+id/action_nav_home_huesped_to_busquedaFragment"
+            app:destination="@id/busquedaLocationFragment" />
     </fragment>
     <fragment
-        android:id="@+id/nuevaPublicacionFragment"
-        android:name="com.example.bookbnb.ui.publicaciones.NuevaPublicacionInfoFragment"
-        android:label="@string/nueva_publicacion_txt"
-        tools:layout="@layout/fragment_nueva_publicacion_info" >
-        <action
-            android:id="@+id/action_nuevaPublicacionFragment_to_nuevaPublicacionLocationFragment"
-            app:destination="@id/nuevaPublicacionLocationFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/nuevaPublicacionLocationFragment"
-        android:name="com.example.bookbnb.ui.publicaciones.NuevaPublicacionLocationFragment"
+        android:id="@+id/busquedaLocationFragment"
+        android:name="com.example.bookbnb.ui.busqueda.BusquedaLocationFragment"
         android:label="@string/ubicacion_lbl"
-        tools:layout="@layout/fragment_nueva_publicacion_location" >
-        <action
-            android:id="@+id/action_nuevaPublicacionLocationFragment_to_nuevaPublicacionImagesFragment"
-            app:destination="@id/nuevaPublicacionImagesFragment" />
+        tools:layout="@layout/fragment_busqueda_location" >
     </fragment>
-    <fragment
-        android:id="@+id/nuevaPublicacionImagesFragment"
-        android:name="com.example.bookbnb.ui.publicaciones.NuevaPublicacionImagesFragment"
-        android:label="@string/fotos_lbl"
-        tools:layout="@layout/fragment_nueva_publicacion_images" />
 </navigation>

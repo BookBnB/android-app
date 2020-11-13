@@ -11,7 +11,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
 import com.example.bookbnb.R
 import com.example.bookbnb.databinding.FragmentNuevaPublicacionInfoBinding
-import com.example.bookbnb.ui.login.RegisterFragmentDirections
 import com.example.bookbnb.viewmodels.*
 
 class NuevaPublicacionInfoFragment : Fragment() {
@@ -47,8 +46,8 @@ class NuevaPublicacionInfoFragment : Fragment() {
     }
 
     private fun setNavigateToNextStepObserver() {
-        viewModel.navigateToMapStep.observe(viewLifecycleOwner, Observer { navigate ->
-            if (navigate) {
+        viewModel.navigateToMapStep.observe(viewLifecycleOwner, Observer {
+            if (it) {
                 NavHostFragment.findNavController(this).navigate(
                     NuevaPublicacionInfoFragmentDirections.actionNuevaPublicacionFragmentToNuevaPublicacionLocationFragment()
                 )
