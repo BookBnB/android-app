@@ -63,4 +63,5 @@
     <string name="ubicacion_lbl">Ubicación</string>
     <string name="fotos_lbl">Fotografías</string>
     <string name="no_location_selected_txt">Error: No seleccionó una ubicación. Ingrese una ubicación para continuar.</string>
+    <string name="search">Buscar</string>
 </resources>

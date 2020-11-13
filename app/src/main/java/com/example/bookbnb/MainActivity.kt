@@ -37,8 +37,9 @@ class MainActivity : AppCompatActivity() {
                 val intent = Intent(this, AnfitrionActivity::class.java)
                 startActivity(intent)
             }
-            else{
-
+            else {
+                val intent = Intent(this, HuespedActivity::class.java)
+                startActivity(intent)
             }
         }
         finish()
