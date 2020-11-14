@@ -2,6 +2,7 @@ package com.example.bookbnb.network
 
 import android.os.Parcelable
 import com.example.bookbnb.models.CustomLocation
+import com.example.bookbnb.models.Publicacion
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 

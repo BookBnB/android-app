@@ -9,13 +9,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.example.bookbnb.R
 import com.example.bookbnb.databinding.FragmentPublicacionesListBinding
-import com.example.bookbnb.models.Publicacion
-import com.example.bookbnb.ui.login.RegisterFragmentDirections
 import com.example.bookbnb.viewmodels.PublicacionesViewModel
 
 
