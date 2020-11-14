@@ -1,6 +1,7 @@
 package com.example.bookbnb.ui.busqueda
 
 import android.app.Activity
+import android.app.Application
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,6 +13,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.NavHostFragment
 import com.example.bookbnb.R
 import com.example.bookbnb.databinding.FragmentBusquedaLocationBinding
 import com.example.bookbnb.viewmodels.BusquedaViewModel
@@ -48,6 +50,15 @@ class BusquedaLocationFragment : Fragment() {
 
         setLocationTextObserver()
         setSuggestionOnClick()
+
+        viewModel.navigateToSearchResults.observe(viewLifecycleOwner, Observer {
+            if (it){
+                NavHostFragment.findNavController(this).navigate(
+                    BusquedaLocationFragmentDirections.actionBusquedaLocationFragmentToResultadosBusquedaFragment()
+                )
+                viewModel.onDoneNavigateToSearchResults()
+            }
+        })
 
         return binding.root
     }

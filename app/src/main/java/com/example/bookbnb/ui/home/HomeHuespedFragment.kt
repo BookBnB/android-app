@@ -37,7 +37,7 @@ class HomeHuespedFragment : Fragment() {
         viewModel.navigateToBusqueda.observe(viewLifecycleOwner, Observer {
             if (it) {
                 NavHostFragment.findNavController(this).navigate(
-                    HomeHuespedFragmentDirections.actionNavHomeHuespedToBusquedaFragment()
+                    HomeHuespedFragmentDirections.actionNavHomeHuespedToBusquedaLocationFragment()
                 )
                 viewModel.onDoneNavigatingToBusqueda()
             }

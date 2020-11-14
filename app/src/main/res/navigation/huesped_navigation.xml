@@ -2,7 +2,7 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/mobile_navigation"
+    android:id="@+id/mobile_huesped_navigation"
     app:startDestination="@id/nav_home_huesped">
     <fragment
         android:id="@+id/nav_home_huesped"
@@ -10,7 +10,7 @@
         android:label="@string/home_label"
         tools:layout="@layout/fragment_home_huesped" >
         <action
-            android:id="@+id/action_nav_home_huesped_to_busquedaFragment"
+            android:id="@+id/action_nav_home_huesped_to_busquedaLocationFragment"
             app:destination="@id/busquedaLocationFragment" />
     </fragment>
     <fragment
@@ -18,5 +18,12 @@
         android:name="com.example.bookbnb.ui.busqueda.BusquedaLocationFragment"
         android:label="@string/ubicacion_lbl"
         tools:layout="@layout/fragment_busqueda_location" >
+        <action
+            android:id="@+id/action_busquedaLocationFragment_to_resultadosBusquedaFragment"
+            app:destination="@id/resultadosBusquedaFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/resultadosBusquedaFragment"
+        android:name="com.example.bookbnb.ui.busqueda.ResultadosBusquedaFragment"
+        tools:layout="@layout/fragment_resultados_busqueda" />
 </navigation>

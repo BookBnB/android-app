@@ -3,6 +3,7 @@ package com.example.bookbnb.network
 
 import android.content.Context
 import com.example.bookbnb.models.CustomLocation
+import com.example.bookbnb.models.Publicacion
 import com.example.bookbnb.utils.SessionManager
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -39,11 +40,23 @@ interface BookBnBApiService {
 
     @POST("lugares/direcciones/consulta")
     suspend fun getLocations(@Header("Authorization") token: String, @Body registerDTO: LocationDTO) : List<CustomLocation>
+
+    @POST("")
+    suspend fun search(@Header("Authorization") token: String, @Body locationDTO: LocationDTO) : List<Publicacion>
 }
 
 class BookBnBApi(var context: Context) {
     val retrofitService : BookBnBApiService by lazy {
         retrofit.create(BookBnBApiService::class.java) }
+
+    suspend fun search(location: String) : ResultWrapper<List<Publicacion>>{
+        val locationDTO = LocationDTO(location, 5)
+        val token = SessionManager(context).fetchAuthToken()
+        if (token.isNullOrEmpty()){
+            throw Exception("No hay una sesión establecida")
+        }
+        return safeApiCall(Dispatchers.IO) { retrofitService.search(token, locationDTO) }
+    }
 
     suspend fun getLocations(location: String) : ResultWrapper<List<CustomLocation>>{
         val locationDTO = LocationDTO(location, 5)
