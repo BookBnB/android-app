@@ -3,81 +3,77 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
     <data>
-        <variable name="property"
-            type="com.example.bookbnb.models.Publicacion" />
         <variable
-            name="viewModel"
-            type="com.example.bookbnb.viewmodels.ResultadosBusquedaViewModel" />
+            name="detallePublicacionViewModel"
+            type="com.example.bookbnb.viewmodels.DetallePublicacionViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:onClick="@{() -> viewModel.navigateToDetallePublicacion(property)}">
+        android:layout_height="wrap_content">
 
         <ImageView
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:id="@+id/resultado_image"
+            android:id="@+id/item_image"
             android:layout_gravity="center_vertical"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
             android:textAppearance="?attr/textAppearanceListItem"
             app:layout_constraintWidth_percent="0.3"
-            app:imageUrl="@{property.imageUrl}"
+            app:imageUrl="@{detallePublicacionViewModel.publicacion.imageUrl}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:src="@tools:sample/backgrounds/scenic"
-            android:contentDescription="@string/imagen" />
+            tools:src="@tools:sample/backgrounds/scenic" />
 
         <TextView
-            android:id="@+id/resultado_title"
+            android:id="@+id/publicacion_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_normal"
             android:layout_marginTop="@dimen/margin_small"
             android:ellipsize="end"
             android:maxLines="2"
-            android:text="@{property.title}"
+            android:text="@{detallePublicacionViewModel.publicacion.title}"
             android:textAppearance="?attr/textAppearanceListItem"
             android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/resultado_direccion"
+            app:layout_constraintBottom_toTopOf="@+id/publicacion_direccion"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/resultado_image"
-            app:layout_constraintTop_toTopOf="@+id/resultado_image"
+            app:layout_constraintStart_toEndOf="@+id/item_image"
+            app:layout_constraintTop_toTopOf="@+id/item_image"
             app:layout_constraintVertical_chainStyle="packed"
-            tools:text="@{property.title}" />
+            tools:text="@{detallePublicacionViewModel.publicacion.title}" />
 
         <TextView
-            android:id="@+id/resultado_direccion"
+            android:id="@+id/publicacion_direccion"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_normal"
             android:layout_marginTop="@dimen/margin_normal"
             android:layout_marginBottom="@dimen/margin_normal"
-            android:text="@{property.location}"
+            android:text="@{detallePublicacionViewModel.publicacion.location}"
             android:textAppearance="?attr/textAppearanceListItem"
-            app:layout_constraintBottom_toTopOf="@+id/resultado_precio"
+            app:layout_constraintBottom_toTopOf="@+id/publicacion_precio"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/resultado_image"
-            app:layout_constraintTop_toBottomOf="@+id/resultado_title"
-            tools:text="@{property.location}" />
+            app:layout_constraintStart_toEndOf="@+id/item_image"
+            app:layout_constraintTop_toBottomOf="@+id/publicacion_title"
+            tools:text="@{detallePublicacionViewModel.publicacion.location}" />
 
         <TextView
-            android:id="@+id/resultado_precio"
+            android:id="@+id/publicacion_precio"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_normal"
             android:layout_marginBottom="@dimen/margin_small"
-            android:text="$ @{property.pricePerNight} por noche"
+            android:text="$ @{detallePublicacionViewModel.publicacion.pricePerNight} por noche"
             android:textAlignment="textEnd"
             android:textAppearance="?attr/textAppearanceHeadline6"
-            app:layout_constraintBottom_toBottomOf="@+id/resultado_image"
+            app:layout_constraintBottom_toBottomOf="@+id/item_image"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/resultado_image"
-            app:layout_constraintTop_toBottomOf="@+id/resultado_direccion"
-            tools:text="$ @{property.pricePerNight} por noche" />
+            app:layout_constraintStart_toEndOf="@+id/item_image"
+            app:layout_constraintTop_toBottomOf="@+id/publicacion_direccion"
+            tools:text="$ @{detallePublicacionViewModel.publicacion.pricePerNight} por noche" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

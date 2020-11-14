@@ -25,5 +25,13 @@
     <fragment
         android:id="@+id/resultadosBusquedaFragment"
         android:name="com.example.bookbnb.ui.busqueda.ResultadosBusquedaFragment"
-        tools:layout="@layout/fragment_resultados_busqueda" />
+        tools:layout="@layout/fragment_resultados_busqueda">
+        <action
+            android:id="@+id/action_resultadosBusquedaFragment_to_detallePublicacionFragment"
+            app:destination="@id/detallePublicacionFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/detallePublicacionFragment"
+        android:name="com.example.bookbnb.ui.publicaciones.DetallePublicacionFragment"
+        tools:layout="@layout/fragment_detalle_publicacion"/>
 </navigation>

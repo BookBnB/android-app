@@ -1,13 +1,14 @@
 package com.example.bookbnb.ui.busqueda
 
-import android.app.Application
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.example.bookbnb.R
 import com.example.bookbnb.databinding.FragmentResultadosBusquedaBinding
@@ -50,6 +51,15 @@ class ResultadosBusquedaFragment : Fragment(){
                 DividerItemDecoration.VERTICAL
             )
         )
+
+        viewModel.navigateToDetallePublicacion.observe(viewLifecycleOwner, Observer {
+            if (it){
+                NavHostFragment.findNavController(this).navigate(
+                    DetallePublicacionFragmentDirections.actionNavResultadosBusquedaToDetallePublicacionFragment()
+                )
+                viewModel.onDoneNavigateToDetallePublicacion()
+            }
+        })
 
         return binding.root
     }
