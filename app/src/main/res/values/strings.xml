@@ -65,4 +65,5 @@
     <string name="no_location_selected_txt">Error: No seleccionó una ubicación. Ingrese una ubicación para continuar.</string>
     <string name="search">Buscar</string>
     <string name="busqueda_location">Indique donde quiere alojarse.</string>
+    <string name="imagen">imagen</string>
 </resources>
