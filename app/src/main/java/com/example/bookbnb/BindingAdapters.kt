@@ -1,13 +1,9 @@
 package com.example.bookbnb
 
-import android.view.View
 import android.widget.ArrayAdapter
-import android.widget.AutoCompleteTextView
 import android.widget.ImageView
-import android.widget.TextView
 import androidx.core.net.toUri
 import androidx.databinding.BindingAdapter
-import androidx.databinding.InverseBindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -15,6 +11,7 @@ import com.example.bookbnb.models.CustomLocation
 import com.example.bookbnb.models.Publicacion
 import com.example.bookbnb.ui.publicaciones.PublicacionRecyclerViewAdapter
 import com.google.android.material.textfield.TextInputLayout
+import android.widget.AutoCompleteTextView as AutoCompleteTextView1
 
 
 @BindingAdapter("imageUrl")
@@ -44,7 +41,7 @@ fun bindRecyclerView(recyclerView: RecyclerView,
 }
 
 @BindingAdapter("app:locationsAdapter")
-fun setAdapter(actv: AutoCompleteTextView, adapter: ArrayAdapter<CustomLocation>?) {
+fun setAdapter(actv: AutoCompleteTextView1, adapter: ArrayAdapter<CustomLocation>?) {
     adapter?.let {
         actv.setAdapter(adapter)
         adapter.notifyDataSetChanged();

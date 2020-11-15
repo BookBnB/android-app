@@ -67,4 +67,15 @@
     <string name="busqueda_location">Indique donde quiere alojarse.</string>
     <string name="imagen">imagen</string>
     <string name="see_detail_txt">Ver detalle</string>
+    <string name="no_images_selected_txt">Error: No seleccionó fotografías de su alojamiento. Ingrese al menos una para continuar.</string>
+    <string name="gallery_dialog_title">Selección de fotos</string>
+    <string name="gallery_dialog_instructions1">¡Agregá hasta 5 fotos de tu alojamiento para que los huespedes las vean!</string>
+    <string name="gallery_dialog_instructions2">Asegurate de que se vean claras y describan los distintos ambientes/servicios que posee tu alojamiento.</string>
+    <string name="new_publicacion_step3_explanation">Paso 3: Seleccione las fotografías más importantes de su alojamiento para que los futuros huespedes puedan verlas.</string>
+    <string name="publicar_lbl">Publicar</string>
+    <string name="publicando_txt">Publicando alojamiento... Por favor, espere.</string>
+    <string name="precio_format">%s ETH/Noche</string>
+    <string name="preview_step_help">Paso 4: Revise todos los datos que ingresó para finalizar la publicación de su alojamiento.</string>
+    <string name="previsualizacion_lbl">Previsualización</string>
+
 </resources>

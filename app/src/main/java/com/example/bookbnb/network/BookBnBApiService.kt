@@ -17,35 +17,77 @@ import retrofit2.http.*
 import java.io.IOException
 import java.lang.Exception
 
-enum class BookBnBApiStatus { LOADING, ERROR, DONE }
-private const val BASE_URL: String = com.example.bookbnb.BuildConfig.SERVER_URL
-
-private val moshi = Moshi.Builder()
-    .add(KotlinJsonAdapterFactory())
-    .build()
-
-private val retrofit = Retrofit.Builder()
-    .addConverterFactory(MoshiConverterFactory.create(moshi))
-    .baseUrl(BASE_URL)
-    .build()
 
 interface BookBnBApiService {
     @POST("sesiones")
-    suspend fun authenticate(@Body usuarioDTO: LoginDTO) : LoginResponse
+    suspend fun authenticate(@Body usuarioDTO: LoginDTO): LoginResponse
 
     @POST("users")
-    suspend fun register(@Body registerDTO: RegisterDTO) : RegisterResponse
+    suspend fun register(@Body registerDTO: RegisterDTO): RegisterResponse
 
     @POST("lugares/direcciones/consulta")
-    suspend fun getLocations(@Header("Authorization") token: String, @Body registerDTO: LocationDTO) : List<CustomLocation>
+    suspend fun getLocations(
+        @Header("Authorization") token: String,
+        @Body locationDTO: LocationDTO
+    ): List<CustomLocation>
+
+    @POST("publicaciones")
+    suspend fun createPublicacion(
+        @Header("Authorization") token: String,
+        @Body publicacionDTO: PublicacionDTO
+    ): CrearPublicacionResponse
+
+    @POST("lugares/ciudades/consulta")
+    suspend fun getCities(
+        @Header("Authorization") token: String,
+        @Body locationDTO: LocationDTO
+    ): List<CustomLocation>
 
     @GET("publicaciones/{id}")
     suspend fun getPublicationById(@Header("Authorization") token: String, @Path("id") publicacionId: String) : Publicacion
 }
 
 class BookBnBApi(var context: Context) {
-    val retrofitService : BookBnBApiService by lazy {
-        retrofit.create(BookBnBApiService::class.java) }
+
+    companion object{
+        private const val BASE_URL: String = com.example.bookbnb.BuildConfig.SERVER_URL
+
+        private val moshi = Moshi.Builder()
+            .add(KotlinJsonAdapterFactory())
+            .build()
+
+        private val retrofit = Retrofit.Builder()
+            .addConverterFactory(MoshiConverterFactory.create(moshi))
+            .baseUrl(BASE_URL)
+            .build()
+    }
+
+    private val retrofitService: BookBnBApiService by lazy {
+        retrofit.create(BookBnBApiService::class.java)
+    }
+
+    suspend fun createPublicacion(
+        titulo: String,
+        desc: String,
+        price: Float,
+        location: CustomLocation,
+        cantHuespedes: Int,
+        imagesURLs: List<String>
+    ) : ResultWrapper<CrearPublicacionResponse> {
+        val publicacionDTO = PublicacionDTO(
+            titulo = titulo,
+            descripcion = desc,
+            precioPorNoche = price,
+            direccion = location,
+            cantidadDeHuespedes = cantHuespedes,
+            imagenes = imagesURLs.map{ url -> CustomImage(url) }
+        )
+        val token = SessionManager(context).fetchAuthToken()
+        if (token.isNullOrEmpty()) {
+            throw Exception("No hay una sesión establecida")
+        }
+        return safeApiCall(Dispatchers.IO) { retrofitService.createPublicacion(token, publicacionDTO) }
+    }
 
     suspend fun getPublicacionById(publicacionId: String) : ResultWrapper<Publicacion> {
         val token = SessionManager(context).fetchAuthToken()
@@ -64,41 +106,53 @@ class BookBnBApi(var context: Context) {
         return safeApiCall(Dispatchers.IO) { retrofitService.search(token, locationDTO) }
     }*/
 
-    suspend fun getLocations(location: String) : ResultWrapper<List<CustomLocation>>{
+    suspend fun getCities(location: String): ResultWrapper<List<CustomLocation>> {
         val locationDTO = LocationDTO(location, 5)
         val token = SessionManager(context).fetchAuthToken()
-        if (token.isNullOrEmpty()){
+        if (token.isNullOrEmpty()) {
+            throw Exception("No hay una sesión establecida")
+        }
+        return safeApiCall(Dispatchers.IO) { retrofitService.getCities(token, locationDTO) }
+    }
+
+    suspend fun getLocations(location: String): ResultWrapper<List<CustomLocation>> {
+        val locationDTO = LocationDTO(location, 5)
+        val token = SessionManager(context).fetchAuthToken()
+        if (token.isNullOrEmpty()) {
             throw Exception("No hay una sesión establecida")
         }
         return safeApiCall(Dispatchers.IO) { retrofitService.getLocations(token, locationDTO) }
     }
 
-    suspend fun register(email: String,
-                         password: String,
-                         nombre: String,
-                         apellido: String,
-                         telefono: String?,
-                         ciudad: String?,
-                         rol: String) : ResultWrapper<RegisterResponse>{
-        val registracion =  RegisterDTO(email, password, nombre, apellido, telefono, ciudad, rol)
+    suspend fun register(
+        email: String,
+        password: String,
+        nombre: String,
+        apellido: String,
+        telefono: String?,
+        ciudad: String?,
+        rol: String
+    ): ResultWrapper<RegisterResponse> {
+        val registracion = RegisterDTO(email, password, nombre, apellido, telefono, ciudad, rol)
         val response = safeApiCall(Dispatchers.IO) { retrofitService.register(registracion) }
         return response
     }
 
-    suspend fun authenticate(username: String, password: String) : ResultWrapper<LoginResponse> {
+    suspend fun authenticate(username: String, password: String): ResultWrapper<LoginResponse> {
         val user = LoginDTO(username, password)
-        try{
-            val response = safeApiCall(Dispatchers.IO) { retrofitService.authenticate(user) }
-            return response
-        }
-        catch (e: Exception){
+        try {
+            return safeApiCall(Dispatchers.IO) { retrofitService.authenticate(user) }
+        } catch (e: Exception) {
             //TODO: ???
             var error = e.message
             throw (e)
         }
     }
 
-    private suspend fun <T> safeApiCall(dispatcher: CoroutineDispatcher, apiCall: suspend () -> T): ResultWrapper<T> {
+    private suspend fun <T> safeApiCall(
+        dispatcher: CoroutineDispatcher,
+        apiCall: suspend () -> T
+    ): ResultWrapper<T> {
         return withContext(dispatcher) {
             try {
                 ResultWrapper.Success(apiCall.invoke())

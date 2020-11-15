@@ -32,14 +32,6 @@
                 android:textStyle="bold" />
         </FrameLayout>
 
-        <org.osmdroid.views.MapView
-            android:id="@+id/map"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/frameLayout"
-            tools:context=".reports.BusquedaLocationFragment" />
-
         <androidx.cardview.widget.CardView
             android:id="@+id/cardView2"
             android:layout_width="match_parent"

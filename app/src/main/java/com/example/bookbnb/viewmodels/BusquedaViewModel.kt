@@ -5,7 +5,6 @@ import android.widget.ArrayAdapter
 import androidx.lifecycle.*
 import com.example.bookbnb.R
 import com.example.bookbnb.models.CustomLocation
-import com.example.bookbnb.models.Publicacion
 import com.example.bookbnb.network.BookBnBApi
 import com.example.bookbnb.network.ResultWrapper
 import kotlinx.coroutines.launch
@@ -45,7 +44,7 @@ class BusquedaViewModel(application: Application) : BaseAndroidViewModel(applica
         viewModelScope.launch {
             try {
                 when (val locationsResponse =
-                    BookBnBApi(getApplication()).getLocations(_destino.value!!)) {
+                    BookBnBApi(getApplication()).getCities(_destino.value!!)) {
                     is ResultWrapper.NetworkError -> showSnackbarMessage(
                         getApplication<Application>().getString(
                             R.string.network_error_msg
