@@ -7,8 +7,10 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.example.bookbnb.databinding.PublicacionItemBinding
 import com.example.bookbnb.models.Publicacion
+import com.example.bookbnb.viewmodels.PublicacionesViewModel
+import com.example.bookbnb.viewmodels.ResultadosBusquedaViewModel
 
-class PublicacionRecyclerViewAdapter : ListAdapter<Publicacion, PublicacionRecyclerViewAdapter.PublicacionViewHolder>(DiffCallback){
+class PublicacionRecyclerViewAdapter(val clickListener: PublicacionListener) : ListAdapter<Publicacion, PublicacionRecyclerViewAdapter.PublicacionViewHolder>(DiffCallback){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PublicacionRecyclerViewAdapter.PublicacionViewHolder {
         return PublicacionViewHolder(PublicacionItemBinding.inflate(
@@ -17,12 +19,13 @@ class PublicacionRecyclerViewAdapter : ListAdapter<Publicacion, PublicacionRecyc
 
     override fun onBindViewHolder(holder: PublicacionViewHolder, position: Int) {
         val publicacion = getItem(position)
-        holder.bind(publicacion)
+        holder.bind(publicacion, clickListener)
     }
 
     class PublicacionViewHolder(private var binding: PublicacionItemBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(publicacion: Publicacion) {
+        fun bind(publicacion: Publicacion, clickListener: PublicacionListener) {
             binding.property = publicacion
+            binding.clickListener = clickListener
             binding.executePendingBindings()
         }
     }
@@ -36,4 +39,8 @@ class PublicacionRecyclerViewAdapter : ListAdapter<Publicacion, PublicacionRecyc
             return oldItem.id == newItem.id
         }
     }
+}
+
+class PublicacionListener(val clickListener: (publicacionId: Int) -> Unit) {
+    fun onClick(publicacion: Publicacion) = clickListener(publicacion.id)
 }

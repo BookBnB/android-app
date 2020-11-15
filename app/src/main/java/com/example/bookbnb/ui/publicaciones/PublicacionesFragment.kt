@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -34,7 +35,12 @@ class PublicacionesFragment : Fragment() {
 
         binding.viewModel = viewModel
 
-        binding.publicacionesList.adapter = PublicacionRecyclerViewAdapter() as PublicacionRecyclerViewAdapter
+        binding.publicacionesList.adapter = PublicacionRecyclerViewAdapter(PublicacionListener { publicacionId ->
+            Toast.makeText(requireContext(), "Publicacion clickeada: $publicacionId", Toast.LENGTH_SHORT).show()
+            NavHostFragment.findNavController(this).navigate(
+                ResultadosBusquedaFragmentDirections.actionResultadosBusquedaFragmentToDetallePublicacionFragment(publicacionId)
+            )
+        }) as PublicacionRecyclerViewAdapter
         binding.publicacionesList.addItemDecoration(
             DividerItemDecoration(
                 context,
@@ -48,16 +54,6 @@ class PublicacionesFragment : Fragment() {
                     PublicacionesFragmentDirections.actionNavPublicacionesToNuevaPublicacionFragment()
                 )
                 viewModel.onDoneNavigatingToNuevaPublicacion()
-            }
-        })
-
-        viewModel.navigateToDetallePublicacion.observe(viewLifecycleOwner, Observer {
-            if (it){
-                val publicacion = viewModel.publicacionActual.toString()
-                NavHostFragment.findNavController(this).navigate(
-                    ResultadosBusquedaFragmentDirections.actionResultadosBusquedaFragmentToDetallePublicacionFragment(publicacion)
-                )
-                viewModel.onDoneNavigateToDetallePublicacion()
             }
         })
 
