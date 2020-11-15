@@ -44,10 +44,7 @@ class ResultadosBusquedaFragment : Fragment(){
         // Allows Data Binding to Observe LiveData with the lifecycle of this Fragment
         binding.lifecycleOwner = this
 
-        binding.resultadosBusquedaViewModel = viewModel
-
         binding.resultadosBusqueda.adapter = PublicacionRecyclerViewAdapter(PublicacionListener { publicacionId ->
-            Toast.makeText(requireContext(), "Publicacion clickeada: $publicacionId", Toast.LENGTH_SHORT).show()
             NavHostFragment.findNavController(this).navigate(
                     ResultadosBusquedaFragmentDirections.actionResultadosBusquedaFragmentToDetallePublicacionFragment(publicacionId)
                 )
@@ -59,6 +56,8 @@ class ResultadosBusquedaFragment : Fragment(){
                 DividerItemDecoration.VERTICAL
             )
         )
+
+        binding.resultadosBusquedaViewModel = viewModel
 
         return binding.root
     }

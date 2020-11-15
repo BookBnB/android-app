@@ -36,9 +36,8 @@ class PublicacionesFragment : Fragment() {
         binding.viewModel = viewModel
 
         binding.publicacionesList.adapter = PublicacionRecyclerViewAdapter(PublicacionListener { publicacionId ->
-            Toast.makeText(requireContext(), "Publicacion clickeada: $publicacionId", Toast.LENGTH_SHORT).show()
             NavHostFragment.findNavController(this).navigate(
-                ResultadosBusquedaFragmentDirections.actionResultadosBusquedaFragmentToDetallePublicacionFragment(publicacionId)
+                PublicacionesFragmentDirections.actionNavPublicacionesToDetallePublicacionFragment(publicacionId)
             )
         }) as PublicacionRecyclerViewAdapter
         binding.publicacionesList.addItemDecoration(
