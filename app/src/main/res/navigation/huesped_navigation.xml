@@ -36,6 +36,6 @@
         tools:layout="@layout/fragment_detalle_publicacion">
         <argument
             android:name="publicacionId"
-            app:argType="integer"/>
+            app:argType="string"/>
     </fragment>
 </navigation>

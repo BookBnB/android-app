@@ -13,9 +13,7 @@ import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
-import retrofit2.http.Body
-import retrofit2.http.Header
-import retrofit2.http.POST
+import retrofit2.http.*
 import java.io.IOException
 import java.lang.Exception
 
@@ -41,22 +39,30 @@ interface BookBnBApiService {
     @POST("lugares/direcciones/consulta")
     suspend fun getLocations(@Header("Authorization") token: String, @Body registerDTO: LocationDTO) : List<CustomLocation>
 
-    @POST("")
-    suspend fun search(@Header("Authorization") token: String, @Body locationDTO: LocationDTO) : List<Publicacion>
+    @GET("publicaciones/{id}")
+    suspend fun getPublicationById(@Header("Authorization") token: String, @Path("id") publicacionId: String) : Publicacion
 }
 
 class BookBnBApi(var context: Context) {
     val retrofitService : BookBnBApiService by lazy {
         retrofit.create(BookBnBApiService::class.java) }
 
-    suspend fun search(location: String) : ResultWrapper<List<Publicacion>>{
+    suspend fun getPublicacionById(publicacionId: String) : ResultWrapper<Publicacion> {
+        val token = SessionManager(context).fetchAuthToken()
+        if (token.isNullOrEmpty()){
+            throw Exception("No hay una sesión establecida")
+        }
+        return safeApiCall(Dispatchers.IO) { retrofitService.getPublicationById(token, publicacionId) }
+    }
+
+    /*suspend fun search(location: String) : ResultWrapper<List<Publicacion>>{
         val locationDTO = LocationDTO(location, 5)
         val token = SessionManager(context).fetchAuthToken()
         if (token.isNullOrEmpty()){
             throw Exception("No hay una sesión establecida")
         }
         return safeApiCall(Dispatchers.IO) { retrofitService.search(token, locationDTO) }
-    }
+    }*/
 
     suspend fun getLocations(location: String) : ResultWrapper<List<CustomLocation>>{
         val locationDTO = LocationDTO(location, 5)

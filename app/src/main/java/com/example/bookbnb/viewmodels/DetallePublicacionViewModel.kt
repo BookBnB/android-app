@@ -1,11 +1,14 @@
 package com.example.bookbnb.viewmodels
 
 import android.app.Application
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.*
+import com.example.bookbnb.R
 import com.example.bookbnb.models.Publicacion
+import com.example.bookbnb.network.BookBnBApi
+import com.example.bookbnb.network.LoginResponse
+import com.example.bookbnb.network.ResultWrapper
+import com.example.bookbnb.utils.SessionManager
+import kotlinx.coroutines.launch
 
 class DetallePublicacionViewModel(application: Application) : BaseAndroidViewModel(application) {
 
@@ -14,8 +17,25 @@ class DetallePublicacionViewModel(application: Application) : BaseAndroidViewMod
     val publicacion : LiveData<Publicacion>
         get() = _publicacion
 
-    fun setPublicacion(publicacion: Publicacion) {
-        _publicacion.value = publicacion
+    fun onGetDetail(publicacionId: String) {
+        viewModelScope.launch {
+            try {
+                _showLoadingSpinner.value = true
+                when (val publicationResponse = BookBnBApi(getApplication()).getPublicacionById(publicacionId)) {
+                    is ResultWrapper.NetworkError -> showSnackbarMessage(getApplication<Application>().getString(
+                        R.string.network_error_msg))
+                    is ResultWrapper.GenericError -> showGenericError(publicationResponse)
+                    is ResultWrapper.Success -> onDetailSuccess(publicationResponse)
+                }
+            }
+            finally {
+                _showLoadingSpinner.value = false
+            }
+        }
+    }
+
+    private fun onDetailSuccess(publicacionResponse: ResultWrapper.Success<Publicacion>) {
+        _publicacion.value = publicacionResponse.value
     }
 
 }

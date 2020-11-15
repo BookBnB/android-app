@@ -41,6 +41,6 @@ class PublicacionRecyclerViewAdapter(val clickListener: PublicacionListener) : L
     }
 }
 
-class PublicacionListener(val clickListener: (publicacionId: Int) -> Unit) {
+class PublicacionListener(val clickListener: (publicacionId: String) -> Unit) {
     fun onClick(publicacion: Publicacion) = clickListener(publicacion.id)
 }

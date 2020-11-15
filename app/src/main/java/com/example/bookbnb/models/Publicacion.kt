@@ -1,6 +1,6 @@
 package com.example.bookbnb.models
 
-class Publicacion(var id: Int,
+class Publicacion(var id: String,
                   var description: String,
                   var title: String,
                   var imageUrl: String,
@@ -8,9 +8,5 @@ class Publicacion(var id: Int,
                   var location: String,
                   var lat: String,
                   var long: String) {
-
-    override fun toString(): String {
-        return "$id|$description|$title|$imageUrl|$pricePerNight|$location|$lat|$long"
-    }
 
 }
