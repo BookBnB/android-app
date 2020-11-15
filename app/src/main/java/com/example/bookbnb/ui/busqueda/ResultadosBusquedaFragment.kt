@@ -1,5 +1,6 @@
 package com.example.bookbnb.ui.busqueda
 
+import android.app.Application
 import android.os.Bundle
 import android.os.Parcelable
 import android.view.LayoutInflater
@@ -10,16 +11,21 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.example.bookbnb.R
 import com.example.bookbnb.databinding.FragmentResultadosBusquedaBinding
+import com.example.bookbnb.models.Coordenada
 import com.example.bookbnb.models.Publicacion
+import com.example.bookbnb.network.BookBnBApi
 import com.example.bookbnb.network.PublicacionDTO
+import com.example.bookbnb.network.ResultWrapper
 import com.example.bookbnb.ui.publicaciones.PublicacionListener
 import com.example.bookbnb.ui.publicaciones.PublicacionRecyclerViewAdapter
 import com.example.bookbnb.viewmodels.ResultadosBusquedaViewModel
 import com.example.bookbnb.viewmodels.ResultadosBusquedaViewModelFactory
+import kotlinx.coroutines.launch
 
 class ResultadosBusquedaFragment : Fragment(){
 
@@ -47,6 +53,7 @@ class ResultadosBusquedaFragment : Fragment(){
         // Allows Data Binding to Observe LiveData with the lifecycle of this Fragment
         binding.lifecycleOwner = this
 
+
         binding.resultadosBusqueda.adapter = PublicacionRecyclerViewAdapter(PublicacionListener { publicacionId ->
             NavHostFragment.findNavController(this).navigate(
                     ResultadosBusquedaFragmentDirections.actionResultadosBusquedaFragmentToDetallePublicacionFragment(publicacionId)
@@ -60,8 +67,8 @@ class ResultadosBusquedaFragment : Fragment(){
             )
         )
 
-        val publicaciones = arguments?.getParcelableArrayList<Parcelable>("publicaciones")
-        viewModel.setPublicaciones(publicaciones as List<PublicacionDTO>)
+        val coordenadas = arguments?.getString("coordenadas")!!.split("|")
+        viewModel.getResults(Coordenada(coordenadas[0].toDouble(), coordenadas[1].toDouble()))
 
         binding.resultadosBusquedaViewModel = viewModel
 

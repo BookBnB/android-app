@@ -4,7 +4,7 @@ import android.app.Application
 import android.view.View
 import androidx.lifecycle.*
 import com.example.bookbnb.R
-import com.example.bookbnb.models.Publicacion
+import com.example.bookbnb.models.Coordenada
 import com.example.bookbnb.network.BookBnBApi
 import com.example.bookbnb.network.PublicacionDTO
 import com.example.bookbnb.network.ResultWrapper
@@ -21,30 +21,25 @@ class ResultadosBusquedaViewModel(application: Application) : BaseAndroidViewMod
     val publicacionActual : MutableLiveData<PublicacionDTO>
         get() = _publicacionActual
 
-
-    fun setPublicaciones(publicaciones: List<PublicacionDTO>) {
-        _publicaciones.value = publicaciones
-    }
-
-    suspend fun onGetDetail(publicacionId: String) {
+    fun getResults(coordenadas: Coordenada) {
         viewModelScope.launch {
-            try {
-                _showLoadingSpinner.value = true
-                when (val publicationResponse = BookBnBApi(getApplication()).getPublicacionById(publicacionId)) {
-                    is ResultWrapper.NetworkError -> showSnackbarMessage(getApplication<Application>().getString(
-                        R.string.network_error_msg))
-                    is ResultWrapper.GenericError -> showGenericError(publicationResponse)
-                    is ResultWrapper.Success -> onDetailSuccess(publicationResponse)
-                }
-            }
-            finally {
-                _showLoadingSpinner.value = false
+
+            when (val searchResponse = BookBnBApi(getApplication()).searchByCityCoordinates(
+                coordenadas
+            )) {
+                is ResultWrapper.NetworkError -> showSnackbarMessage(
+                    getApplication<Application>().getString(
+                        R.string.network_error_msg
+                    )
+                )
+                is ResultWrapper.GenericError -> showGenericError(searchResponse)
+                is ResultWrapper.Success -> onSearchSuccess(searchResponse)
             }
         }
     }
 
-    private fun onDetailSuccess(publicacionResponse: ResultWrapper.Success<PublicacionDTO>) {
-        _publicacionActual.value = publicacionResponse.value
+    private fun onSearchSuccess(searchResponse: ResultWrapper.Success<List<PublicacionDTO>>) {
+        _publicaciones.value = searchResponse.value
     }
 
 }

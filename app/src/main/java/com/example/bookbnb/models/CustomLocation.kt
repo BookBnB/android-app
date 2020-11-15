@@ -1,6 +1,10 @@
 package com.example.bookbnb.models
 
-class Coordenada(var latitud: Double, var longitud: Double)
+class Coordenada(var latitud: Double, var longitud: Double) {
+    override fun toString(): String {
+        return "$latitud|$longitud"
+    }
+}
 
 class CustomLocation(var pais: String, var provincia: String, var municipio: String?, var ciudad: String?, var direccion: String?, var coordenadas: Coordenada) {
 

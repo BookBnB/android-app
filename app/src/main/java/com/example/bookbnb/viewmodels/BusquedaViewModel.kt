@@ -4,6 +4,7 @@ import android.app.Application
 import android.widget.ArrayAdapter
 import androidx.lifecycle.*
 import com.example.bookbnb.R
+import com.example.bookbnb.models.Coordenada
 import com.example.bookbnb.models.CustomLocation
 import com.example.bookbnb.network.BookBnBApi
 import com.example.bookbnb.network.PublicacionDTO
@@ -29,16 +30,17 @@ class BusquedaViewModel(application: Application) : BaseAndroidViewModel(applica
     val navigateToSearchResults: MutableLiveData<Boolean>
         get() = _navigateToSearchResults
 
-    private val _publicaciones = MutableLiveData<List<PublicacionDTO>>()
-    val publicaciones: MutableLiveData<List<PublicacionDTO>>
-        get() = _publicaciones
+    private val _coordenadas = MutableLiveData<Coordenada>()
+    val coordenadas: MutableLiveData<Coordenada>
+        get() = _coordenadas
 
-    fun onNavigateToSearchResults(publicaciones : List<PublicacionDTO>) {
-        _publicaciones.value = publicaciones
+    fun onNavigateToSearchResults() {
+        _coordenadas.value = _selectedLocation.value!!.coordenadas
         _navigateToSearchResults.value = true
     }
 
     fun onDoneNavigateToSearchResults() {
+        _coordenadas.value = null
         _navigateToSearchResults.value = false
     }
 
@@ -74,25 +76,9 @@ class BusquedaViewModel(application: Application) : BaseAndroidViewModel(applica
     }
 
     fun onGetResults() {
-        viewModelScope.launch {
-
-            when (val searchResponse = BookBnBApi(getApplication()).searchByCityCoordinates(
-                _selectedLocation.value!!.coordenadas
-            )) {
-                is ResultWrapper.NetworkError -> showSnackbarMessage(
-                    getApplication<Application>().getString(
-                        R.string.network_error_msg
-                    )
-                )
-                is ResultWrapper.GenericError -> showGenericError(searchResponse)
-                is ResultWrapper.Success -> onSearchSuccess(searchResponse)
-            }
-        }
+        onNavigateToSearchResults()
     }
 
-    private fun onSearchSuccess(searchResponse: ResultWrapper.Success<List<PublicacionDTO>>) {
-        onNavigateToSearchResults(searchResponse.value)
-    }
 }
 
 class BusquedaViewModelFactory(val app: Application) : ViewModelProvider.Factory {

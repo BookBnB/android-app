@@ -21,14 +21,14 @@
         <action
             android:id="@+id/action_busquedaLocationFragment_to_resultadosBusquedaFragment"
             app:destination="@id/resultadosBusquedaFragment" />
-        <argument
-            android:name="publicaciones"
-            app:argType="List<com.example.bookbnb.network.PublicacionDTO>"/>
     </fragment>
     <fragment
         android:id="@+id/resultadosBusquedaFragment"
         android:name="com.example.bookbnb.ui.busqueda.ResultadosBusquedaFragment"
         tools:layout="@layout/fragment_resultados_busqueda">
+        <argument
+            android:name="coordenadas"
+            app:argType="string"/>
         <action
             android:id="@+id/action_resultadosBusquedaFragment_to_detallePublicacionFragment"
             app:destination="@id/detallePublicacionFragment" />
