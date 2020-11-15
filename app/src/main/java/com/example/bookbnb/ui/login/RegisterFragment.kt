@@ -20,13 +20,14 @@ import com.example.bookbnb.MainActivity
 import com.example.bookbnb.R
 import com.example.bookbnb.databinding.FragmentLoginBinding
 import com.example.bookbnb.databinding.FragmentRegisterBinding
+import com.example.bookbnb.ui.BaseFragment
 import com.example.bookbnb.viewmodels.LoginViewModel
 import com.example.bookbnb.viewmodels.LoginViewModelFactory
 import com.example.bookbnb.viewmodels.RegisterViewModel
 import com.example.bookbnb.viewmodels.RegisterViewModelFactory
 import com.google.android.material.snackbar.Snackbar
 
-class RegisterFragment : Fragment() {
+class RegisterFragment : BaseFragment() {
 
     private val viewModel: RegisterViewModel by lazy {
         val activity = requireNotNull(this.activity) {
@@ -38,7 +39,7 @@ class RegisterFragment : Fragment() {
 
     private lateinit var binding: FragmentRegisterBinding
 
-    private lateinit var spinnerHolder: RelativeLayout
+    private lateinit var spinnerHolder: View
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -55,34 +56,13 @@ class RegisterFragment : Fragment() {
 
         binding.registerViewModel = viewModel
 
-        setSpinnerObserver()
+        setSpinnerObserver(viewModel, requireActivity().findViewById(R.id.spinner_holder))
         setPossibleUserTypes()
         setNavigateToLoginObserver()
-        setSnackbarMessageObserver()
+        setSnackbarMessageObserver(viewModel,
+            requireActivity().findViewById(R.id.login_activity_layout))
 
         return binding.root
-    }
-
-    private fun setSpinnerObserver() {
-        spinnerHolder = requireActivity().findViewById(R.id.spinner_holder)
-
-        viewModel.showLoadingSpinner.observe(viewLifecycleOwner, Observer { show ->
-            hideKeyboard()
-            spinnerHolder.visibility = if (show) View.VISIBLE else View.GONE
-        })
-    }
-
-    private fun setSnackbarMessageObserver() {
-        viewModel.snackbarMessage.observe(viewLifecycleOwner, Observer { msg ->
-            msg?.let {
-                Snackbar.make(
-                    requireActivity().findViewById(R.id.login_activity_layout),
-                    it,
-                    Snackbar.LENGTH_LONG
-                ).show()
-                viewModel.onDoneShowingSnackbarMessage()
-            }
-        })
     }
 
     private fun setNavigateToLoginObserver() {
@@ -103,12 +83,4 @@ class RegisterFragment : Fragment() {
         (binding.userTypeTextField.editText as? AutoCompleteTextView)?.setText(getString(R.string.user_type_huesped), false) //Defaults to huesped
     }
 
-    private fun Fragment.hideKeyboard() {
-        view?.let { activity?.hideKeyboard(it) }
-    }
-
-    private fun Context.hideKeyboard(view: View) {
-        val inputMethodManager = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
-        inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
-    }
 }

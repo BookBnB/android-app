@@ -17,16 +17,13 @@ import androidx.navigation.fragment.NavHostFragment
 import com.example.bookbnb.MainActivity
 import com.example.bookbnb.R
 import com.example.bookbnb.databinding.FragmentLoginBinding
+import com.example.bookbnb.ui.BaseFragment
 import com.example.bookbnb.viewmodels.LoginViewModel
 import com.example.bookbnb.viewmodels.LoginViewModelFactory
 import com.google.android.material.snackbar.Snackbar
 
-class LoginFragment : Fragment(){
-    /**
-     * One way to delay creation of the viewModel until an appropriate lifecycle method is to use
-     * lazy. This requires that viewModel not be referenced before onActivityCreated, which we
-     * do in this Fragment.
-     */
+class LoginFragment : BaseFragment(){
+
     private val viewModel: LoginViewModel by lazy {
         val activity = requireNotNull(this.activity) {
             "You can only access the viewModel after onActivityCreated()"
@@ -56,32 +53,10 @@ class LoginFragment : Fragment(){
 
         setNavigateToMainActivityObserver()
         setNavigateToRegisterObserver()
-        setSpinnerObserver()
-        setSnackbarMessageObserver()
+        setSpinnerObserver(viewModel, requireActivity().findViewById(R.id.spinner_holder))
+        setSnackbarMessageObserver(viewModel, requireActivity().findViewById(R.id.login_activity_layout))
 
         return binding.root
-    }
-
-    private fun setSnackbarMessageObserver() {
-        viewModel.snackbarMessage.observe(viewLifecycleOwner, Observer { msg ->
-            msg?.let {
-                Snackbar.make(
-                    requireActivity().findViewById(R.id.login_activity_layout),
-                    it,
-                    Snackbar.LENGTH_LONG
-                ).show()
-                viewModel.onDoneShowingSnackbarMessage()
-            }
-        })
-    }
-
-    private fun setSpinnerObserver() {
-        spinnerHolder = requireActivity().findViewById(R.id.spinner_holder)
-
-        viewModel.showLoadingSpinner.observe(viewLifecycleOwner, Observer { show ->
-            hideKeyboard()
-            spinnerHolder.visibility = if (show) View.VISIBLE else View.GONE
-        })
     }
 
     private fun setNavigateToRegisterObserver() {
@@ -102,14 +77,5 @@ class LoginFragment : Fragment(){
                 requireActivity().finish()
             }
         })
-    }
-
-    private fun Fragment.hideKeyboard() {
-        view?.let { activity?.hideKeyboard(it) }
-    }
-
-    private fun Context.hideKeyboard(view: View) {
-        val inputMethodManager = getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
-        inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
     }
 }

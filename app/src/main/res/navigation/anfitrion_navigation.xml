@@ -40,5 +40,18 @@
         android:id="@+id/nuevaPublicacionImagesFragment"
         android:name="com.example.bookbnb.ui.publicaciones.NuevaPublicacionImagesFragment"
         android:label="@string/fotos_lbl"
-        tools:layout="@layout/fragment_nueva_publicacion_images" />
+        tools:layout="@layout/fragment_nueva_publicacion_images" >
+        <action
+            android:id="@+id/action_nuevaPublicacionImagesFragment_to_nuevaPublicacionPreviewFragment"
+            app:destination="@id/nuevaPublicacionPreviewFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/nuevaPublicacionPreviewFragment"
+        android:name="com.example.bookbnb.ui.publicaciones.NuevaPublicacionPreviewFragment"
+        android:label="@string/previsualizacion_lbl" >
+        <action
+            android:id="@+id/action_nuevaPublicacionPreviewFragment_to_nav_publicaciones"
+            app:destination="@id/nav_publicaciones"
+            app:popUpTo="@id/nav_publicaciones" />
+    </fragment>
 </navigation>
