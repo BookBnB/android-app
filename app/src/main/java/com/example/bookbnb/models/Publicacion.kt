@@ -8,4 +8,9 @@ class Publicacion(var id: Int,
                   var location: String,
                   var lat: String,
                   var long: String) {
+
+    override fun toString(): String {
+        return "$id|$description|$title|$imageUrl|$pricePerNight|$location|$lat|$long"
+    }
+
 }

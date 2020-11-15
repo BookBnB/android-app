@@ -39,10 +39,10 @@ class ResultadosBusquedaFragment : Fragment(){
             false
         )
 
-        binding.resultadosBusquedaViewModel = viewModel
-
         // Allows Data Binding to Observe LiveData with the lifecycle of this Fragment
         binding.lifecycleOwner = this
+
+        binding.resultadosBusquedaViewModel = viewModel
 
         binding.resultadosBusqueda.adapter = PublicacionRecyclerViewAdapter() as PublicacionRecyclerViewAdapter
         binding.resultadosBusqueda.addItemDecoration(
@@ -54,8 +54,9 @@ class ResultadosBusquedaFragment : Fragment(){
 
         viewModel.navigateToDetallePublicacion.observe(viewLifecycleOwner, Observer {
             if (it){
+                val publicacion = viewModel.publicacionActual.toString()
                 NavHostFragment.findNavController(this).navigate(
-                    DetallePublicacionFragmentDirections.actionNavResultadosBusquedaToDetallePublicacionFragment()
+                    ResultadosBusquedaFragmentDirections.actionResultadosBusquedaFragmentToDetallePublicacionFragment(publicacion)
                 )
                 viewModel.onDoneNavigateToDetallePublicacion()
             }

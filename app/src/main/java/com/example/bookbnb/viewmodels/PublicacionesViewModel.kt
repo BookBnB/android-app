@@ -1,5 +1,6 @@
 package com.example.bookbnb.viewmodels
 
+import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -12,8 +13,16 @@ class PublicacionesViewModel : ViewModel()  {
     val publicaciones : LiveData<List<Publicacion>>
         get() = _publicaciones
 
+    private val _publicacionActual = MutableLiveData<Publicacion>()
+    val publicacionActual : MutableLiveData<Publicacion>
+        get() = _publicacionActual
+
+    private val _navigateToDetallePublicacion = MutableLiveData<Boolean>(false)
+    val navigateToDetallePublicacion : MutableLiveData<Boolean>
+        get() = _navigateToDetallePublicacion
+
     private val _navigateToNewPublicacion = MutableLiveData<Boolean>(false)
-    val navigateToNewPublicacion : LiveData<Boolean>
+    val navigateToNewPublicacion : MutableLiveData<Boolean>
         get() = _navigateToNewPublicacion
 
     init{
@@ -28,5 +37,15 @@ class PublicacionesViewModel : ViewModel()  {
 
     fun onDoneNavigatingToNuevaPublicacion(){
         _navigateToNewPublicacion.value = false
+    }
+
+    fun navigateToDetallePublicacion(publicacion: Publicacion){
+        _navigateToDetallePublicacion.value = true
+        _publicacionActual.value = publicacion
+    }
+
+    fun onDoneNavigateToDetallePublicacion(){
+        _navigateToDetallePublicacion.value = false
+        _publicacionActual.value = null
     }
 }

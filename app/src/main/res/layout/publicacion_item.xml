@@ -5,6 +5,9 @@
     <data>
         <variable name="property"
             type="com.example.bookbnb.models.Publicacion" />
+        <variable
+            name="viewModel"
+            type="com.example.bookbnb.viewmodels.PublicacionesViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -73,6 +76,20 @@
             app:layout_constraintStart_toEndOf="@+id/item_image"
             app:layout_constraintTop_toBottomOf="@+id/publicacion_direccion"
             tools:text="$ @{property.pricePerNight} por noche" />
+
+        <Button
+            style="@style/PrimaryButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center_horizontal"
+            android:layout_marginStart="@dimen/margin_normal"
+            android:layout_marginEnd="@dimen/margin_normal"
+            android:layout_marginBottom="@dimen/margin_normal"
+            android:text="@string/see_detail_txt"
+            android:onClick="@{() -> viewModel.navigateToDetallePublicacion(property)}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

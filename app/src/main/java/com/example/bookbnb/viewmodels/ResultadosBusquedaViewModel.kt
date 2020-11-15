@@ -1,6 +1,7 @@
 package com.example.bookbnb.viewmodels
 
 import android.app.Application
+import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -19,7 +20,7 @@ class ResultadosBusquedaViewModel(application: Application) : BaseAndroidViewMod
         get() = _publicacionActual
 
     private val _navigateToDetallePublicacion = MutableLiveData<Boolean>(false)
-    val navigateToDetallePublicacion : LiveData<Boolean>
+    val navigateToDetallePublicacion : MutableLiveData<Boolean>
         get() = _navigateToDetallePublicacion
 
     init{

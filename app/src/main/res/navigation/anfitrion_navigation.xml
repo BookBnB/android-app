@@ -17,6 +17,9 @@
         <action
             android:id="@+id/action_nav_publicaciones_to_nuevaPublicacionFragment"
             app:destination="@id/nuevaPublicacionFragment" />
+        <action
+            android:id="@+id/action_nav_publicaciones_to_detallePublicacionFragment"
+            app:destination="@id/detallePublicacionFragment" />
     </fragment>
     <fragment
         android:id="@+id/nuevaPublicacionFragment"
@@ -41,4 +44,12 @@
         android:name="com.example.bookbnb.ui.publicaciones.NuevaPublicacionImagesFragment"
         android:label="@string/fotos_lbl"
         tools:layout="@layout/fragment_nueva_publicacion_images" />
+    <fragment
+        android:id="@+id/detallePublicacionFragment"
+        android:name="com.example.bookbnb.ui.publicaciones.DetallePublicacionFragment"
+        tools:layout="@layout/fragment_detalle_publicacion">
+        <argument
+            android:name="publicacion"
+            app:argType="string"/>
+    </fragment>
 </navigation>

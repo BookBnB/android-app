@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.example.bookbnb.databinding.FragmentPublicacionesListBinding
+import com.example.bookbnb.ui.busqueda.ResultadosBusquedaFragmentDirections
 import com.example.bookbnb.viewmodels.PublicacionesViewModel
 
 
@@ -47,6 +48,16 @@ class PublicacionesFragment : Fragment() {
                     PublicacionesFragmentDirections.actionNavPublicacionesToNuevaPublicacionFragment()
                 )
                 viewModel.onDoneNavigatingToNuevaPublicacion()
+            }
+        })
+
+        viewModel.navigateToDetallePublicacion.observe(viewLifecycleOwner, Observer {
+            if (it){
+                val publicacion = viewModel.publicacionActual.toString()
+                NavHostFragment.findNavController(this).navigate(
+                    ResultadosBusquedaFragmentDirections.actionResultadosBusquedaFragmentToDetallePublicacionFragment(publicacion)
+                )
+                viewModel.onDoneNavigateToDetallePublicacion()
             }
         })
 
