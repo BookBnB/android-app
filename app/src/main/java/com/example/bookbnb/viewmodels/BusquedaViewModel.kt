@@ -6,6 +6,7 @@ import androidx.lifecycle.*
 import com.example.bookbnb.R
 import com.example.bookbnb.models.CustomLocation
 import com.example.bookbnb.network.BookBnBApi
+import com.example.bookbnb.network.PublicacionDTO
 import com.example.bookbnb.network.ResultWrapper
 import kotlinx.coroutines.launch
 import java.lang.Exception
@@ -25,10 +26,15 @@ class BusquedaViewModel(application: Application) : BaseAndroidViewModel(applica
         get() = _autocompleteLocationAdapter
 
     private val _navigateToSearchResults = MutableLiveData<Boolean>(false)
-    val navigateToSearchResults: LiveData<Boolean>
+    val navigateToSearchResults: MutableLiveData<Boolean>
         get() = _navigateToSearchResults
 
-    fun onNavigateToSearchResults() {
+    private val _publicaciones = MutableLiveData<List<PublicacionDTO>>()
+    val publicaciones: MutableLiveData<List<PublicacionDTO>>
+        get() = _publicaciones
+
+    fun onNavigateToSearchResults(publicaciones : List<PublicacionDTO>) {
+        _publicaciones.value = publicaciones
         _navigateToSearchResults.value = true
     }
 
@@ -68,15 +74,11 @@ class BusquedaViewModel(application: Application) : BaseAndroidViewModel(applica
     }
 
     fun onGetResults() {
-        //viewModelScope.launch {
+        viewModelScope.launch {
 
-            onNavigateToSearchResults()
-            /*val publicacion: Publicacion = Publicacion(1, "Test", "Desc", "https://live.staticflickr.com/5724/30787745771_31ee1eb522_k.jpg", 100f, "Algun lado","","")
-            val publicacion2: Publicacion = Publicacion(1, "Test", "Desc", "https://live.staticflickr.com/5724/30787745771_31ee1eb522_k.jpg", 100f, "Algun lado","","")
-            val searchResponse = listOf(publicacion, publicacion2)
-            onSearchSuccess(searchResponse)
-            val searchResponse = BookBnBApi(getApplication()).search(_destino.value!!)
-            when (searchResponse) {
+            when (val searchResponse = BookBnBApi(getApplication()).searchByCityCoordinates(
+                _selectedLocation.value!!.coordenadas
+            )) {
                 is ResultWrapper.NetworkError -> showSnackbarMessage(
                     getApplication<Application>().getString(
                         R.string.network_error_msg
@@ -85,13 +87,11 @@ class BusquedaViewModel(application: Application) : BaseAndroidViewModel(applica
                 is ResultWrapper.GenericError -> showGenericError(searchResponse)
                 is ResultWrapper.Success -> onSearchSuccess(searchResponse)
             }
-        }*/
-        //}
+        }
+    }
 
-        /*private fun onSearchSuccess(searchResponse: ResultWrapper.Success<List<Publicacion>>) {
-        onNavigateToSearchResults()
-    }*/
-
+    private fun onSearchSuccess(searchResponse: ResultWrapper.Success<List<PublicacionDTO>>) {
+        onNavigateToSearchResults(searchResponse.value)
     }
 }
 

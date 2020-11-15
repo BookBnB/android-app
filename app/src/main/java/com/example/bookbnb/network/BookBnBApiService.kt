@@ -2,6 +2,7 @@ package com.example.bookbnb.network
 
 
 import android.content.Context
+import com.example.bookbnb.models.Coordenada
 import com.example.bookbnb.models.CustomLocation
 import com.example.bookbnb.models.Publicacion
 import com.example.bookbnb.utils.SessionManager
@@ -44,7 +45,10 @@ interface BookBnBApiService {
     ): List<CustomLocation>
 
     @GET("publicaciones/{id}")
-    suspend fun getPublicationById(@Header("Authorization") token: String, @Path("id") publicacionId: String) : Publicacion
+    suspend fun getPublicationById(@Header("Authorization") token: String, @Path("id") publicacionId: String) : PublicacionDTO
+
+    @GET("publicaciones")
+    suspend fun searchByCityCoordinates(@Header("Authorization") token: String, @Body coordenadas: Coordenada) : List<PublicacionDTO>
 }
 
 class BookBnBApi(var context: Context) {
@@ -89,7 +93,7 @@ class BookBnBApi(var context: Context) {
         return safeApiCall(Dispatchers.IO) { retrofitService.createPublicacion(token, publicacionDTO) }
     }
 
-    suspend fun getPublicacionById(publicacionId: String) : ResultWrapper<Publicacion> {
+    suspend fun getPublicacionById(publicacionId: String) : ResultWrapper<PublicacionDTO> {
         val token = SessionManager(context).fetchAuthToken()
         if (token.isNullOrEmpty()){
             throw Exception("No hay una sesión establecida")
@@ -97,14 +101,13 @@ class BookBnBApi(var context: Context) {
         return safeApiCall(Dispatchers.IO) { retrofitService.getPublicationById(token, publicacionId) }
     }
 
-    /*suspend fun search(location: String) : ResultWrapper<List<Publicacion>>{
-        val locationDTO = LocationDTO(location, 5)
+    suspend fun searchByCityCoordinates(coordenadas: Coordenada) : ResultWrapper<List<PublicacionDTO>>{
         val token = SessionManager(context).fetchAuthToken()
         if (token.isNullOrEmpty()){
             throw Exception("No hay una sesión establecida")
         }
-        return safeApiCall(Dispatchers.IO) { retrofitService.search(token, locationDTO) }
-    }*/
+        return safeApiCall(Dispatchers.IO) { retrofitService.searchByCityCoordinates(token, coordenadas) }
+    }
 
     suspend fun getCities(location: String): ResultWrapper<List<CustomLocation>> {
         val locationDTO = LocationDTO(location, 5)

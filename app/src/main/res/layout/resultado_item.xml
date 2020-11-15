@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
     <data>
         <variable name="property"
-            type="com.example.bookbnb.models.Publicacion" />
+            type="com.example.bookbnb.network.PublicacionDTO" />
         <variable
             name="clickListener"
             type="com.example.bookbnb.ui.publicaciones.PublicacionListener" />
@@ -24,7 +24,7 @@
             android:layout_marginBottom="8dp"
             android:textAppearance="?attr/textAppearanceListItem"
             app:layout_constraintWidth_percent="0.3"
-            app:imageUrl="@{property.imageUrl}"
+            app:imageUrl="@{property.imagenes[0].url}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -39,7 +39,7 @@
             android:layout_marginTop="@dimen/margin_small"
             android:ellipsize="end"
             android:maxLines="2"
-            android:text="@{property.title}"
+            android:text="@{property.titulo}"
             android:textAppearance="?attr/textAppearanceListItem"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/resultado_direccion"
@@ -47,7 +47,7 @@
             app:layout_constraintStart_toEndOf="@+id/resultado_image"
             app:layout_constraintTop_toTopOf="@+id/resultado_image"
             app:layout_constraintVertical_chainStyle="packed"
-            tools:text="@{property.title}" />
+            tools:text="@{property.titulo}" />
 
         <TextView
             android:id="@+id/resultado_direccion"
@@ -56,13 +56,13 @@
             android:layout_marginStart="@dimen/margin_normal"
             android:layout_marginTop="@dimen/margin_normal"
             android:layout_marginBottom="@dimen/margin_normal"
-            android:text="@{property.location}"
+            android:text="@{property.direccion.toString()}"
             android:textAppearance="?attr/textAppearanceListItem"
             app:layout_constraintBottom_toTopOf="@+id/resultado_precio"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/resultado_image"
             app:layout_constraintTop_toBottomOf="@+id/resultado_title"
-            tools:text="@{property.location}" />
+            tools:text="@{property.direccion.toString()}" />
 
         <TextView
             android:id="@+id/resultado_precio"
@@ -70,14 +70,14 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_normal"
             android:layout_marginBottom="@dimen/margin_small"
-            android:text="$ @{property.pricePerNight} por noche"
+            android:text="@{@string/precio_detalle_format(property.precioPorNoche)}"
             android:textAlignment="textEnd"
             android:textAppearance="?attr/textAppearanceHeadline6"
             app:layout_constraintBottom_toBottomOf="@+id/resultado_image"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/resultado_image"
             app:layout_constraintTop_toBottomOf="@+id/resultado_direccion"
-            tools:text="$ @{property.pricePerNight} por noche" />
+            tools:text="@{@string/precio_detalle_format(property.precioPorNoche)}" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

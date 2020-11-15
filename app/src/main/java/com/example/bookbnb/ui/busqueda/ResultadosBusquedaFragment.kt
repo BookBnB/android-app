@@ -1,6 +1,7 @@
 package com.example.bookbnb.ui.busqueda
 
 import android.os.Bundle
+import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +14,8 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.example.bookbnb.R
 import com.example.bookbnb.databinding.FragmentResultadosBusquedaBinding
+import com.example.bookbnb.models.Publicacion
+import com.example.bookbnb.network.PublicacionDTO
 import com.example.bookbnb.ui.publicaciones.PublicacionListener
 import com.example.bookbnb.ui.publicaciones.PublicacionRecyclerViewAdapter
 import com.example.bookbnb.viewmodels.ResultadosBusquedaViewModel
@@ -56,6 +59,9 @@ class ResultadosBusquedaFragment : Fragment(){
                 DividerItemDecoration.VERTICAL
             )
         )
+
+        val publicaciones = arguments?.getParcelableArrayList<Parcelable>("publicaciones")
+        viewModel.setPublicaciones(publicaciones as List<PublicacionDTO>)
 
         binding.resultadosBusquedaViewModel = viewModel
 

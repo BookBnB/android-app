@@ -1,5 +1,6 @@
 package com.example.bookbnb.network
 
+import android.os.Parcel
 import android.os.Parcelable
 import com.example.bookbnb.models.CustomLocation
 import com.example.bookbnb.models.Publicacion

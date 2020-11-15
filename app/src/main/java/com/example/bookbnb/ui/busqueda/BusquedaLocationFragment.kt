@@ -54,7 +54,7 @@ class BusquedaLocationFragment : Fragment() {
         viewModel.navigateToSearchResults.observe(viewLifecycleOwner, Observer {
             if (it){
                 NavHostFragment.findNavController(this).navigate(
-                    BusquedaLocationFragmentDirections.actionBusquedaLocationFragmentToResultadosBusquedaFragment()
+                    BusquedaLocationFragmentDirections.actionBusquedaLocationFragmentToResultadosBusquedaFragment(viewModel.publicaciones)
                 )
                 viewModel.onDoneNavigateToSearchResults()
             }

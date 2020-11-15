@@ -38,10 +38,10 @@ class DetallePublicacionFragment : Fragment() {
         // Allows Data Binding to Observe LiveData with the lifecycle of this Fragment
         binding.lifecycleOwner = this
 
+        binding.detallePublicacionViewModel = viewModel
+
         val publicacionId = arguments?.getString("publicacionId")
         viewModel.onGetDetail(publicacionId!!)
-
-        binding.detallePublicacionViewModel = viewModel
 
         return binding.root
     }
