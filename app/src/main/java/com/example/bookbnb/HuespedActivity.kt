@@ -35,7 +35,7 @@ class HuespedActivity : AppCompatActivity() {
             val jwt = JWT(token)
             setContentView(R.layout.activity_huesped)
             val toolbar: Toolbar = findViewById(R.id.toolbar_huesped)
-            //setSupportActionBar(toolbar)
+            setSupportActionBar(toolbar)
 
             val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout_huesped)
             val navView: NavigationView = findViewById(R.id.nav_view_huesped)

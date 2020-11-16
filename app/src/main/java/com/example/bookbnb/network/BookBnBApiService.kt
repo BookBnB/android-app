@@ -49,7 +49,9 @@ interface BookBnBApiService {
     suspend fun getPublicationById(@Header("Authorization") token: String, @Path("id") publicacionId: String) : Publicacion
 
     @GET("publicaciones")
-    suspend fun searchByCityCoordinates(@Header("Authorization") token: String, @Query("coordenadas") coordenadas: Coordenada) : List<Publicacion>
+    suspend fun searchByCityCoordinates(@Header("Authorization") token: String,
+                                        @Query("coordenadas[latitud]") latitud: Double,
+                                        @Query("coordenadas[longitud]") longitud: Double) : List<Publicacion>
 }
 
 class BookBnBApi(var context: Context) {
@@ -107,7 +109,7 @@ class BookBnBApi(var context: Context) {
         if (token.isNullOrEmpty()){
             throw Exception("No hay una sesión establecida")
         }
-        return safeApiCall(Dispatchers.IO) { retrofitService.searchByCityCoordinates(token, coordenadas) }
+        return safeApiCall(Dispatchers.IO) { retrofitService.searchByCityCoordinates(token, coordenadas.latitud, coordenadas.longitud) }
     }
 
     suspend fun getCities(location: String): ResultWrapper<List<CustomLocation>> {

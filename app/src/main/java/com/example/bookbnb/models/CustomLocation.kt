@@ -2,7 +2,9 @@ package com.example.bookbnb.models
 
 import android.os.Parcel
 import android.os.Parcelable
+import com.squareup.moshi.JsonClass
 
+@JsonClass(generateAdapter = true)
 class Coordenada(var latitud: Double, var longitud: Double) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readDouble(),
@@ -11,7 +13,6 @@ class Coordenada(var latitud: Double, var longitud: Double) : Parcelable {
     }
 
     override fun toString(): String {
-        return "{'latitud': $latitud, 'longitud':$longitud}"
         return "$latitud|$longitud"
     }
 

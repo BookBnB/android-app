@@ -15,11 +15,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".HuespedActivity"></activity>
+        <activity
+            android:name=".HuespedActivity"
+            android:label="@string/huesped_activity_label"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".AnfitrionActivity"
             android:label="@string/title_activity_anfitrion"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".LoginActivity" />
         <activity
             android:name=".MainActivity"
