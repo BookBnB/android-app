@@ -37,9 +37,10 @@
     <fragment
         android:id="@+id/detallePublicacionFragment"
         android:name="com.example.bookbnb.ui.publicaciones.DetallePublicacionFragment"
+        android:label="@string/detalle_publicacion_title"
         tools:layout="@layout/fragment_detalle_publicacion">
         <argument
             android:name="publicacionId"
-            app:argType="string"/>
+            app:argType="string" />
     </fragment>
 </navigation>
