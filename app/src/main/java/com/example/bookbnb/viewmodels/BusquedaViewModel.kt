@@ -7,7 +7,6 @@ import com.example.bookbnb.R
 import com.example.bookbnb.models.Coordenada
 import com.example.bookbnb.models.CustomLocation
 import com.example.bookbnb.network.BookBnBApi
-import com.example.bookbnb.network.PublicacionDTO
 import com.example.bookbnb.network.ResultWrapper
 import kotlinx.coroutines.launch
 import java.lang.Exception

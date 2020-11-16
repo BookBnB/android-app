@@ -25,10 +25,11 @@
     <fragment
         android:id="@+id/resultadosBusquedaFragment"
         android:name="com.example.bookbnb.ui.busqueda.ResultadosBusquedaFragment"
+        android:label="@string/resultados_lbl"
         tools:layout="@layout/fragment_resultados_busqueda">
         <argument
             android:name="coordenadas"
-            app:argType="string"/>
+            app:argType="com.example.bookbnb.models.Coordenada" />
         <action
             android:id="@+id/action_resultadosBusquedaFragment_to_detallePublicacionFragment"
             app:destination="@id/detallePublicacionFragment" />

@@ -5,20 +5,20 @@ import android.view.View
 import androidx.lifecycle.*
 import com.example.bookbnb.R
 import com.example.bookbnb.models.Coordenada
+import com.example.bookbnb.models.Publicacion
 import com.example.bookbnb.network.BookBnBApi
-import com.example.bookbnb.network.PublicacionDTO
 import com.example.bookbnb.network.ResultWrapper
 import kotlinx.coroutines.launch
 
 class ResultadosBusquedaViewModel(application: Application) : BaseAndroidViewModel(application) {
 
-    private val _publicaciones = MutableLiveData<List<PublicacionDTO>>()
+    private val _publicaciones = MutableLiveData<List<Publicacion>>()
 
-    val publicaciones : LiveData<List<PublicacionDTO>>
+    val publicaciones : LiveData<List<Publicacion>>
         get() = _publicaciones
 
-    private val _publicacionActual = MutableLiveData<PublicacionDTO>()
-    val publicacionActual : MutableLiveData<PublicacionDTO>
+    private val _publicacionActual = MutableLiveData<Publicacion>()
+    val publicacionActual : MutableLiveData<Publicacion>
         get() = _publicacionActual
 
     fun getResults(coordenadas: Coordenada) {
@@ -38,7 +38,7 @@ class ResultadosBusquedaViewModel(application: Application) : BaseAndroidViewMod
         }
     }
 
-    private fun onSearchSuccess(searchResponse: ResultWrapper.Success<List<PublicacionDTO>>) {
+    private fun onSearchSuccess(searchResponse: ResultWrapper.Success<List<Publicacion>>) {
         _publicaciones.value = searchResponse.value
     }
 

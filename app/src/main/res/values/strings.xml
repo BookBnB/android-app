@@ -78,5 +78,6 @@
     <string name="precio_detail_format">$ %s por noche</string>
     <string name="preview_step_help">Paso 4: Revise todos los datos que ingresó para finalizar la publicación de su alojamiento.</string>
     <string name="previsualizacion_lbl">Previsualización</string>
+    <string name="resultados_lbl">Resultados</string>
 
 </resources>

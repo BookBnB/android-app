@@ -52,9 +52,11 @@ class BusquedaLocationFragment : Fragment() {
         setSuggestionOnClick()
 
         viewModel.navigateToSearchResults.observe(viewLifecycleOwner, Observer {
-            if (it){
+            if (it && viewModel.coordenadas.value != null){
                 NavHostFragment.findNavController(this).navigate(
-                    BusquedaLocationFragmentDirections.actionBusquedaLocationFragmentToResultadosBusquedaFragment(viewModel.coordenadas.toString())
+                    BusquedaLocationFragmentDirections.actionBusquedaLocationFragmentToResultadosBusquedaFragment(
+                        viewModel.coordenadas.value!!
+                    )
                 )
                 viewModel.onDoneNavigateToSearchResults()
             }

@@ -19,15 +19,15 @@ import com.example.bookbnb.databinding.FragmentResultadosBusquedaBinding
 import com.example.bookbnb.models.Coordenada
 import com.example.bookbnb.models.Publicacion
 import com.example.bookbnb.network.BookBnBApi
-import com.example.bookbnb.network.PublicacionDTO
 import com.example.bookbnb.network.ResultWrapper
+import com.example.bookbnb.ui.BaseFragment
 import com.example.bookbnb.ui.publicaciones.PublicacionListener
 import com.example.bookbnb.ui.publicaciones.PublicacionRecyclerViewAdapter
 import com.example.bookbnb.viewmodels.ResultadosBusquedaViewModel
 import com.example.bookbnb.viewmodels.ResultadosBusquedaViewModelFactory
 import kotlinx.coroutines.launch
 
-class ResultadosBusquedaFragment : Fragment(){
+class ResultadosBusquedaFragment : BaseFragment(){
 
     private val viewModel: ResultadosBusquedaViewModel by lazy {
         val activity = requireNotNull(this.activity) {
@@ -67,8 +67,8 @@ class ResultadosBusquedaFragment : Fragment(){
             )
         )
 
-        val coordenadas = arguments?.getString("coordenadas")!!.split("|")
-        viewModel.getResults(Coordenada(coordenadas[0].toDouble(), coordenadas[1].toDouble()))
+        val coordenadas = requireArguments().getParcelable<Coordenada>("coordenadas")
+        coordenadas?.let { viewModel.getResults(it) }
 
         binding.resultadosBusquedaViewModel = viewModel
 

@@ -3,6 +3,7 @@ package com.example.bookbnb.network
 
 import android.content.Context
 import com.example.bookbnb.models.Coordenada
+import com.example.bookbnb.models.CustomImage
 import com.example.bookbnb.models.CustomLocation
 import com.example.bookbnb.models.Publicacion
 import com.example.bookbnb.utils.SessionManager
@@ -35,7 +36,7 @@ interface BookBnBApiService {
     @POST("publicaciones")
     suspend fun createPublicacion(
         @Header("Authorization") token: String,
-        @Body publicacionDTO: PublicacionDTO
+        @Body publicacionDTO: Publicacion
     ): CrearPublicacionResponse
 
     @POST("lugares/ciudades/consulta")
@@ -45,10 +46,10 @@ interface BookBnBApiService {
     ): List<CustomLocation>
 
     @GET("publicaciones/{id}")
-    suspend fun getPublicationById(@Header("Authorization") token: String, @Path("id") publicacionId: String) : PublicacionDTO
+    suspend fun getPublicationById(@Header("Authorization") token: String, @Path("id") publicacionId: String) : Publicacion
 
     @GET("publicaciones")
-    suspend fun searchByCityCoordinates(@Header("Authorization") token: String, @Body coordenadas: Coordenada) : List<PublicacionDTO>
+    suspend fun searchByCityCoordinates(@Header("Authorization") token: String, @Query("coordenadas") coordenadas: Coordenada) : List<Publicacion>
 }
 
 class BookBnBApi(var context: Context) {
@@ -78,7 +79,7 @@ class BookBnBApi(var context: Context) {
         cantHuespedes: Int,
         imagesURLs: List<String>
     ) : ResultWrapper<CrearPublicacionResponse> {
-        val publicacionDTO = PublicacionDTO(
+        val publicacionDTO = Publicacion(
             titulo = titulo,
             descripcion = desc,
             precioPorNoche = price,
@@ -93,7 +94,7 @@ class BookBnBApi(var context: Context) {
         return safeApiCall(Dispatchers.IO) { retrofitService.createPublicacion(token, publicacionDTO) }
     }
 
-    suspend fun getPublicacionById(publicacionId: String) : ResultWrapper<PublicacionDTO> {
+    suspend fun getPublicacionById(publicacionId: String) : ResultWrapper<Publicacion> {
         val token = SessionManager(context).fetchAuthToken()
         if (token.isNullOrEmpty()){
             throw Exception("No hay una sesión establecida")
@@ -101,7 +102,7 @@ class BookBnBApi(var context: Context) {
         return safeApiCall(Dispatchers.IO) { retrofitService.getPublicationById(token, publicacionId) }
     }
 
-    suspend fun searchByCityCoordinates(coordenadas: Coordenada) : ResultWrapper<List<PublicacionDTO>>{
+    suspend fun searchByCityCoordinates(coordenadas: Coordenada) : ResultWrapper<List<Publicacion>>{
         val token = SessionManager(context).fetchAuthToken()
         if (token.isNullOrEmpty()){
             throw Exception("No hay una sesión establecida")
