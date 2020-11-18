@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">BookBnb</string>
+    <string name="app_name">BookBnB</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">Book BnB</string>
@@ -81,5 +81,6 @@
     <string name="resultados_lbl">Resultados</string>
     <string name="huesped_activity_label">HuespedActivity</string>
     <string name="detalle_publicacion_title">Detalle Publicación</string>
+    <string name="explorar_btn_txt">EXPLORAR</string>
 
 </resources>
