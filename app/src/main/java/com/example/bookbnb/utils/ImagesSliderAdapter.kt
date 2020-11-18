@@ -13,16 +13,16 @@ import com.bumptech.glide.Glide
 import com.example.bookbnb.R
 import com.smarteist.autoimageslider.SliderViewAdapter
 
-class CustomImage(var uri: Uri?){
+class CustomImageUri(var uri: Uri?){
     fun getImageUri(): Uri?{
         return uri
     }
 }
 
-class ImagesSliderAdapter(private val context: Context) : SliderViewAdapter<ImagesSliderAdapter.SliderAdapterVH>() {
+class ImagesSliderAdapter(private val context: Context, private val loadFromFirebase: Boolean = false) : SliderViewAdapter<ImagesSliderAdapter.SliderAdapterVH>() {
 
-    private var mSliderItems: MutableList<CustomImage> = ArrayList()
-    fun renewItems(sliderItems: MutableList<CustomImage>) {
+    private var mSliderItems: MutableList<CustomImageUri> = ArrayList()
+    fun renewItems(sliderItems: MutableList<CustomImageUri>) {
         mSliderItems = sliderItems
         notifyDataSetChanged()
     }
@@ -32,7 +32,7 @@ class ImagesSliderAdapter(private val context: Context) : SliderViewAdapter<Imag
         notifyDataSetChanged()
     }
 
-    fun addItem(sliderItem: CustomImage) {
+    fun addItem(sliderItem: CustomImageUri) {
         mSliderItems.add(sliderItem)
         notifyDataSetChanged()
     }
@@ -47,15 +47,19 @@ class ImagesSliderAdapter(private val context: Context) : SliderViewAdapter<Imag
         viewHolder: SliderAdapterVH,
         position: Int
     ) {
-        val sliderItem: CustomImage = mSliderItems[position]
+        val sliderItem: CustomImageUri = mSliderItems[position]
         //viewHolder.textViewDescription.text = "Test"
         viewHolder.textViewDescription.textSize = 16f
         viewHolder.textViewDescription.setTextColor(Color.WHITE)
-        viewHolder.imageViewBackground.setImageURI(sliderItem.getImageUri())
-        /*Glide.with(viewHolder.itemView)
-            .load(sliderItem.getImageUrl())
+        if (loadFromFirebase) {
+            Glide.with(viewHolder.itemView)
+            .load(sliderItem.uri)
             .fitCenter()
-            .into(viewHolder.imageViewBackground)*/ //Not needed, they are not in  firebase yet
+            .into(viewHolder.imageViewBackground)
+        }
+        else{
+            viewHolder.imageViewBackground.setImageURI(sliderItem.getImageUri())
+        }
         viewHolder.itemView.setOnClickListener {
             Toast.makeText(context, "This is item in position $position", Toast.LENGTH_SHORT)
                 .show()

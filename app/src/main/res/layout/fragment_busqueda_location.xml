@@ -55,9 +55,8 @@
                 android:maxLines="1"
                 android:inputType="text"
                 android:ellipsize="end"
-
                 android:drawableTint="@android:color/darker_gray"
-                android:hint="Paseo Colón 850, Ciudad Autonoma de Buenos Aires, Argentina" />
+                android:hint="Ciudad de Mendoza, Mendoza, Argentina" />
 
         </androidx.cardview.widget.CardView>
 

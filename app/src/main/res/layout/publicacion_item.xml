@@ -15,10 +15,77 @@
         android:layout_height="wrap_content"
         android:onClick="@{() -> clickListener.onClick(property)}">
 
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardView"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.smarteist.autoimageslider.SliderView
+                android:id="@+id/imageSlider"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:sliderAnimationDuration="600"
+                app:sliderAutoCycleDirection="back_and_forth"
+                app:sliderAutoCycleEnabled="true"
+                app:sliderIndicatorAnimationDuration="600"
+                app:sliderIndicatorGravity="center_horizontal|bottom"
+                app:sliderIndicatorMargin="15dp"
+                app:sliderIndicatorOrientation="horizontal"
+                app:sliderIndicatorPadding="3dp"
+                app:sliderIndicatorRadius="2dp"
+                app:sliderIndicatorSelectedColor="#5A5A5A"
+                app:sliderIndicatorUnselectedColor="#FFF"
+                app:sliderScrollTimeInSec="1"
+                app:sliderStartAutoCycle="false"/>
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:id="@+id/titulo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:text="@{property.titulo}"
+            tools:text="Cabañas de las Sierras"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cardView" />
+
+
+        <TextView
+            android:id="@+id/ubicacion"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_normal"
+            android:layout_marginTop="@dimen/margin_small"
+            android:layout_marginEnd="@dimen/margin_normal"
+            android:text="@{property.direccion.toString()}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/titulo"
+            tools:text="Paseo Colón 850" />
+
+        <TextView
+            android:id="@+id/precio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_small"
+            android:layout_marginEnd="@dimen/margin_normal"
+            android:text="@{@string/precio_format(property.precioPorNoche)}"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ubicacion"
+            tools:text="0.0015 ETH/Noche" />
+        <!--
         <ImageView
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:id="@+id/item_image"
+            android:id="@+id/resultado_image"
             android:layout_gravity="center_vertical"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
@@ -28,10 +95,11 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:src="@tools:sample/backgrounds/scenic" />
+            tools:src="@tools:sample/backgrounds/scenic"
+            android:contentDescription="@string/imagen" />
 
         <TextView
-            android:id="@+id/publicacion_title"
+            android:id="@+id/resultado_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_normal"
@@ -41,15 +109,15 @@
             android:text="@{property.titulo}"
             android:textAppearance="?attr/textAppearanceListItem"
             android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/publicacion_direccion"
+            app:layout_constraintBottom_toTopOf="@+id/resultado_direccion"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/item_image"
-            app:layout_constraintTop_toTopOf="@+id/item_image"
+            app:layout_constraintStart_toEndOf="@+id/resultado_image"
+            app:layout_constraintTop_toTopOf="@+id/resultado_image"
             app:layout_constraintVertical_chainStyle="packed"
-            tools:text="Cabañas del Meson - Mendoza" />
+            tools:text="Cabañas del Meson - Mendoza"/>
 
         <TextView
-            android:id="@+id/publicacion_direccion"
+            android:id="@+id/resultado_direccion"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_normal"
@@ -57,14 +125,14 @@
             android:layout_marginBottom="@dimen/margin_normal"
             android:text="@{property.direccion.toString()}"
             android:textAppearance="?attr/textAppearanceListItem"
-            app:layout_constraintBottom_toTopOf="@+id/publicacion_precio"
+            app:layout_constraintBottom_toTopOf="@+id/resultado_precio"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/item_image"
-            app:layout_constraintTop_toBottomOf="@+id/publicacion_title"
+            app:layout_constraintStart_toEndOf="@+id/resultado_image"
+            app:layout_constraintTop_toBottomOf="@+id/resultado_title"
             tools:text="Calle Falsa 123, Mendoza, Argentina" />
 
         <TextView
-            android:id="@+id/publicacion_precio"
+            android:id="@+id/resultado_precio"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_normal"
@@ -72,11 +140,12 @@
             android:text="@{@string/precio_format(property.precioPorNoche)}"
             android:textAlignment="textEnd"
             android:textAppearance="?attr/textAppearanceHeadline6"
-            app:layout_constraintBottom_toBottomOf="@+id/item_image"
+            app:layout_constraintBottom_toBottomOf="@+id/resultado_image"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/item_image"
-            app:layout_constraintTop_toBottomOf="@+id/publicacion_direccion"
+            app:layout_constraintStart_toEndOf="@+id/resultado_image"
+            app:layout_constraintTop_toBottomOf="@+id/resultado_direccion"
             tools:text="0.0015 ETH/Noche" />
+-->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

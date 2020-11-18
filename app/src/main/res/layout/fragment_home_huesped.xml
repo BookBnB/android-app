@@ -12,7 +12,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/primaryDarkColor">
+    android:background="@color/secondaryLightColor">
 
     <TextView
         android:id="@+id/app_title"
@@ -25,8 +25,9 @@
         android:layout_marginBottom="@dimen/margin_big"
         android:text="@string/app_name"
         android:textAlignment="center"
-        android:textAppearance="?attr/textAppearanceHeadline3"
         android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        android:textAppearance="?attr/textAppearanceHeadline3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -76,7 +77,7 @@
                 android:layout_marginTop="@dimen/margin_small"
                 android:layout_marginEnd="@dimen/margin_normal_plus"
                 android:textColor="#FFFFFF"
-                android:text="Encontra tu anfitrión ideal de manera sencilla, directa y en unos simples pasos."
+                android:text="Encontra tu alojamiento ideal de manera sencilla, directa y en unos simples pasos."
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

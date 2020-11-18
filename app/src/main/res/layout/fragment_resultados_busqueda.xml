@@ -19,6 +19,6 @@
             app:layoutManager="LinearLayoutManager"
             app:publicacionesListData="@{resultadosBusquedaViewModel.publicaciones}"
             tools:context=".ui.busqueda.ResultadosBusquedaFragment"
-            tools:listitem="@layout/resultado_item" />
+            tools:listitem="@layout/publicacion_item" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

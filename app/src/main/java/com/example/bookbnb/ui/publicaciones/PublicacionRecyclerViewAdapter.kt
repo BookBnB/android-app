@@ -1,14 +1,16 @@
 package com.example.bookbnb.ui.publicaciones
 
+import android.net.Uri
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import com.example.bookbnb.databinding.PublicacionItemBinding
+import com.example.bookbnb.models.CustomImage
 import com.example.bookbnb.models.Publicacion
-import com.example.bookbnb.viewmodels.PublicacionesViewModel
-import com.example.bookbnb.viewmodels.ResultadosBusquedaViewModel
+import com.example.bookbnb.utils.CustomImageUri
+import com.example.bookbnb.utils.ImagesSliderAdapter
 
 class PublicacionRecyclerViewAdapter(val clickListener: PublicacionListener) : ListAdapter<Publicacion, PublicacionRecyclerViewAdapter.PublicacionViewHolder>(DiffCallback){
 
@@ -26,6 +28,10 @@ class PublicacionRecyclerViewAdapter(val clickListener: PublicacionListener) : L
         fun bind(publicacion: Publicacion, clickListener: PublicacionListener) {
             binding.property = publicacion
             binding.clickListener = clickListener
+
+            val adapter = ImagesSliderAdapter(binding.imageSlider.context)
+            adapter.renewItems(publicacion.imagenes.map { CustomImageUri(Uri.parse(it.url)) }.toMutableList())
+            binding.imageSlider.setSliderAdapter(adapter)
             binding.executePendingBindings()
         }
     }

@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.publicaciones.NuevaPublicacionPreviewFragment"
+    tools:layout="@layout/fragment_nueva_publicacion_preview">
     <data>
         <variable
             type="com.example.bookbnb.viewmodels.NuevaPublicacionViewModel"
@@ -9,9 +11,7 @@
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".ui.publicaciones.NuevaPublicacionPreviewFragment"
-        tools:layout="@layout/fragment_nueva_publicacion_preview">
+        android:layout_height="match_parent">
 
         <ScrollView
             android:layout_width="match_parent"
