@@ -15,7 +15,6 @@
             android:name="com.example.bookbnb.ui.busqueda.ResultadosBusquedaFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="@dimen/margin_small"
             app:layoutManager="LinearLayoutManager"
             app:publicacionesListData="@{resultadosBusquedaViewModel.publicaciones}"
             tools:context=".ui.busqueda.ResultadosBusquedaFragment"

@@ -58,7 +58,7 @@ class ResultadosBusquedaFragment : BaseFragment(){
             NavHostFragment.findNavController(this).navigate(
                     ResultadosBusquedaFragmentDirections.actionResultadosBusquedaFragmentToDetallePublicacionFragment(publicacionId)
                 )
-        }) as PublicacionRecyclerViewAdapter
+        }, true) as PublicacionRecyclerViewAdapter
 
         binding.resultadosBusqueda.addItemDecoration(
             DividerItemDecoration(
