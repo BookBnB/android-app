@@ -89,6 +89,10 @@ class DetallePublicacionViewModel(application: Application) : BaseAndroidViewMod
     }
 
     fun endReservation(){
+        if (_price.value == null){
+            showSnackbarMessage("Error: No se ingresó un precio para la reserva.")
+            return;
+        }
         viewModelScope.launch {
             try {
                 _showLoadingSpinner.value = true

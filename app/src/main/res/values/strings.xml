@@ -84,5 +84,6 @@
     <string name="explorar_btn_txt">EXPLORAR</string>
     <string name="reservar_lbl">RESERVAR</string>
     <string name="reserva_realizada_lbl">Reserva Realizada</string>
+    <string name="cerrar_sesion_lbl">Cerrar sesión</string>
 
 </resources>
