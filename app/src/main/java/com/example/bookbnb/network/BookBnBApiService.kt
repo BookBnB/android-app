@@ -50,6 +50,9 @@ interface BookBnBApiService {
     @GET("publicaciones/{id}")
     suspend fun getPublicationById(@Header("Authorization") token: String, @Path("id") publicacionId: String) : Publicacion
 
+    @GET("usuarios/{id}/publicaciones")
+    suspend fun getPublicationsByAnfitrionId(@Header("Authorization") token: String, @Path("id") anfitrionId: String) : List<Publicacion>
+
     @GET("publicaciones")
     suspend fun searchByCityCoordinates(@Header("Authorization") token: String,
                                         @Query("coordenadas[latitud]") latitud: Double,
@@ -80,6 +83,14 @@ class BookBnBApi(var context: Context) {
 
     private val retrofitService: BookBnBApiService by lazy {
         retrofit.create(BookBnBApiService::class.java)
+    }
+
+    suspend fun getPublicationsByAnfitrionId(anfitrionId: String) : ResultWrapper<List<Publicacion>>{
+        val token = SessionManager(context).fetchAuthToken()
+        if (token.isNullOrEmpty()) {
+            throw Exception("No hay una sesión establecida")
+        }
+        return safeApiCall(Dispatchers.IO) { retrofitService.getPublicationsByAnfitrionId(token, anfitrionId) }
     }
 
     suspend fun reservarPublicacion(

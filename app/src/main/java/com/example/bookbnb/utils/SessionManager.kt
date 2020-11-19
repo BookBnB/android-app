@@ -1,7 +1,11 @@
 package com.example.bookbnb.utils
 
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
+import com.auth0.android.jwt.JWT
+import com.example.bookbnb.LoginActivity
 import com.example.bookbnb.R
 
 /**
@@ -12,6 +16,18 @@ class SessionManager (context: Context) {
 
     companion object {
         const val USER_TOKEN = "user_token"
+    }
+
+    fun logout(activity: Activity){
+        removeAuthToken()
+        activity.startActivity(Intent(activity, LoginActivity::class.java))
+        activity.finish()
+    }
+
+    fun removeAuthToken(){
+        val editor = prefs.edit()
+        editor.remove(USER_TOKEN)
+        editor.apply()
     }
 
     /**
@@ -28,5 +44,11 @@ class SessionManager (context: Context) {
      */
     fun fetchAuthToken(): String? {
         return prefs.getString(USER_TOKEN, null)
+    }
+
+    fun getUserId(): String?{
+        val token = fetchAuthToken() ?: return null
+        val jwtToken = JWT(token)
+        return jwtToken.getClaim("id").asString()
     }
 }
