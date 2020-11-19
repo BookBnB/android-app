@@ -96,71 +96,19 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/desc"
                     tools:text="0.0015 ETH/Noche" />
+
+                <Button
+                    android:id="@+id/reservarBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_normal"
+                    android:text="@string/reservar_lbl"
+                    style="@style/PrimaryButton"
+                    android:onClick="@{() -> detallePublicacionViewModel.onReservaButtonClick()}"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/precio" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>
-
-   <!--
-        <ImageView
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:id="@+id/item_image"
-            android:layout_gravity="center_vertical"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            android:textAppearance="?attr/textAppearanceListItem"
-            app:layout_constraintWidth_percent="0.3"
-            app:imageUrl="@{detallePublicacionViewModel.publicacion.imagenes[0].url}"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:src="@tools:sample/backgrounds/scenic" />
-
-        <TextView
-            android:id="@+id/publicacion_title"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_normal"
-            android:layout_marginTop="@dimen/margin_small"
-            android:ellipsize="end"
-            android:maxLines="2"
-            android:text="@{detallePublicacionViewModel.publicacion.titulo}"
-            android:textAppearance="?attr/textAppearanceListItem"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/publicacion_direccion"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/item_image"
-            app:layout_constraintTop_toTopOf="@+id/item_image"
-            app:layout_constraintVertical_chainStyle="packed"
-            tools:text="Cabañas del Meson - Mendoza" />
-
-        <TextView
-            android:id="@+id/publicacion_direccion"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_normal"
-            android:layout_marginTop="@dimen/margin_normal"
-            android:layout_marginBottom="@dimen/margin_normal"
-            android:text="@{detallePublicacionViewModel.publicacion.direccion.toString()}"
-            android:textAppearance="?attr/textAppearanceListItem"
-            app:layout_constraintBottom_toTopOf="@+id/publicacion_precio"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/item_image"
-            app:layout_constraintTop_toBottomOf="@+id/publicacion_title"
-            tools:text="Calle Falsa 123, Mendoza, Argentina}" />
-
-        <TextView
-            android:id="@+id/publicacion_precio"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_normal"
-            android:layout_marginBottom="@dimen/margin_small"
-            android:text="@{@string/precio_format(detallePublicacionViewModel.publicacion.precioPorNoche)}"
-            android:textAlignment="textEnd"
-            android:textAppearance="?attr/textAppearanceHeadline6"
-            app:layout_constraintBottom_toBottomOf="@+id/item_image"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/item_image"
-            app:layout_constraintTop_toBottomOf="@+id/publicacion_direccion"
-            tools:text="0.0015 ETH/Noche" />
--->
 </layout>

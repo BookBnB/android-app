@@ -82,5 +82,7 @@
     <string name="huesped_activity_label">HuespedActivity</string>
     <string name="detalle_publicacion_title">Detalle Publicación</string>
     <string name="explorar_btn_txt">EXPLORAR</string>
+    <string name="reservar_lbl">RESERVAR</string>
+    <string name="reserva_realizada_lbl">Reserva Realizada</string>
 
 </resources>

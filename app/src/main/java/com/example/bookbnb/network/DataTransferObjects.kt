@@ -37,3 +37,19 @@ data class LoginDTO(
 data class LoginResponse(
     val token: String
 )
+
+@JsonClass(generateAdapter = true)
+data class ReservaDTO(
+    var publicacionId: String,
+    var fechaInicio: String,
+    var fechaFin: String,
+    var precioPorNoche: Float
+)
+
+data class ReservarPublicacionResponse(
+    var id: String,
+    var publicacionId: String,
+    var huespedId: String,
+    var estado: String,
+    var precioPorNoche: Float
+)

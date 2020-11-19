@@ -42,5 +42,14 @@
         <argument
             android:name="publicacionId"
             app:argType="string" />
+        <action
+            android:id="@+id/action_detallePublicacionFragment_to_reservaRealizadaFragment"
+            app:destination="@id/reservaRealizadaFragment"
+            app:popUpTo="@id/nav_home_huesped" />
     </fragment>
+    <fragment
+        android:id="@+id/reservaRealizadaFragment"
+        android:name="com.example.bookbnb.ui.busqueda.ReservaRealizadaFragment"
+        android:label="@string/reserva_realizada_lbl"
+        tools:layout="@layout/fragment_reserva_realizada" />
 </navigation>

@@ -18,6 +18,8 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.*
 import java.io.IOException
 import java.lang.Exception
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 interface BookBnBApiService {
@@ -52,12 +54,19 @@ interface BookBnBApiService {
     suspend fun searchByCityCoordinates(@Header("Authorization") token: String,
                                         @Query("coordenadas[latitud]") latitud: Double,
                                         @Query("coordenadas[longitud]") longitud: Double) : List<Publicacion>
+
+    @POST("reservas")
+    suspend fun reservarPublicacion(
+        @Header("Authorization") token: String,
+        @Body reservaDTO: ReservaDTO
+    ): ReservarPublicacionResponse
 }
 
 class BookBnBApi(var context: Context) {
 
     companion object{
         private const val BASE_URL: String = com.example.bookbnb.BuildConfig.SERVER_URL
+        private const val DATE_ISO_FORMAT: String = "yyyy-MM-dd'T'HH:mm:ss'Z'"
 
         private val moshi = Moshi.Builder()
             .add(KotlinJsonAdapterFactory())
@@ -71,6 +80,23 @@ class BookBnBApi(var context: Context) {
 
     private val retrofitService: BookBnBApiService by lazy {
         retrofit.create(BookBnBApiService::class.java)
+    }
+
+    suspend fun reservarPublicacion(
+        publicacionId: String,
+        startDate: Date,
+        endDate: Date,
+        pricePerNight: Float
+    ) : ResultWrapper<ReservarPublicacionResponse> {
+        val reservaDTO = ReservaDTO(publicacionId,
+            SimpleDateFormat(DATE_ISO_FORMAT).format(startDate),
+            SimpleDateFormat(DATE_ISO_FORMAT).format(endDate),
+            pricePerNight)
+        val token = SessionManager(context).fetchAuthToken()
+        if (token.isNullOrEmpty()) {
+            throw Exception("No hay una sesión establecida")
+        }
+        return safeApiCall(Dispatchers.IO) { retrofitService.reservarPublicacion(token, reservaDTO) }
     }
 
     suspend fun createPublicacion(

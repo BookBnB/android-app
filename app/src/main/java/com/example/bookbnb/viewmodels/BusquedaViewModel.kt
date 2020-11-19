@@ -67,11 +67,13 @@ class BusquedaViewModel(application: Application) : BaseAndroidViewModel(applica
     }
 
     private fun setAutoCompleteSuggestions(locationsSuggestions: List<CustomLocation>) {
-        _autocompleteLocationAdapter.value = ArrayAdapter(
-            getApplication<Application>().applicationContext,
-            android.R.layout.simple_spinner_dropdown_item,
-            locationsSuggestions
-        )
+        if (_autocompleteLocationAdapter.value == null){
+            _autocompleteLocationAdapter.value = ArrayAdapter(
+                getApplication<Application>().applicationContext,
+                android.R.layout.simple_spinner_dropdown_item,
+                locationsSuggestions
+            )
+        }
     }
 
     fun onGetResults() {
