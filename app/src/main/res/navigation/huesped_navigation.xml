@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_huesped_navigation"
+    app:startDestination="@id/nav_home_huesped">
+    <fragment
+        android:id="@+id/nav_home_huesped"
+        android:name="com.example.bookbnb.ui.home.HomeHuespedFragment"
+        android:label="@string/home_label"
+        tools:layout="@layout/fragment_home_huesped" >
+        <action
+            android:id="@+id/action_nav_home_huesped_to_busquedaLocationFragment"
+            app:destination="@id/busquedaLocationFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/busquedaLocationFragment"
+        android:name="com.example.bookbnb.ui.busqueda.BusquedaLocationFragment"
+        android:label="@string/ubicacion_lbl"
+        tools:layout="@layout/fragment_busqueda_location" >
+        <action
+            android:id="@+id/action_busquedaLocationFragment_to_resultadosBusquedaFragment"
+            app:destination="@id/resultadosBusquedaFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/resultadosBusquedaFragment"
+        android:name="com.example.bookbnb.ui.busqueda.ResultadosBusquedaFragment"
+        android:label="@string/resultados_lbl"
+        tools:layout="@layout/fragment_resultados_busqueda">
+        <argument
+            android:name="coordenadas"
+            app:argType="com.example.bookbnb.models.Coordenada" />
+        <action
+            android:id="@+id/action_resultadosBusquedaFragment_to_detallePublicacionFragment"
+            app:destination="@id/detallePublicacionFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/detallePublicacionFragment"
+        android:name="com.example.bookbnb.ui.publicaciones.DetallePublicacionFragment"
+        android:label="@string/detalle_publicacion_title"
+        tools:layout="@layout/fragment_detalle_publicacion">
+        <argument
+            android:name="publicacionId"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_detallePublicacionFragment_to_reservaRealizadaFragment"
+            app:destination="@id/reservaRealizadaFragment"
+            app:popUpTo="@id/nav_home_huesped" />
+    </fragment>
+    <fragment
+        android:id="@+id/reservaRealizadaFragment"
+        android:name="com.example.bookbnb.ui.busqueda.ReservaRealizadaFragment"
+        android:label="@string/reserva_realizada_lbl"
+        tools:layout="@layout/fragment_reserva_realizada" />
+</navigation>

@@ -2,7 +2,10 @@ package com.example.bookbnb.network
 
 
 import android.content.Context
+import com.example.bookbnb.models.Coordenada
+import com.example.bookbnb.models.CustomImage
 import com.example.bookbnb.models.CustomLocation
+import com.example.bookbnb.models.Publicacion
 import com.example.bookbnb.utils.SessionManager
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -12,11 +15,11 @@ import kotlinx.coroutines.withContext
 import retrofit2.HttpException
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
-import retrofit2.http.Body
-import retrofit2.http.Header
-import retrofit2.http.POST
+import retrofit2.http.*
 import java.io.IOException
 import java.lang.Exception
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 interface BookBnBApiService {
@@ -35,13 +38,35 @@ interface BookBnBApiService {
     @POST("publicaciones")
     suspend fun createPublicacion(
         @Header("Authorization") token: String,
-        @Body publicacionDTO: PublicacionDTO
+        @Body publicacionDTO: Publicacion
     ): CrearPublicacionResponse
+
+    @POST("lugares/ciudades/consulta")
+    suspend fun getCities(
+        @Header("Authorization") token: String,
+        @Body locationDTO: LocationDTO
+    ): List<CustomLocation>
+
+    @GET("publicaciones/{id}")
+    suspend fun getPublicationById(@Header("Authorization") token: String, @Path("id") publicacionId: String) : Publicacion
+
+    @GET("publicaciones")
+    suspend fun searchByCityCoordinates(@Header("Authorization") token: String,
+                                        @Query("coordenadas[latitud]") latitud: Double,
+                                        @Query("coordenadas[longitud]") longitud: Double) : List<Publicacion>
+
+    @POST("reservas")
+    suspend fun reservarPublicacion(
+        @Header("Authorization") token: String,
+        @Body reservaDTO: ReservaDTO
+    ): ReservarPublicacionResponse
 }
 
 class BookBnBApi(var context: Context) {
+
     companion object{
         private const val BASE_URL: String = com.example.bookbnb.BuildConfig.SERVER_URL
+        private const val DATE_ISO_FORMAT: String = "yyyy-MM-dd'T'HH:mm:ss'Z'"
 
         private val moshi = Moshi.Builder()
             .add(KotlinJsonAdapterFactory())
@@ -57,6 +82,23 @@ class BookBnBApi(var context: Context) {
         retrofit.create(BookBnBApiService::class.java)
     }
 
+    suspend fun reservarPublicacion(
+        publicacionId: String,
+        startDate: Date,
+        endDate: Date,
+        pricePerNight: Float
+    ) : ResultWrapper<ReservarPublicacionResponse> {
+        val reservaDTO = ReservaDTO(publicacionId,
+            SimpleDateFormat(DATE_ISO_FORMAT).format(startDate),
+            SimpleDateFormat(DATE_ISO_FORMAT).format(endDate),
+            pricePerNight)
+        val token = SessionManager(context).fetchAuthToken()
+        if (token.isNullOrEmpty()) {
+            throw Exception("No hay una sesión establecida")
+        }
+        return safeApiCall(Dispatchers.IO) { retrofitService.reservarPublicacion(token, reservaDTO) }
+    }
+
     suspend fun createPublicacion(
         titulo: String,
         desc: String,
@@ -65,7 +107,7 @@ class BookBnBApi(var context: Context) {
         cantHuespedes: Int,
         imagesURLs: List<String>
     ) : ResultWrapper<CrearPublicacionResponse> {
-        val publicacionDTO = PublicacionDTO(
+        val publicacionDTO = Publicacion(
             titulo = titulo,
             descripcion = desc,
             precioPorNoche = price,
@@ -78,6 +120,31 @@ class BookBnBApi(var context: Context) {
             throw Exception("No hay una sesión establecida")
         }
         return safeApiCall(Dispatchers.IO) { retrofitService.createPublicacion(token, publicacionDTO) }
+    }
+
+    suspend fun getPublicacionById(publicacionId: String) : ResultWrapper<Publicacion> {
+        val token = SessionManager(context).fetchAuthToken()
+        if (token.isNullOrEmpty()){
+            throw Exception("No hay una sesión establecida")
+        }
+        return safeApiCall(Dispatchers.IO) { retrofitService.getPublicationById(token, publicacionId) }
+    }
+
+    suspend fun searchByCityCoordinates(coordenadas: Coordenada) : ResultWrapper<List<Publicacion>>{
+        val token = SessionManager(context).fetchAuthToken()
+        if (token.isNullOrEmpty()){
+            throw Exception("No hay una sesión establecida")
+        }
+        return safeApiCall(Dispatchers.IO) { retrofitService.searchByCityCoordinates(token, coordenadas.latitud, coordenadas.longitud) }
+    }
+
+    suspend fun getCities(location: String): ResultWrapper<List<CustomLocation>> {
+        val locationDTO = LocationDTO(location, 5)
+        val token = SessionManager(context).fetchAuthToken()
+        if (token.isNullOrEmpty()) {
+            throw Exception("No hay una sesión establecida")
+        }
+        return safeApiCall(Dispatchers.IO) { retrofitService.getCities(token, locationDTO) }
     }
 
     suspend fun getLocations(location: String): ResultWrapper<List<CustomLocation>> {

@@ -1,21 +1,11 @@
 package com.example.bookbnb.network
 
+import android.os.Parcel
 import android.os.Parcelable
 import com.example.bookbnb.models.CustomLocation
+import com.example.bookbnb.models.Publicacion
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
-
-
-class CustomImage(var url: String)
-@JsonClass(generateAdapter = true)
-class PublicacionDTO(var id: String? = null,
-                     var titulo: String,
-                     var descripcion: String,
-                     var precioPorNoche: Float,
-                     var direccion: CustomLocation,
-                     var cantidadDeHuespedes: Int,
-                     var imagenes: List<CustomImage>
-)
 
 data class CrearPublicacionResponse(
     var id: String
@@ -46,4 +36,20 @@ data class LoginDTO(
 
 data class LoginResponse(
     val token: String
+)
+
+@JsonClass(generateAdapter = true)
+data class ReservaDTO(
+    var publicacionId: String,
+    var fechaInicio: String,
+    var fechaFin: String,
+    var precioPorNoche: Float
+)
+
+data class ReservarPublicacionResponse(
+    var id: String,
+    var publicacionId: String,
+    var huespedId: String,
+    var estado: String,
+    var precioPorNoche: Float
 )

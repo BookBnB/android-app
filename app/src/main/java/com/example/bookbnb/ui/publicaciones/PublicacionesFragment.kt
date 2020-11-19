@@ -4,18 +4,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.example.bookbnb.R
 import com.example.bookbnb.databinding.FragmentPublicacionesListBinding
-import com.example.bookbnb.models.Publicacion
-import com.example.bookbnb.ui.login.RegisterFragmentDirections
+import com.example.bookbnb.ui.busqueda.ResultadosBusquedaFragmentDirections
 import com.example.bookbnb.viewmodels.PublicacionesViewModel
 
 
@@ -39,7 +35,11 @@ class PublicacionesFragment : Fragment() {
 
         binding.viewModel = viewModel
 
-        binding.publicacionesList.adapter = PublicacionRecyclerViewAdapter() as PublicacionRecyclerViewAdapter
+        binding.publicacionesList.adapter = PublicacionRecyclerViewAdapter(PublicacionListener { publicacionId ->
+            NavHostFragment.findNavController(this).navigate(
+                PublicacionesFragmentDirections.actionNavPublicacionesToDetallePublicacionFragment(publicacionId)
+            )
+        }) as PublicacionRecyclerViewAdapter
         binding.publicacionesList.addItemDecoration(
             DividerItemDecoration(
                 context,

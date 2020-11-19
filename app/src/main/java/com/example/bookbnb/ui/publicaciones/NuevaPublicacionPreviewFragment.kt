@@ -8,11 +8,10 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
-import androidx.recyclerview.widget.GridLayoutManager
 import com.example.bookbnb.R
 import com.example.bookbnb.databinding.FragmentNuevaPublicacionPreviewBinding
 import com.example.bookbnb.ui.BaseFragment
-import com.example.bookbnb.utils.CustomImage
+import com.example.bookbnb.utils.CustomImageUri
 import com.example.bookbnb.utils.ImagesSliderAdapter
 import com.example.bookbnb.viewmodels.NuevaPublicacionViewModel
 import com.example.bookbnb.viewmodels.NuevaPublicacionViewModelFactory
@@ -46,7 +45,7 @@ class NuevaPublicacionPreviewFragment : BaseFragment() {
         setSnackbarMessageObserver(viewModel, binding.root)
 
         val adapter = ImagesSliderAdapter(requireContext())
-        adapter.renewItems(viewModel.selectedPhotosUri.value!!.map { CustomImage(it) }.toMutableList())
+        adapter.renewItems(viewModel.selectedPhotosUri.value!!.map { CustomImageUri(it) }.toMutableList())
         binding.imageSlider.setSliderAdapter(adapter)
 
         setSpinnerObserver(viewModel, binding.spinnerHolder)
