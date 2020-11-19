@@ -1,12 +1,20 @@
 package com.example.bookbnb.viewmodels
 
+import android.app.Application
+import android.se.omapi.Session
 import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.bookbnb.R
 import com.example.bookbnb.models.Publicacion
+import com.example.bookbnb.network.BookBnBApi
+import com.example.bookbnb.network.ResultWrapper
+import com.example.bookbnb.utils.SessionManager
+import kotlinx.coroutines.launch
 
-class PublicacionesViewModel : ViewModel()  {
+class PublicacionesViewModel(application: Application) : BaseAndroidViewModel(application) {
 
     private val _publicaciones = MutableLiveData<List<Publicacion>>()
 
@@ -19,7 +27,23 @@ class PublicacionesViewModel : ViewModel()  {
         get() = _navigateToNewPublicacion
 
     init{
-        //_publicaciones.value = listOf(publicacion, publicacion2)
+        viewModelScope.launch {
+            val sessionManager = SessionManager(getApplication())
+            when (val publicacionesResponse =
+                sessionManager.getUserId()?.let {
+                    BookBnBApi(getApplication()).getPublicationsByAnfitrionId(
+                        it
+                    )
+                }) {
+                is ResultWrapper.NetworkError -> showSnackbarMessage(
+                    getApplication<Application>().getString(
+                        R.string.network_error_msg
+                    )
+                )
+                is ResultWrapper.GenericError -> showGenericError(publicacionesResponse)
+                is ResultWrapper.Success -> _publicaciones.value = publicacionesResponse.value
+            }
+        }
     }
 
     fun navigateToNuevaPublicacion(){
