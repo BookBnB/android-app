@@ -99,12 +99,13 @@
 
                 <Button
                     android:id="@+id/reservarBtn"
+                    style="@style/PrimaryButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_normal"
-                    android:text="@string/reservar_lbl"
-                    style="@style/PrimaryButton"
+                    android:layout_marginBottom="@dimen/margin_normal"
                     android:onClick="@{() -> detallePublicacionViewModel.onReservaButtonClick()}"
+                    android:text="@string/reservar_lbl"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"

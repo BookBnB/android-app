@@ -41,7 +41,7 @@ class HuespedActivity : AppCompatActivity() {
             val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout_huesped)
             val navView: NavigationView = findViewById(R.id.nav_view_huesped)
 
-            //Sets the navigation header subtitle
+            //Sets the drawer header subtitle
             navView.getHeaderView(0).findViewById<TextView>(R.id.drawer_header_subtitle)?.let {
                 it.text = jwt.getClaim("email").asString()
             }

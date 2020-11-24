@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
     <data>
+        <import type="android.view.View"/>
         <variable
             name="resultadosBusquedaViewModel"
             type="com.example.bookbnb.viewmodels.ResultadosBusquedaViewModel" />
@@ -19,5 +20,18 @@
             app:publicacionesListData="@{resultadosBusquedaViewModel.publicaciones}"
             tools:context=".ui.busqueda.ResultadosBusquedaFragment"
             tools:listitem="@layout/publicacion_item" />
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_margin="@dimen/margin_normal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textAlignment="center"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
+            android:textColor="@color/design_default_color_error"
+            android:visibility="@{resultadosBusquedaViewModel.publicaciones.size() == 0 ? View.VISIBLE : View.GONE}"
+            android:text="¡Oops! No se encontraron alojamientos publicados con esos criterios... ¿Quizás es el destino que quiere que vaya a otro destino?"
+            tools:visibility="gone">
+
+        </com.google.android.material.textview.MaterialTextView>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>
