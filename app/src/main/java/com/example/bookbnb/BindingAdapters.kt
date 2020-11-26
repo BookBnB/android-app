@@ -2,6 +2,7 @@ package com.example.bookbnb
 
 import android.widget.ArrayAdapter
 import android.widget.ImageView
+import android.widget.ListAdapter
 import androidx.core.net.toUri
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
