@@ -81,19 +81,6 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/cardView" />
 
-                <TextView
-                    android:id="@+id/desc"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/margin_normal"
-                    android:layout_marginTop="@dimen/margin_normal"
-                    android:layout_marginEnd="@dimen/margin_normal"
-                    android:text="@{nuevaPublicacionViewModel.desc}"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/ubicacion"
-                    tools:text="Increíbles vistas, actividades en familia, la playa. Te va a encantar mi lugar debido a la ubicación, las vistas, y el espacio acogedor. Mi alojamiento es bueno para parejas, viajeros de negocios, y familias (con hijos)." />
 
                 <TextView
                     android:id="@+id/ubicacion"
@@ -106,7 +93,55 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/titulo"
-                    tools:text="Paseo Colón 850" />
+                    tools:text="Paseo Colón 850"
+                    android:drawablePadding="@dimen/margin_min"
+                    android:gravity="center_vertical"
+                    app:drawableStartCompat="@drawable/ic_location_24" />
+                <TextView
+                    android:id="@+id/cant_huespedes"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_normal"
+                    android:layout_marginTop="@dimen/margin_small"
+                    android:layout_marginEnd="@dimen/margin_normal"
+                    android:drawablePadding="@dimen/margin_min"
+                    android:gravity="center_vertical"
+                    app:drawableStartCompat="@drawable/ic_family_24"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/ubicacion"
+                    tools:text="Hasta 4 huespedes"
+                    android:text="@{@string/cant_huespedes_format(nuevaPublicacionViewModel.cantDeHuespedes)}"/>
+
+                <TextView
+                    android:id="@+id/tipo_alojamiento"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_normal"
+                    android:layout_marginTop="@dimen/margin_small"
+                    android:layout_marginEnd="@dimen/margin_normal"
+                    android:drawablePadding="@dimen/margin_min"
+                    android:gravity="center_vertical"
+                    android:text="@{nuevaPublicacionViewModel.tipoAlojamiento}"
+                    app:drawableStartCompat="@drawable/ic_homework_24"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/cant_huespedes"
+                    tools:text="Habitación de hotel" />
+
+                <TextView
+                    android:id="@+id/desc"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_normal"
+                    android:layout_marginTop="@dimen/margin_normal"
+                    android:layout_marginEnd="@dimen/margin_normal"
+                    android:text="@{nuevaPublicacionViewModel.desc}"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tipo_alojamiento"
+                    tools:text="Increíbles vistas, actividades en familia, la playa. Te va a encantar mi lugar debido a la ubicación, las vistas, y el espacio acogedor. Mi alojamiento es bueno para parejas, viajeros de negocios, y familias (con hijos)." />
 
                 <TextView
                     android:id="@+id/precio"
@@ -120,7 +155,6 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/desc"
                     tools:text="0.0015 ETH/Noche" />
-
                 <Button
                     android:id="@+id/crearPublicacionBtn"
                     style="@style/PrimaryButton"
@@ -144,7 +178,7 @@
             android:id="@+id/spinner_holder"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#A4FFFFFF"
+            android:background="#B4FFFFFF"
             android:visibility="gone"
             android:clickable="true">
 
@@ -163,11 +197,11 @@
                     android:id="@+id/text_cargando_reporte"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_normal"
+                    android:layout_margin="@dimen/margin_normal"
                     android:layout_gravity="center_horizontal"
                     android:textAlignment="center"
                     android:text="@string/publicando_txt"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Large"
                     android:textStyle="bold" />
             </LinearLayout>
         </RelativeLayout>

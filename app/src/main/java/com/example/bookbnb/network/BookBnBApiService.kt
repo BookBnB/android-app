@@ -54,6 +54,13 @@ interface BookBnBApiService {
     suspend fun getPublicationsByAnfitrionId(@Header("Authorization") token: String, @Path("id") anfitrionId: String) : List<Publicacion>
 
     @GET("publicaciones")
+    suspend fun searchPublicaciones(@Header("Authorization") token: String,
+                                    @Query("coordenadas[latitud]") latitud: Double,
+                                    @Query("coordenadas[longitud]") longitud: Double,
+                                    @Query("tipoDeAlojamiento") tipoAlojamiento: String?,
+                                    @Query("cantidadDeHuespedes") cantHuespedes: Int) : List<Publicacion>
+
+    @GET("publicaciones")
     suspend fun searchByCityCoordinates(@Header("Authorization") token: String,
                                         @Query("coordenadas[latitud]") latitud: Double,
                                         @Query("coordenadas[longitud]") longitud: Double) : List<Publicacion>
@@ -114,7 +121,8 @@ class BookBnBApi(var context: Context) {
         price: Float,
         location: CustomLocation,
         cantHuespedes: Int,
-        imagesURLs: List<String>
+        imagesURLs: List<String>,
+        tipoAlojamiento: String
     ) : ResultWrapper<CrearPublicacionResponse> {
         val publicacionDTO = Publicacion(
             titulo = titulo,
@@ -122,7 +130,8 @@ class BookBnBApi(var context: Context) {
             precioPorNoche = price,
             direccion = location,
             cantidadDeHuespedes = cantHuespedes,
-            imagenes = imagesURLs.map{ url -> CustomImage(url) }
+            imagenes = imagesURLs.map{ url -> CustomImage(url) },
+            tipoDeAlojamiento = tipoAlojamiento
         )
         val token = SessionManager(context).fetchAuthToken()
         if (token.isNullOrEmpty()) {
@@ -137,6 +146,22 @@ class BookBnBApi(var context: Context) {
             throw Exception("No hay una sesión establecida")
         }
         return safeApiCall(Dispatchers.IO) { retrofitService.getPublicationById(token, publicacionId) }
+    }
+
+    suspend fun searchPublicaciones(coordenadas: Coordenada,
+                                    tipoAlojamiento: String?,
+                                    cantHuespedes: Int)
+            : ResultWrapper<List<Publicacion>>{
+        val token = SessionManager(context).fetchAuthToken()
+        if (token.isNullOrEmpty()){
+            throw Exception("No hay una sesión establecida")
+        }
+        return safeApiCall(Dispatchers.IO) { retrofitService.searchPublicaciones(token,
+            coordenadas.latitud,
+            coordenadas.longitud,
+            if (tipoAlojamiento == "Todos") null else tipoAlojamiento, //If Todos is selected then i pass null to api
+            cantHuespedes)
+        }
     }
 
     suspend fun searchByCityCoordinates(coordenadas: Coordenada) : ResultWrapper<List<Publicacion>>{

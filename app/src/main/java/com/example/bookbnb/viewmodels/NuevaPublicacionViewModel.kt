@@ -19,6 +19,7 @@ import com.google.firebase.storage.ktx.storage
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import java.lang.Float.parseFloat
+import java.lang.Integer.parseInt
 
 //TODO: Embed different classes for parts of the viewmodel (i.e. one for info, one for location, etc.)
 class NuevaPublicacionViewModel(application: Application) : BaseAndroidViewModel(application) {
@@ -33,6 +34,14 @@ class NuevaPublicacionViewModel(application: Application) : BaseAndroidViewModel
     private val _price = MutableLiveData<String>("")
     val price: MutableLiveData<String>
         get() = _price
+
+    private val _cantDeHuespedes = MutableLiveData<String>("")
+    val cantDeHuespedes: MutableLiveData<String>
+        get() = _cantDeHuespedes
+
+    private val _tipoAlojamiento = MutableLiveData<String>("")
+    val tipoAlojamiento: MutableLiveData<String>
+        get() = _tipoAlojamiento
 
     private val _selectedLocation = MutableLiveData<CustomLocation>()
     val selectedLocation: MutableLiveData<CustomLocation>
@@ -79,7 +88,8 @@ class NuevaPublicacionViewModel(application: Application) : BaseAndroidViewModel
     enum class FormErrors {
         MISSING_TITULO,
         MISSING_DESC,
-        INVALID_PRICE
+        INVALID_PRICE,
+        MISSING_CANT_HUESPEDES
     }
 
     fun setSelectedLocation(location: CustomLocation?) {
@@ -125,6 +135,11 @@ class NuevaPublicacionViewModel(application: Application) : BaseAndroidViewModel
             parseFloat(_price.value!!)
         } catch (e: Exception) {
             formErrors.add(FormErrors.INVALID_PRICE)
+        }
+        try{
+            parseInt(_cantDeHuespedes.value!!)
+        } catch (e: Exception){
+            formErrors.add(FormErrors.MISSING_CANT_HUESPEDES)
         }
         return formErrors.isEmpty()
     }
@@ -210,8 +225,9 @@ class NuevaPublicacionViewModel(application: Application) : BaseAndroidViewModel
                     _desc.value!!,
                     parseFloat(_price.value!!),
                     _selectedLocation.value!!,
-                    2,//TODO: Agregar cantidad de huespedes al form.
-                    imagesUrls
+                    parseInt(_cantDeHuespedes.value!!),
+                    imagesUrls,
+                    _tipoAlojamiento.value!!
                 )
                 when (response) {
                     is ResultWrapper.NetworkError -> showSnackbarMessage(

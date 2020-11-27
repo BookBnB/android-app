@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -11,6 +13,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
 import com.example.bookbnb.R
 import com.example.bookbnb.databinding.FragmentNuevaPublicacionInfoBinding
+import com.example.bookbnb.models.TipoDeAlojamientoProvider
 import com.example.bookbnb.viewmodels.*
 
 class NuevaPublicacionInfoFragment : Fragment() {
@@ -41,6 +44,7 @@ class NuevaPublicacionInfoFragment : Fragment() {
         binding.nuevaPublicacionViewModel = viewModel
 
         setNavigateToNextStepObserver()
+        setPossibleTiposAlojamiento()
 
         return binding.root
     }
@@ -54,5 +58,13 @@ class NuevaPublicacionInfoFragment : Fragment() {
                 viewModel.onDoneNavigatingToMapStep()
             }
         })
+    }
+
+    private fun setPossibleTiposAlojamiento() {
+        val tipos = TipoDeAlojamientoProvider.tipos
+        val adapter = ArrayAdapter(requireContext(), R.layout.dropdown_item, tipos)
+        (binding.tipoAlojamientoType as? AutoCompleteTextView)?.setAdapter(adapter)
+        viewModel.tipoAlojamiento.value = tipos[0]
+        (binding.tipoAlojamientoType as? AutoCompleteTextView)?.setText(tipos[0], false) //Defaults to first item in tipos
     }
 }

@@ -2,6 +2,18 @@ package com.example.bookbnb.models
 
 import com.squareup.moshi.JsonClass
 
+class TipoDeAlojamientoProvider{
+    companion object{
+        val tipos : List<String> = listOf(
+            "Alojamiento entero",
+            "Habitación privada",
+            "Habitación compartida",
+            "Habitación de hotel"
+        )
+    }
+
+}
+
 class CustomImage(var url: String)
 @JsonClass(generateAdapter = true)
 class Publicacion(var id: String? = null,
@@ -10,5 +22,6 @@ class Publicacion(var id: String? = null,
                   var precioPorNoche: Float,
                   var direccion: CustomLocation,
                   var cantidadDeHuespedes: Int,
-                  var imagenes: List<CustomImage>
+                  var imagenes: List<CustomImage>,
+                  var tipoDeAlojamiento: String
 )

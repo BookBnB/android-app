@@ -16,10 +16,18 @@
         tools:layout="@layout/fragment_publicaciones_list" >
         <action
             android:id="@+id/action_nav_publicaciones_to_nuevaPublicacionFragment"
-            app:destination="@id/nuevaPublicacionFragment" />
+            app:destination="@id/nuevaPublicacionFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right" />
         <action
             android:id="@+id/action_nav_publicaciones_to_detallePublicacionAnfitrionFragment"
-            app:destination="@id/detallePublicacionAnfitrionFragment" />
+            app:destination="@id/detallePublicacionAnfitrionFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right"/>
     </fragment>
     <fragment
         android:id="@+id/nuevaPublicacionFragment"
@@ -28,7 +36,11 @@
         tools:layout="@layout/fragment_nueva_publicacion_info" >
         <action
             android:id="@+id/action_nuevaPublicacionFragment_to_nuevaPublicacionLocationFragment"
-            app:destination="@id/nuevaPublicacionLocationFragment" />
+            app:destination="@id/nuevaPublicacionLocationFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right"/>
     </fragment>
     <fragment
         android:id="@+id/nuevaPublicacionLocationFragment"
@@ -37,7 +49,11 @@
         tools:layout="@layout/fragment_nueva_publicacion_location" >
         <action
             android:id="@+id/action_nuevaPublicacionLocationFragment_to_nuevaPublicacionImagesFragment"
-            app:destination="@id/nuevaPublicacionImagesFragment" />
+            app:destination="@id/nuevaPublicacionImagesFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right"/>
     </fragment>
     <fragment
         android:id="@+id/nuevaPublicacionImagesFragment"
@@ -46,7 +62,11 @@
         tools:layout="@layout/fragment_nueva_publicacion_images" >
         <action
             android:id="@+id/action_nuevaPublicacionImagesFragment_to_nuevaPublicacionPreviewFragment"
-            app:destination="@id/nuevaPublicacionPreviewFragment" />
+            app:destination="@id/nuevaPublicacionPreviewFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right"/>
     </fragment>
     <fragment
         android:id="@+id/nuevaPublicacionPreviewFragment"
@@ -55,7 +75,11 @@
         <action
             android:id="@+id/action_nuevaPublicacionPreviewFragment_to_nav_publicaciones"
             app:destination="@id/nav_publicaciones"
-            app:popUpTo="@id/nav_publicaciones" />
+            app:popUpTo="@id/nav_publicaciones"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right"/>
     </fragment>
     <fragment
         android:id="@+id/detallePublicacionAnfitrionFragment"
