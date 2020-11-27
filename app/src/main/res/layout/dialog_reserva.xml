@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
     <data>
         <variable
-            type="com.example.bookbnb.viewmodels.DetallePublicacionViewModel"
+            type="com.example.bookbnb.viewmodels.DetallePublicacionHuespedViewModel"
             name="publicacionViewModel" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout

@@ -55,7 +55,9 @@ class PublicacionesFragment : Fragment() {
     private fun setPublicacionesList(binding: FragmentPublicacionesListBinding) {
         binding.publicacionesList.adapter =
             PublicacionRecyclerViewAdapter(PublicacionListener { publicacionId ->
-
+                NavHostFragment.findNavController(this).navigate(
+                    PublicacionesFragmentDirections.actionNavPublicacionesToDetallePublicacionAnfitrionFragment(publicacionId)
+                )
             }, true) as PublicacionRecyclerViewAdapter
         binding.publicacionesList.addItemDecoration(
             DividerItemDecoration(

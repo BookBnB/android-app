@@ -86,5 +86,6 @@
     <string name="reservar_lbl">RESERVAR</string>
     <string name="reserva_realizada_lbl">Reserva Realizada</string>
     <string name="cerrar_sesion_lbl">Cerrar sesión</string>
+    <string name="detalle_publicacion_anfitrion_title">Detalle Publicación</string>
 
 </resources>

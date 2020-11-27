@@ -13,26 +13,25 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
 import com.example.bookbnb.R
 import com.example.bookbnb.databinding.DialogReservaBinding
-import com.example.bookbnb.databinding.FragmentDetallePublicacionBinding
+import com.example.bookbnb.databinding.FragmentDetallePublicacionHuespedBinding
 import com.example.bookbnb.ui.BaseFragment
 import com.example.bookbnb.utils.CustomImageUri
 import com.example.bookbnb.utils.ImagesSliderAdapter
-import com.example.bookbnb.viewmodels.DetallePublicacionViewModel
-import com.example.bookbnb.viewmodels.DetallePublicacionViewModelFactory
+import com.example.bookbnb.viewmodels.DetallePublicacionHuespedViewModel
+import com.example.bookbnb.viewmodels.DetallePublicacionHuespedViewModelFactory
 import com.google.android.material.datepicker.MaterialDatePicker
 
+class DetallePublicacionHuespedFragment : BaseFragment() {
 
-class DetallePublicacionFragment : BaseFragment() {
-
-    private val viewModel: DetallePublicacionViewModel by lazy {
+    private val viewModel: DetallePublicacionHuespedViewModel by lazy {
         val activity = requireNotNull(this.activity) {
             "You can only access the viewModel after onActivityCreated()"
         }
-        ViewModelProvider(activity, DetallePublicacionViewModelFactory(activity.application))
-            .get(DetallePublicacionViewModel::class.java)
+        ViewModelProvider(activity, DetallePublicacionHuespedViewModelFactory(activity.application))
+            .get(DetallePublicacionHuespedViewModel::class.java)
     }
 
-    private lateinit var binding: FragmentDetallePublicacionBinding
+    private lateinit var binding: FragmentDetallePublicacionHuespedBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,7 +39,7 @@ class DetallePublicacionFragment : BaseFragment() {
     ): View? {
         binding = DataBindingUtil.inflate(
             inflater,
-            R.layout.fragment_detalle_publicacion,
+            R.layout.fragment_detalle_publicacion_huesped,
             container,
             false
         )
@@ -59,7 +58,7 @@ class DetallePublicacionFragment : BaseFragment() {
         viewModel.navigateToReservationComplete.observe(viewLifecycleOwner, Observer {navigate ->
             if (navigate){
                 NavHostFragment.findNavController(this).navigate(
-                    DetallePublicacionFragmentDirections.actionDetallePublicacionFragmentToReservaRealizadaFragment()
+                    DetallePublicacionHuespedFragmentDirections.actionDetallePublicacionFragmentToReservaRealizadaFragment()
                 )
                 viewModel.onDoneNavigatingToReservationComplete()
             }
@@ -76,7 +75,7 @@ class DetallePublicacionFragment : BaseFragment() {
             val adapter = ImagesSliderAdapter(requireContext(), loadFromFirebase = true)
             adapter.renewItems(publicacion.imagenes.map { CustomImageUri(Uri.parse(it.url)) }
                 .toMutableList())
-            binding.imageSlider.setSliderAdapter(adapter)
+            binding.detallePublicacion.imageSlider.setSliderAdapter(adapter)
         })
     }
 

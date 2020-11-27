@@ -18,8 +18,8 @@
             android:id="@+id/action_nav_publicaciones_to_nuevaPublicacionFragment"
             app:destination="@id/nuevaPublicacionFragment" />
         <action
-            android:id="@+id/action_nav_publicaciones_to_detallePublicacionFragment"
-            app:destination="@id/detallePublicacionFragment" />
+            android:id="@+id/action_nav_publicaciones_to_detallePublicacionAnfitrionFragment"
+            app:destination="@id/detallePublicacionAnfitrionFragment" />
     </fragment>
     <fragment
         android:id="@+id/nuevaPublicacionFragment"
@@ -58,11 +58,12 @@
             app:popUpTo="@id/nav_publicaciones" />
     </fragment>
     <fragment
-        android:id="@+id/detallePublicacionFragment"
-        android:name="com.example.bookbnb.ui.publicaciones.DetallePublicacionFragment"
-        tools:layout="@layout/fragment_detalle_publicacion">
+        android:id="@+id/detallePublicacionAnfitrionFragment"
+        android:name="com.example.bookbnb.ui.publicaciones.DetallePublicacionAnfitrionFragment"
+        android:label="@string/detalle_publicacion_anfitrion_title"
+        tools:layout="@layout/fragment_detalle_publicacion_anfitrion">
         <argument
             android:name="publicacionId"
-            app:argType="string"/>
+            app:argType="string" />
     </fragment>
 </navigation>
