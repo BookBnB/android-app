@@ -57,14 +57,30 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/margin_normal"
-                android:layout_marginTop="@dimen/margin_normal"
+                android:layout_marginTop="@dimen/margin_small"
                 android:layout_marginEnd="@dimen/margin_normal"
                 android:text="@{detallePublicacionViewModel.publicacion.descripcion}"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/ubicacion"
+                app:layout_constraintTop_toBottomOf="@+id/cant_huespedes"
                 tools:text="Increíbles vistas, actividades en familia, la playa. Te va a encantar mi lugar debido a la ubicación, las vistas, y el espacio acogedor. Mi alojamiento es bueno para parejas, viajeros de negocios, y familias (con hijos)." />
+
+            <TextView
+                android:id="@+id/cant_huespedes"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:drawablePadding="@dimen/margin_min"
+                android:gravity="center_vertical"
+                android:layout_marginStart="@dimen/margin_normal"
+                android:layout_marginTop="@dimen/margin_small"
+                android:layout_marginEnd="@dimen/margin_normal"
+                tools:text="Hasta 4 huespedes"
+                android:text="@{@string/cant_huespedes_format(detallePublicacionViewModel.publicacion.cantidadDeHuespedes)}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/ubicacion"
+                app:drawableStartCompat="@drawable/ic_family_24" />
 
             <TextView
                 android:id="@+id/ubicacion"
@@ -73,11 +89,14 @@
                 android:layout_marginStart="@dimen/margin_normal"
                 android:layout_marginTop="@dimen/margin_small"
                 android:layout_marginEnd="@dimen/margin_normal"
+                android:drawablePadding="@dimen/margin_min"
+                android:gravity="center_vertical"
                 android:text="@{detallePublicacionViewModel.publicacion.direccion.toString()}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/titulo"
-                tools:text="Paseo Colón 850" />
+                tools:text="Paseo Colón 850"
+                app:drawableStartCompat="@drawable/ic_location_24" />
 
             <TextView
                 android:id="@+id/precio"

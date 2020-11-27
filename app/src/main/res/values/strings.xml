@@ -77,6 +77,7 @@
     <string name="precio_format">%s ETH/Noche</string>
     <string name="precio_total_format">El precio total es %s ETH</string>
     <string name="precio_detail_format">$ %s por noche</string>
+    <string name="cant_huespedes_format">Hasta %s huespedes</string>
     <string name="preview_step_help">Paso 4: Revise todos los datos que ingresó para finalizar la publicación de su alojamiento.</string>
     <string name="previsualizacion_lbl">Previsualización</string>
     <string name="resultados_lbl">Resultados</string>
@@ -87,5 +88,6 @@
     <string name="reserva_realizada_lbl">Reserva Realizada</string>
     <string name="cerrar_sesion_lbl">Cerrar sesión</string>
     <string name="detalle_publicacion_anfitrion_title">Detalle Publicación</string>
+    <string name="cant_de_huespedes_lbl">Cant. de huespedes</string>
 
 </resources>

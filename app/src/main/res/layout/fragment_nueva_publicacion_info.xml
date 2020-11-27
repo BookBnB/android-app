@@ -13,6 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".ui.publicaciones.NuevaPublicacionInfoFragment">
+
         <FrameLayout
             android:id="@+id/frameLayout"
             android:layout_width="0dp"
@@ -43,10 +44,10 @@
             android:layout_marginEnd="@dimen/margin_normal"
             android:ems="10"
             android:hint="@string/titulo_lbl"
+            app:errorText='@{nuevaPublicacionViewModel.formErrors.contains(FormErrors.MISSING_TITULO) ? "Ingrese un título" : ""}'
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/frameLayout"
-            app:errorText='@{nuevaPublicacionViewModel.formErrors.contains(FormErrors.MISSING_TITULO) ? "Ingrese un título" : ""}'>
+            app:layout_constraintTop_toBottomOf="@+id/frameLayout">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/publicacion_titulo"
@@ -67,19 +68,19 @@
             android:layout_marginEnd="@dimen/margin_normal"
             android:ems="10"
             android:hint="@string/descripcion_lbl"
+            app:errorText='@{nuevaPublicacionViewModel.formErrors.contains(FormErrors.MISSING_DESC) ? "Ingrese una descripción" : ""}'
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/titulo_text_field"
-            app:errorText='@{nuevaPublicacionViewModel.formErrors.contains(FormErrors.MISSING_DESC) ? "Ingrese una descripción" : ""}'>
+            app:layout_constraintTop_toBottomOf="@+id/titulo_text_field">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/publicacion_descripcion"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:lines="6"
-                android:inputType="textMultiLine"
                 android:gravity="start"
-                android:text="@={nuevaPublicacionViewModel.desc}"/>
+                android:inputType="textMultiLine"
+                android:lines="6"
+                android:text="@={nuevaPublicacionViewModel.desc}" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -93,11 +94,11 @@
             android:layout_marginEnd="@dimen/margin_normal"
             android:ems="10"
             android:hint="@string/price_lbl"
+            app:errorText='@{nuevaPublicacionViewModel.formErrors.contains(FormErrors.INVALID_PRICE) ? "Ingrese un precio válido" : ""}'
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/descripcion_text_field"
-            app:suffixText="@string/eth_shortname"
-            app:errorText='@{nuevaPublicacionViewModel.formErrors.contains(FormErrors.INVALID_PRICE) ? "Ingrese un precio válido" : ""}'>
+            app:suffixText="@string/eth_shortname">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/publicacion_price"
@@ -105,6 +106,31 @@
                 android:layout_height="wrap_content"
                 android:inputType="numberDecimal"
                 android:text="@={nuevaPublicacionViewModel.price}" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/huespedes_text_field"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginStart="@dimen/margin_normal"
+            android:layout_marginTop="@dimen/margin_normal"
+            android:layout_marginEnd="@dimen/margin_normal"
+            android:ems="10"
+            android:hint="@string/cant_de_huespedes_lbl"
+            app:errorText='@{nuevaPublicacionViewModel.formErrors.contains(FormErrors.MISSING_CANT_HUESPEDES) ? "Ingrese una cantidad de huespedes" : ""}'
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/price_text_field"
+            app:suffixText="Huesped/es">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/publicacion_huespedes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="numberSigned"
+                android:text="@={nuevaPublicacionViewModel.cantDeHuespedes}" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <Button
@@ -115,8 +141,8 @@
             android:layout_marginStart="@dimen/margin_normal"
             android:layout_marginEnd="@dimen/margin_normal"
             android:layout_marginBottom="@dimen/margin_normal"
-            android:text="@string/continue_txt"
             android:onClick="@{() -> nuevaPublicacionViewModel.onNavigateToMapStep()}"
+            android:text="@string/continue_txt"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
