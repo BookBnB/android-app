@@ -133,6 +133,29 @@
                 android:text="@={nuevaPublicacionViewModel.cantDeHuespedes}" />
         </com.google.android.material.textfield.TextInputLayout>
 
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tipo_alojamiento_text_field"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginStart="@dimen/margin_normal"
+            android:layout_marginTop="@dimen/margin_normal"
+            android:layout_marginEnd="@dimen/margin_normal"
+            android:ems="10"
+            android:hint="@string/tipo_de_alojamiento_lbl"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/huespedes_text_field">
+
+            <AutoCompleteTextView
+                android:id="@+id/tipo_alojamiento_type"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="none"
+                android:text="@={nuevaPublicacionViewModel.tipoAlojamiento}" />
+        </com.google.android.material.textfield.TextInputLayout>
+
         <Button
             style="@style/PrimaryButton"
             android:layout_width="match_parent"

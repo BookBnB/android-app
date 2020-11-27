@@ -89,5 +89,6 @@
     <string name="cerrar_sesion_lbl">Cerrar sesión</string>
     <string name="detalle_publicacion_anfitrion_title">Detalle Publicación</string>
     <string name="cant_de_huespedes_lbl">Cant. de huespedes</string>
+    <string name="tipo_de_alojamiento_lbl">Tipo de alojamiento</string>
 
 </resources>

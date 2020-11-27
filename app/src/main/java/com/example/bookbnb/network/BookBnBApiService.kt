@@ -114,7 +114,8 @@ class BookBnBApi(var context: Context) {
         price: Float,
         location: CustomLocation,
         cantHuespedes: Int,
-        imagesURLs: List<String>
+        imagesURLs: List<String>,
+        tipoAlojamiento: String
     ) : ResultWrapper<CrearPublicacionResponse> {
         val publicacionDTO = Publicacion(
             titulo = titulo,
@@ -122,7 +123,8 @@ class BookBnBApi(var context: Context) {
             precioPorNoche = price,
             direccion = location,
             cantidadDeHuespedes = cantHuespedes,
-            imagenes = imagesURLs.map{ url -> CustomImage(url) }
+            imagenes = imagesURLs.map{ url -> CustomImage(url) },
+            tipoDeAlojamiento = tipoAlojamiento
         )
         val token = SessionManager(context).fetchAuthToken()
         if (token.isNullOrEmpty()) {

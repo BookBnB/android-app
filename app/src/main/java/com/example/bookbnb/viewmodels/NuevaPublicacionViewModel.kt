@@ -39,6 +39,10 @@ class NuevaPublicacionViewModel(application: Application) : BaseAndroidViewModel
     val cantDeHuespedes: MutableLiveData<String>
         get() = _cantDeHuespedes
 
+    private val _tipoAlojamiento = MutableLiveData<String>("")
+    val tipoAlojamiento: MutableLiveData<String>
+        get() = _tipoAlojamiento
+
     private val _selectedLocation = MutableLiveData<CustomLocation>()
     val selectedLocation: MutableLiveData<CustomLocation>
         get() = _selectedLocation
@@ -222,7 +226,8 @@ class NuevaPublicacionViewModel(application: Application) : BaseAndroidViewModel
                     parseFloat(_price.value!!),
                     _selectedLocation.value!!,
                     parseInt(_cantDeHuespedes.value!!),
-                    imagesUrls
+                    imagesUrls,
+                    _tipoAlojamiento.value!!
                 )
                 when (response) {
                     is ResultWrapper.NetworkError -> showSnackbarMessage(

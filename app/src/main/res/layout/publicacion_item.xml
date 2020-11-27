@@ -65,13 +65,13 @@
             android:layout_marginStart="@dimen/margin_normal"
             android:layout_marginTop="@dimen/margin_small"
             android:layout_marginEnd="@dimen/margin_normal"
-            android:drawablePadding="@dimen/margin_min"
             android:text="@{property.direccion.toString()}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/titulo"
-            android:gravity="center_vertical"
             tools:text="Paseo Colón 850"
+            android:drawablePadding="@dimen/margin_min"
+            android:gravity="center_vertical"
             app:drawableStartCompat="@drawable/ic_location_24" />
 
         <TextView
