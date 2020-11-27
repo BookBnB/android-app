@@ -91,6 +91,22 @@
             android:text="@{@string/cant_huespedes_format(property.cantidadDeHuespedes)}"/>
 
         <TextView
+            android:id="@+id/tipo_alojamiento"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_normal"
+            android:layout_marginTop="@dimen/margin_small"
+            android:layout_marginEnd="@dimen/margin_normal"
+            android:drawablePadding="@dimen/margin_min"
+            android:gravity="center_vertical"
+            android:text="@{property.tipoDeAlojamiento}"
+            app:drawableStartCompat="@drawable/ic_homework_24"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cant_huespedes"
+            tools:text="Habitación de hotel" />
+
+        <TextView
             android:id="@+id/precio"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -100,73 +116,8 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cant_huespedes"
+            app:layout_constraintTop_toBottomOf="@+id/tipo_alojamiento"
             tools:text="0.0015 ETH/Noche" />
-        <!--
-        <ImageView
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:id="@+id/resultado_image"
-            android:layout_gravity="center_vertical"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            android:textAppearance="?attr/textAppearanceListItem"
-            app:layout_constraintWidth_percent="0.3"
-            app:imageUrl="@{property.imagenes[0].url}"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:src="@tools:sample/backgrounds/scenic"
-            android:contentDescription="@string/imagen" />
-
-        <TextView
-            android:id="@+id/resultado_title"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_normal"
-            android:layout_marginTop="@dimen/margin_small"
-            android:ellipsize="end"
-            android:maxLines="2"
-            android:text="@{property.titulo}"
-            android:textAppearance="?attr/textAppearanceListItem"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/resultado_direccion"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/resultado_image"
-            app:layout_constraintTop_toTopOf="@+id/resultado_image"
-            app:layout_constraintVertical_chainStyle="packed"
-            tools:text="Cabañas del Meson - Mendoza"/>
-
-        <TextView
-            android:id="@+id/resultado_direccion"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_normal"
-            android:layout_marginTop="@dimen/margin_normal"
-            android:layout_marginBottom="@dimen/margin_normal"
-            android:text="@{property.direccion.toString()}"
-            android:textAppearance="?attr/textAppearanceListItem"
-            app:layout_constraintBottom_toTopOf="@+id/resultado_precio"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/resultado_image"
-            app:layout_constraintTop_toBottomOf="@+id/resultado_title"
-            tools:text="Calle Falsa 123, Mendoza, Argentina" />
-
-        <TextView
-            android:id="@+id/resultado_precio"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_normal"
-            android:layout_marginBottom="@dimen/margin_small"
-            android:text="@{@string/precio_format(property.precioPorNoche)}"
-            android:textAlignment="textEnd"
-            android:textAppearance="?attr/textAppearanceHeadline6"
-            app:layout_constraintBottom_toBottomOf="@+id/resultado_image"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/resultado_image"
-            app:layout_constraintTop_toBottomOf="@+id/resultado_direccion"
-            tools:text="0.0015 ETH/Noche" />
--->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

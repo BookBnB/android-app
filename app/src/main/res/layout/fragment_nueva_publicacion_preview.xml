@@ -178,7 +178,7 @@
             android:id="@+id/spinner_holder"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#A4FFFFFF"
+            android:background="#B4FFFFFF"
             android:visibility="gone"
             android:clickable="true">
 
@@ -197,11 +197,11 @@
                     android:id="@+id/text_cargando_reporte"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_normal"
+                    android:layout_margin="@dimen/margin_normal"
                     android:layout_gravity="center_horizontal"
                     android:textAlignment="center"
                     android:text="@string/publicando_txt"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Large"
                     android:textStyle="bold" />
             </LinearLayout>
         </RelativeLayout>
