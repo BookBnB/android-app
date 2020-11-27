@@ -11,7 +11,11 @@
         tools:layout="@layout/fragment_home_huesped" >
         <action
             android:id="@+id/action_nav_home_huesped_to_busquedaLocationFragment"
-            app:destination="@id/busquedaLocationFragment" />
+            app:destination="@id/busquedaLocationFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right"/>
     </fragment>
     <fragment
         android:id="@+id/busquedaLocationFragment"
@@ -20,7 +24,11 @@
         tools:layout="@layout/fragment_busqueda_location" >
         <action
             android:id="@+id/action_busquedaLocationFragment_to_resultadosBusquedaFragment"
-            app:destination="@id/resultadosBusquedaFragment" />
+            app:destination="@id/resultadosBusquedaFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right"/>
     </fragment>
     <fragment
         android:id="@+id/resultadosBusquedaFragment"
@@ -32,7 +40,11 @@
             app:argType="com.example.bookbnb.models.Coordenada" />
         <action
             android:id="@+id/action_resultadosBusquedaFragment_to_detallePublicacionFragment"
-            app:destination="@id/detallePublicacionFragment" />
+            app:destination="@id/detallePublicacionFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right"/>
         <argument
             android:name="tipoAlojamiento"
             app:argType="string" />
@@ -51,7 +63,11 @@
         <action
             android:id="@+id/action_detallePublicacionFragment_to_reservaRealizadaFragment"
             app:destination="@id/reservaRealizadaFragment"
-            app:popUpTo="@id/nav_home_huesped" />
+            app:popUpTo="@id/nav_home_huesped"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right"/>
     </fragment>
     <fragment
         android:id="@+id/reservaRealizadaFragment"
