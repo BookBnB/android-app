@@ -66,9 +66,11 @@ class ResultadosBusquedaFragment : BaseFragment(){
                 DividerItemDecoration.VERTICAL
             )
         )
-
-        val coordenadas = requireArguments().getParcelable<Coordenada>("coordenadas")
-        coordenadas?.let { viewModel.getResults(it) }
+        val args = requireArguments()
+        val coordenadas = args.getParcelable<Coordenada>("coordenadas")
+        val tipoAlojamiento = args.getString("tipoAlojamiento")
+        val cantHuespedes = args.getInt("cantHuespedes")
+        viewModel.getResults(coordenadas!!, tipoAlojamiento!!, cantHuespedes)
 
         binding.resultadosBusquedaViewModel = viewModel
 

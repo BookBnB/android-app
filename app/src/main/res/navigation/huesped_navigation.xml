@@ -33,6 +33,12 @@
         <action
             android:id="@+id/action_resultadosBusquedaFragment_to_detallePublicacionFragment"
             app:destination="@id/detallePublicacionFragment" />
+        <argument
+            android:name="tipoAlojamiento"
+            app:argType="string" />
+        <argument
+            android:name="cantHuespedes"
+            app:argType="integer" />
     </fragment>
     <fragment
         android:id="@+id/detallePublicacionFragment"

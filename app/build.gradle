@@ -107,4 +107,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-common-ktx'
     implementation 'com.google.firebase:firebase-storage-ktx'
 
+    //Number picker
+    implementation 'com.shawnlin:number-picker:2.4.11'
+
 }

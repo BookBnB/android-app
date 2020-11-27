@@ -17,6 +17,14 @@ class BusquedaViewModel(application: Application) : BaseAndroidViewModel(applica
     val selectedLocation: MutableLiveData<CustomLocation>
         get() = _selectedLocation
 
+    private val _selectedTipoAlojamiento = MutableLiveData<String>()
+    val selectedTipoAlojamiento: MutableLiveData<String>
+        get() = _selectedTipoAlojamiento
+
+    private val _selectedCantHuespedes = MutableLiveData<Int>(1)
+    val selectedCantHuespedes: MutableLiveData<Int>
+        get() = _selectedCantHuespedes
+
     private val _destino = MutableLiveData<String>("")
     val destino: MutableLiveData<String>
         get() = _destino
@@ -41,6 +49,13 @@ class BusquedaViewModel(application: Application) : BaseAndroidViewModel(applica
     fun onDoneNavigateToSearchResults() {
         _coordenadas.value = null
         _navigateToSearchResults.value = false
+    }
+
+
+    fun setSelectedCantHuespedes(cantHuespedes: Int) {
+        if (selectedCantHuespedes.value != cantHuespedes) {
+            selectedCantHuespedes.value = cantHuespedes
+        }
     }
 
     fun setSelectedLocation(location: CustomLocation?) {
@@ -75,7 +90,12 @@ class BusquedaViewModel(application: Application) : BaseAndroidViewModel(applica
     }
 
     fun onGetResults() {
-        onNavigateToSearchResults()
+        if (selectedLocation.value != null) {
+            onNavigateToSearchResults()
+        }
+        else{
+            showSnackbarMessage("No ingresó una ciudad para la búsqueda.")
+        }
     }
 
 }

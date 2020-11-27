@@ -44,7 +44,7 @@ class NuevaPublicacionInfoFragment : Fragment() {
         binding.nuevaPublicacionViewModel = viewModel
 
         setNavigateToNextStepObserver()
-        setPossiblTiposAlojamiento()
+        setPossibleTiposAlojamiento()
 
         return binding.root
     }
@@ -60,7 +60,7 @@ class NuevaPublicacionInfoFragment : Fragment() {
         })
     }
 
-    private fun setPossiblTiposAlojamiento() {
+    private fun setPossibleTiposAlojamiento() {
         val tipos = TipoDeAlojamientoProvider.tipos
         val adapter = ArrayAdapter(requireContext(), R.layout.dropdown_item, tipos)
         (binding.tipoAlojamientoType as? AutoCompleteTextView)?.setAdapter(adapter)

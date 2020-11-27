@@ -16,7 +16,11 @@
         tools:layout="@layout/fragment_publicaciones_list" >
         <action
             android:id="@+id/action_nav_publicaciones_to_nuevaPublicacionFragment"
-            app:destination="@id/nuevaPublicacionFragment" />
+            app:destination="@id/nuevaPublicacionFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right" />
         <action
             android:id="@+id/action_nav_publicaciones_to_detallePublicacionAnfitrionFragment"
             app:destination="@id/detallePublicacionAnfitrionFragment" />
