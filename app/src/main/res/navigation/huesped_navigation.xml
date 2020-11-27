@@ -36,9 +36,9 @@
     </fragment>
     <fragment
         android:id="@+id/detallePublicacionFragment"
-        android:name="com.example.bookbnb.ui.publicaciones.DetallePublicacionFragment"
+        android:name="com.example.bookbnb.ui.publicaciones.DetallePublicacionHuespedFragment"
         android:label="@string/detalle_publicacion_title"
-        tools:layout="@layout/fragment_detalle_publicacion">
+        tools:layout="@layout/fragment_detalle_publicacion_huesped">
         <argument
             android:name="publicacionId"
             app:argType="string" />

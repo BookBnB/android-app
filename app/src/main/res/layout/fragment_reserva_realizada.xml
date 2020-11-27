@@ -28,6 +28,7 @@
         tools:text="AJ830P"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Headline2"
+        android:textStyle="bold"
         android:layout_marginBottom="@dimen/margin_big"/>
     <TextView
         android:layout_width="match_parent"
