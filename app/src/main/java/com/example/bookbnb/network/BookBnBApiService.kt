@@ -96,13 +96,11 @@ class BookBnBApi(var context: Context) {
     suspend fun reservarPublicacion(
         publicacionId: String,
         startDate: Date,
-        endDate: Date,
-        pricePerNight: Float
+        endDate: Date
     ) : ResultWrapper<ReservarPublicacionResponse> {
         val reservaDTO = ReservaDTO(publicacionId,
             SimpleDateFormat(DATE_ISO_FORMAT).format(startDate),
-            SimpleDateFormat(DATE_ISO_FORMAT).format(endDate),
-            pricePerNight)
+            SimpleDateFormat(DATE_ISO_FORMAT).format(endDate))
         val token = SessionManager(context).fetchAuthToken()
         if (token.isNullOrEmpty()) {
             throw Exception("No hay una sesión establecida")
@@ -187,7 +185,6 @@ class BookBnBApi(var context: Context) {
             return safeApiCall(Dispatchers.IO) { retrofitService.authenticate(user) }
         } catch (e: Exception) {
             //TODO: ???
-            var error = e.message
             throw (e)
         }
     }

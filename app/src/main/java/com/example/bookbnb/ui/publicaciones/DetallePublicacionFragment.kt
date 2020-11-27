@@ -54,7 +54,7 @@ class DetallePublicacionFragment : BaseFragment() {
 
         setDisplayDisponibilidadObserver()
 
-        setDisplayReservaPrecioDialogObserver(inflater)
+        setDisplayReservaDialogObserver(inflater)
 
         viewModel.navigateToReservationComplete.observe(viewLifecycleOwner, Observer {navigate ->
             if (navigate){
@@ -97,8 +97,8 @@ class DetallePublicacionFragment : BaseFragment() {
         })
     }
 
-    private fun setDisplayReservaPrecioDialogObserver(inflater: LayoutInflater){
-        viewModel.showReservaPrecioDialog.observe(viewLifecycleOwner, Observer { display ->
+    private fun setDisplayReservaDialogObserver(inflater: LayoutInflater){
+        viewModel.showReservaDialog.observe(viewLifecycleOwner, Observer { display ->
             if (display) {
                 val builder = AlertDialog.Builder(context)
                 val binding: DialogReservaBinding = DataBindingUtil.inflate(
@@ -107,18 +107,19 @@ class DetallePublicacionFragment : BaseFragment() {
                     null,
                     false
                 )
+                viewModel.setReservaTotalPrice()
                 binding.publicacionViewModel = viewModel
                 val reservaDialog = builder
                     .setPositiveButton(
-                        "Enviar Reserva"
-                    ) { dialog: DialogInterface?, which: Int -> viewModel.endReservation() }
+                        "Reservar"
+                    ) { _: DialogInterface?, _: Int -> viewModel.endReservation() }
                     .setNegativeButton(
                         "Cancelar"
-                    ) { dialog: DialogInterface?, which: Int -> viewModel.cancelReservation() }
+                    ) { _: DialogInterface?, _: Int -> viewModel.cancelReservation() }
                     .create()
                 reservaDialog.setView(binding.root)
                 reservaDialog.show()
-                viewModel.onDoneShowingReservaPrecio()
+                viewModel.onDoneShowingReservaConfirm()
             }
         })
     }

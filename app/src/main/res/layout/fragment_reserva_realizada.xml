@@ -19,5 +19,20 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
-        android:text="Su petición de reserva fue recibida y procesada con éxito. Esta será visualizada por el anfitrión quién se encargará de aprobarla o rechazarla." />
+        android:text="Su petición de reserva fue recibida y procesada con éxito. Su id de reserva es:"
+        android:layout_marginBottom="@dimen/margin_big"/>
+    <TextView
+        android:id="@+id/reservaIdTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:text="AJ830P"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline2"
+        android:layout_marginBottom="@dimen/margin_big"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
+        android:text="Esta será visualizada por el anfitrión quién se encargará de aprobarla o rechazarla." />
+
 </LinearLayout>

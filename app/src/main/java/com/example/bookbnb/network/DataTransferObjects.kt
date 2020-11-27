@@ -42,8 +42,7 @@ data class LoginResponse(
 data class ReservaDTO(
     var publicacionId: String,
     var fechaInicio: String,
-    var fechaFin: String,
-    var precioPorNoche: Float
+    var fechaFin: String
 )
 
 data class ReservarPublicacionResponse(

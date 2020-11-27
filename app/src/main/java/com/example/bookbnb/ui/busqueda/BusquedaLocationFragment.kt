@@ -67,7 +67,7 @@ class BusquedaLocationFragment : Fragment() {
 
     private fun setSuggestionOnClick() {
         binding.searchText.onItemClickListener =
-            AdapterView.OnItemClickListener { parent, arg1, pos, id ->
+            AdapterView.OnItemClickListener { _, _, pos, _ ->
                 val item = viewModel.autocompleteLocationAdapter.value?.getItem(pos)
                 viewModel.setSelectedLocation(item)
                 binding.searchText.setSelection(0) //Focus on the start of the TextView

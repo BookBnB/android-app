@@ -12,6 +12,8 @@ import com.example.bookbnb.utils.SessionManager
 import kotlinx.coroutines.launch
 import java.lang.Float.parseFloat
 import java.util.*
+import java.util.concurrent.TimeUnit
+import kotlin.math.round
 
 class DetallePublicacionViewModel(application: Application) : BaseAndroidViewModel(application) {
 
@@ -32,17 +34,21 @@ class DetallePublicacionViewModel(application: Application) : BaseAndroidViewMod
     val endDate : MutableLiveData<Date>
         get() = _endDate
 
+    private val _reservaPrecioTotal = MutableLiveData<Float>()
+    val reservaPrecioTotal : MutableLiveData<Float>
+        get() = _reservaPrecioTotal
+
+    private val _reservaRealizadaId = MutableLiveData<String>()
+    val reservaRealizadaId : MutableLiveData<String>
+        get() = _reservaRealizadaId
+
     private val _navigateToReservationComplete = MutableLiveData<Boolean>(false)
     val navigateToReservationComplete : MutableLiveData<Boolean>
         get() = _navigateToReservationComplete
 
-    private val _showReservaPrecioDialog = MutableLiveData<Boolean>(false)
-    val showReservaPrecioDialog : MutableLiveData<Boolean>
-        get() = _showReservaPrecioDialog
-
-    private val _price = MutableLiveData<String>("")
-    val price: MutableLiveData<String>
-        get() = _price
+    private val _showReservaDialog = MutableLiveData<Boolean>(false)
+    val showReservaDialog : MutableLiveData<Boolean>
+        get() = _showReservaDialog
 
     fun onGetDetail(publicacionId: String) {
         viewModelScope.launch {
@@ -61,6 +67,12 @@ class DetallePublicacionViewModel(application: Application) : BaseAndroidViewMod
         }
     }
 
+    fun setReservaTotalPrice(){
+        val diff = endDate.value!!.time - startDate.value!!.time
+        val nights = TimeUnit.MILLISECONDS.toDays(diff)
+        _reservaPrecioTotal.value = nights * publicacion.value!!.precioPorNoche
+    }
+
     private fun onDetailSuccess(publicacionResponse: ResultWrapper.Success<Publicacion>) {
         _publicacion.value = publicacionResponse.value
     }
@@ -76,11 +88,11 @@ class DetallePublicacionViewModel(application: Application) : BaseAndroidViewMod
     fun setDisponibilidadElegida(start: Long, end: Long){
         startDate.value = Date(start)
         endDate.value = Date(end)
-        showReservaPrecioDialog.value = true
+        _showReservaDialog.value = true
     }
 
-    fun onDoneShowingReservaPrecio(){
-        showReservaPrecioDialog.value = false
+    fun onDoneShowingReservaConfirm(){
+        _showReservaDialog.value = false
     }
 
     fun cancelReservation(){
@@ -89,18 +101,12 @@ class DetallePublicacionViewModel(application: Application) : BaseAndroidViewMod
     }
 
     fun endReservation(){
-        if (_price.value == null){
-            showSnackbarMessage("Error: No se ingresó un precio para la reserva.")
-            return;
-        }
         viewModelScope.launch {
             try {
                 _showLoadingSpinner.value = true
                 val reservaResponse = BookBnBApi(getApplication()).reservarPublicacion(publicacion.value!!.id!!,
                     startDate.value!!,
-                    endDate.value!!,
-                    parseFloat(price.value!!)
-                )
+                    endDate.value!!)
                 when (reservaResponse) {
                     is ResultWrapper.NetworkError -> showSnackbarMessage(getApplication<Application>().getString(
                         R.string.network_error_msg))
@@ -115,6 +121,7 @@ class DetallePublicacionViewModel(application: Application) : BaseAndroidViewMod
     }
 
     private fun onReservaSuccess(reservaResponse: ResultWrapper.Success<ReservarPublicacionResponse>) {
+        _reservaRealizadaId.value = reservaResponse.value.id
         _navigateToReservationComplete.value = true
     }
 

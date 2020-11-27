@@ -3,6 +3,7 @@ package com.example.bookbnb
 import android.widget.ArrayAdapter
 import android.widget.ImageView
 import android.widget.ListAdapter
+import android.widget.TextView
 import androidx.core.net.toUri
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -12,6 +13,8 @@ import com.example.bookbnb.models.CustomLocation
 import com.example.bookbnb.models.Publicacion
 import com.example.bookbnb.ui.publicaciones.PublicacionRecyclerViewAdapter
 import com.google.android.material.textfield.TextInputLayout
+import java.text.SimpleDateFormat
+import java.util.*
 import android.widget.AutoCompleteTextView as AutoCompleteTextView1
 
 
@@ -47,4 +50,9 @@ fun setAdapter(actv: AutoCompleteTextView1, adapter: ArrayAdapter<CustomLocation
         actv.setAdapter(adapter)
         adapter.notifyDataSetChanged();
     }
+}
+
+@BindingAdapter("dateShortString")
+fun bindShortDate(txtView: TextView, date: Date){
+    txtView.text = SimpleDateFormat("dd/MM/yyyy").format(date)
 }

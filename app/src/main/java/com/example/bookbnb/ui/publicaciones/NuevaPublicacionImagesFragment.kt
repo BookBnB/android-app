@@ -108,7 +108,7 @@ class NuevaPublicacionImagesFragment : BaseFragment() {
         val alertDialog = builder
             .setPositiveButton(
                 "Continuar"
-            ) { dialog: DialogInterface?, which: Int -> startSelectPhotos() }
+            ) { _: DialogInterface?, _: Int -> startSelectPhotos() }
             .create()
         alertDialog.setView(inflater.inflate(R.layout.dialog_gallery, null))
         alertDialog.setCanceledOnTouchOutside(false);
@@ -143,7 +143,7 @@ class NuevaPublicacionImagesFragment : BaseFragment() {
             .setTitle("Error al seleccionar las fotografías")
             .setMessage(msg) // Specifying a listener allows you to take an action before dismissing the dialog.
             // The dialog is automatically dismissed when a dialog button is clicked.
-            .setPositiveButton("Reintentar", { dialog, which -> startSelectPhotos() })
+            .setPositiveButton("Reintentar") { _, _ -> startSelectPhotos() }
             .show()
     }
 }
