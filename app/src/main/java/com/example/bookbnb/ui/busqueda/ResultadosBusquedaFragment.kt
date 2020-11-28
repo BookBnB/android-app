@@ -70,9 +70,13 @@ class ResultadosBusquedaFragment : BaseFragment(){
         val coordenadas = args.getParcelable<Coordenada>("coordenadas")
         val tipoAlojamiento = args.getString("tipoAlojamiento")
         val cantHuespedes = args.getInt("cantHuespedes")
-        viewModel.getResults(coordenadas!!, tipoAlojamiento!!, cantHuespedes)
+        val minPrice = args.getFloat("minPrice")
+        val maxPrice = args.getFloat("maxPrice")
+        viewModel.getResults(coordenadas!!, tipoAlojamiento!!, cantHuespedes, minPrice, maxPrice)
 
         binding.resultadosBusquedaViewModel = viewModel
+
+        setSnackbarMessageObserver(viewModel, binding.root)
 
         return binding.root
     }
