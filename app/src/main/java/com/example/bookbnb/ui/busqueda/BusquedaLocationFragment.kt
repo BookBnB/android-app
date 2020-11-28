@@ -3,6 +3,7 @@ package com.example.bookbnb.ui.busqueda
 import android.app.Activity
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,8 +22,9 @@ import com.example.bookbnb.models.TipoDeAlojamientoProvider
 import com.example.bookbnb.ui.BaseFragment
 import com.example.bookbnb.viewmodels.BusquedaViewModel
 import com.example.bookbnb.viewmodels.BusquedaViewModelFactory
-import com.shawnlin.numberpicker.NumberPicker
-import java.lang.String
+import com.google.android.material.slider.LabelFormatter.LABEL_GONE
+import com.google.android.material.slider.RangeSlider
+import com.google.android.material.slider.Slider
 
 class BusquedaLocationFragment : BaseFragment() {
 
@@ -59,13 +61,22 @@ class BusquedaLocationFragment : BaseFragment() {
         onNavigateToSearchResults()
         setPossibleTiposAlojamiento()
         setSnackbarMessageObserver(viewModel, binding.root)
-        // OnValueChangeListener
-        binding.numberPicker.value = 1 //Default to 1
+
+        binding.numberPicker.value = viewModel.selectedCantHuespedes.value!!
         binding.numberPicker.setOnValueChangedListener { _, _, newVal ->
             viewModel.setSelectedCantHuespedes(newVal)
         }
 
+        setPriceSlider()
+
         return binding.root
+    }
+
+    private fun setPriceSlider() {
+        binding.rangeSlider.labelBehavior = LABEL_GONE
+        binding.rangeSlider.addOnChangeListener { slider, _, _ ->
+            viewModel.updateSelectedPrice(slider.values)
+        }
     }
 
     private fun setPossibleTiposAlojamiento() {
@@ -84,7 +95,9 @@ class BusquedaLocationFragment : BaseFragment() {
                     BusquedaLocationFragmentDirections.actionBusquedaLocationFragmentToResultadosBusquedaFragment(
                         viewModel.coordenadas.value!!,
                         viewModel.selectedTipoAlojamiento.value!!,
-                        viewModel.selectedCantHuespedes.value!!
+                        viewModel.selectedCantHuespedes.value!!,
+                        viewModel.selectedMinPrice.value!!,
+                        viewModel.selectedMaxPrice.value!!
                     )
                 )
                 viewModel.onDoneNavigateToSearchResults()

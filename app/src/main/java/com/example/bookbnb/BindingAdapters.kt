@@ -1,17 +1,21 @@
 package com.example.bookbnb
 
+import android.util.Log
 import android.widget.ArrayAdapter
 import android.widget.ImageView
 import android.widget.ListAdapter
 import android.widget.TextView
 import androidx.core.net.toUri
 import androidx.databinding.BindingAdapter
+import androidx.databinding.InverseBindingAdapter
+import androidx.databinding.InverseBindingListener
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.bookbnb.models.CustomLocation
 import com.example.bookbnb.models.Publicacion
 import com.example.bookbnb.ui.publicaciones.PublicacionRecyclerViewAdapter
+import com.google.android.material.slider.RangeSlider
 import com.google.android.material.textfield.TextInputLayout
 import java.text.SimpleDateFormat
 import java.util.*

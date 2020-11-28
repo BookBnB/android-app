@@ -21,11 +21,15 @@ class ResultadosBusquedaViewModel(application: Application) : BaseAndroidViewMod
     val publicacionActual : MutableLiveData<Publicacion>
         get() = _publicacionActual
 
-    fun getResults(coordenadas: Coordenada, tipoAlojamiento: String, cantHuespedes: Int) {
+    fun getResults(coordenadas: Coordenada,
+                   tipoAlojamiento: String,
+                   cantHuespedes: Int,
+                   minPrice: Float,
+                   maxPrice: Float) {
         viewModelScope.launch {
 
             when (val searchResponse = BookBnBApi(getApplication()).searchPublicaciones(
-                coordenadas, tipoAlojamiento, cantHuespedes
+                coordenadas, tipoAlojamiento, cantHuespedes, minPrice, maxPrice
             )) {
                 is ResultWrapper.NetworkError -> showSnackbarMessage(
                     getApplication<Application>().getString(

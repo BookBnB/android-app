@@ -58,7 +58,9 @@ interface BookBnBApiService {
                                     @Query("coordenadas[latitud]") latitud: Double,
                                     @Query("coordenadas[longitud]") longitud: Double,
                                     @Query("tipoDeAlojamiento") tipoAlojamiento: String?,
-                                    @Query("cantidadDeHuespedes") cantHuespedes: Int) : List<Publicacion>
+                                    @Query("cantidadDeHuespedes") cantHuespedes: Int,
+                                    @Query("precioPorNocheMinimo") minPrice: Float,
+                                    @Query("precioPorNocheMaximo") maxPrice: Float) : List<Publicacion>
 
     @GET("publicaciones")
     suspend fun searchByCityCoordinates(@Header("Authorization") token: String,
@@ -150,7 +152,9 @@ class BookBnBApi(var context: Context) {
 
     suspend fun searchPublicaciones(coordenadas: Coordenada,
                                     tipoAlojamiento: String?,
-                                    cantHuespedes: Int)
+                                    cantHuespedes: Int,
+                                    minPrice: Float,
+                                    maxPrice: Float)
             : ResultWrapper<List<Publicacion>>{
         val token = SessionManager(context).fetchAuthToken()
         if (token.isNullOrEmpty()){
@@ -160,7 +164,9 @@ class BookBnBApi(var context: Context) {
             coordenadas.latitud,
             coordenadas.longitud,
             if (tipoAlojamiento == "Todos") null else tipoAlojamiento, //If Todos is selected then i pass null to api
-            cantHuespedes)
+            cantHuespedes,
+            minPrice,
+            maxPrice)
         }
     }
 

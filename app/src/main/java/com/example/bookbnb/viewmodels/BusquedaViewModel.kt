@@ -10,6 +10,7 @@ import com.example.bookbnb.network.BookBnBApi
 import com.example.bookbnb.network.ResultWrapper
 import kotlinx.coroutines.launch
 import java.lang.Exception
+import kotlin.math.round
 
 class BusquedaViewModel(application: Application) : BaseAndroidViewModel(application) {
 
@@ -24,6 +25,14 @@ class BusquedaViewModel(application: Application) : BaseAndroidViewModel(applica
     private val _selectedCantHuespedes = MutableLiveData<Int>(1)
     val selectedCantHuespedes: MutableLiveData<Int>
         get() = _selectedCantHuespedes
+
+    private val _selectedMinPrice = MutableLiveData<Float>(0f)
+    val selectedMinPrice : MutableLiveData<Float>
+        get() = _selectedMinPrice
+
+    private val _selectedMaxPrice = MutableLiveData<Float>(1f)
+    val selectedMaxPrice : MutableLiveData<Float>
+        get() = _selectedMaxPrice
 
     private val _destino = MutableLiveData<String>("")
     val destino: MutableLiveData<String>
@@ -98,6 +107,16 @@ class BusquedaViewModel(application: Application) : BaseAndroidViewModel(applica
         }
     }
 
+    fun updateSelectedPrice(values: MutableList<Float>){
+        _selectedMinPrice.value = values.min()?.round(3)?.toFloat()
+        _selectedMaxPrice.value = values.max()?.round(3)?.toFloat()
+    }
+
+}
+fun Float.round(decimals: Int): Double {
+    var multiplier = 1.0
+    repeat(decimals) { multiplier *= 10 }
+    return round(this * multiplier) / multiplier
 }
 
 class BusquedaViewModelFactory(val app: Application) : ViewModelProvider.Factory {

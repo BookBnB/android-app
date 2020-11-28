@@ -8,6 +8,7 @@
             name="busquedaViewModel"
             type="com.example.bookbnb.viewmodels.BusquedaViewModel" />
     </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -27,7 +28,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/margin_normal"
-                android:text="@string/busqueda_location"
+                android:text="Indique los parametros de su búsqueda para poder brindarle las opciones adecuadas a sus necesidades"
                 android:textColor="@color/secondaryTextColor"
                 android:textStyle="bold" />
         </FrameLayout>
@@ -45,18 +46,18 @@
                 android:id="@+id/searchText"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:backgroundTint="@android:color/transparent"
                 android:background="@android:color/transparent"
-                android:padding="8dp"
-                android:drawableStart="@drawable/ic_baseline_search_36"
-                android:text="@={busquedaViewModel.destino}"
-                app:locationsAdapter="@{busquedaViewModel.autocompleteLocationAdapter}"
+                android:backgroundTint="@android:color/transparent"
                 android:completionThreshold="3"
-                android:maxLines="1"
-                android:inputType="text"
-                android:ellipsize="end"
+                android:drawableStart="@drawable/ic_baseline_search_36"
                 android:drawableTint="@android:color/darker_gray"
-                android:hint="Ciudad de Mendoza, Mendoza, Argentina" />
+                android:ellipsize="end"
+                android:hint="Ciudad de Mendoza, Mendoza, Argentina"
+                android:inputType="text"
+                android:maxLines="1"
+                android:padding="8dp"
+                android:text="@={busquedaViewModel.destino}"
+                app:locationsAdapter="@{busquedaViewModel.autocompleteLocationAdapter}" />
 
         </androidx.cardview.widget.CardView>
 
@@ -114,6 +115,49 @@
                 android:inputType="none"
                 android:text="@={busquedaViewModel.selectedTipoAlojamiento}" />
         </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:id="@+id/precio_text_view"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_normal"
+            android:layout_marginTop="@dimen/margin_normal"
+            android:text="@string/price_lbl"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            app:layout_constraintBottom_toBottomOf="@+id/range_slider"
+            app:layout_constraintEnd_toStartOf="@+id/range_slider"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tipo_alojamiento_text_field" />
+
+        <com.google.android.material.slider.RangeSlider
+            android:id="@+id/range_slider"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_normal"
+            android:layout_marginEnd="@dimen/margin_normal"
+            android:valueFrom="0.0"
+            android:valueTo="1.0"
+            app:values="@array/initial_slider_values"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/precio_text_view"
+            app:layout_constraintTop_toBottomOf="@+id/tipo_alojamiento_text_field" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_normal"
+            android:layout_marginTop="@dimen/margin_small"
+            android:layout_marginEnd="@dimen/margin_normal"
+            android:textAlignment="viewEnd"
+            tools:text="(Entre 0.0 ETH/Noche y 1.0 ETH/Noche)"
+            android:text="@{@string/rango_precio_format(busquedaViewModel.selectedMinPrice, busquedaViewModel.selectedMaxPrice)}"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:textColor="@color/primaryDarkColor"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/range_slider" />
 
         <Button
             android:id="@+id/button3"
