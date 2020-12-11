@@ -80,10 +80,8 @@
                 android:layout_marginTop="@dimen/margin_big"
                 android:layout_marginEnd="@dimen/margin_normal"
                 android:onClick="@{() -> loginViewModel.onLogin()}"
-                android:text="@string/login_btn"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/login_password" />
+                android:text="@string/login_btn" />
+
 
             <Button
                 android:layout_gravity="center_horizontal"
@@ -95,10 +93,58 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="@dimen/margin_normal"
                 android:text="@string/registrar_label"
-                android:onClick="@{() -> loginViewModel.onNavigateToRegister()}"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/login_button" />
+                android:onClick="@{() -> loginViewModel.onNavigateToRegister()}" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/margin_normal">
+                <TextView
+                    android:id="@+id/tvText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:text="@string/ingresa_con_otros_txt"
+                    android:textColor="#9a9a9a"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="@dimen/margin_normal"
+                    android:layout_toStartOf="@id/tvText"
+                    android:background="#9a9a9a"
+                    />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="@dimen/margin_normal"
+                    android:layout_toEndOf="@id/tvText"
+                    android:background="#9a9a9a"
+                    />
+
+            </RelativeLayout>
+
+            <Button
+                android:layout_gravity="center_horizontal"
+                style="@style/PrimaryButton"
+                android:id="@+id/sign_in_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#DE5246"
+                android:drawableLeft="@drawable/common_google_signin_btn_icon_light"
+                android:text="@string/ingresa_con_google_lbl"
+                android:textColor="#FFFFFF"
+                android:textColorHighlight="#FFFFFF"
+                android:onClick="@{() -> loginViewModel.onShowGoogleSignUpClick()}"
+                android:layout_marginStart="@dimen/margin_normal"
+                android:layout_marginTop="@dimen/margin_normal"
+                android:layout_marginEnd="@dimen/margin_normal"/>
 
         </LinearLayout>
     </ScrollView>

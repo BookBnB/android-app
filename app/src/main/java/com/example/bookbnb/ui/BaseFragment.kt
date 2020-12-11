@@ -4,8 +4,10 @@ import android.app.Activity
 import android.content.Context
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import com.example.bookbnb.R
 import com.example.bookbnb.viewmodels.BaseAndroidViewModel
 import com.google.android.material.snackbar.Snackbar
 
@@ -14,11 +16,13 @@ abstract class BaseFragment : Fragment() {
     protected fun setSnackbarMessageObserver(viewModel: BaseAndroidViewModel, view: View) {
         viewModel.snackbarMessage.observe(viewLifecycleOwner, Observer { msg ->
             msg?.let {
-                Snackbar.make(
+                var snackbar = Snackbar.make(
                     view,
                     it,
                     Snackbar.LENGTH_LONG
-                ).show()
+                )
+                snackbar.view.setBackgroundColor(ContextCompat.getColor(requireActivity(), viewModel.snackbarColor.value!!));
+                snackbar.show()
                 viewModel.onDoneShowingSnackbarMessage()
             }
         })

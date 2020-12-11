@@ -111,7 +111,7 @@ class RegisterViewModel(application: Application) : BaseAndroidViewModel(applica
                             _ciudad.value,
                             role)
                     when (registerResponse) {
-                        is ResultWrapper.NetworkError -> showSnackbarMessage(
+                        is ResultWrapper.NetworkError -> showSnackbarErrorMessage(
                             getApplication<Application>().getString(
                                 R.string.network_error_msg
                             )

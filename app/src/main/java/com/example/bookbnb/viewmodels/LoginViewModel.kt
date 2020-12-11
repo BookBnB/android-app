@@ -32,6 +32,19 @@ class LoginViewModel(application: Application) : BaseAndroidViewModel(applicatio
     val navigateToRegister: LiveData<Boolean>
         get() = _navigateToRegister
 
+    private val _showGoogleSignUp = MutableLiveData<Boolean>(false)
+    val showGoogleSignUp: LiveData<Boolean>
+        get() = _showGoogleSignUp
+
+    fun onShowGoogleSignUpClick(){
+        _showGoogleSignUp.value = true
+    }
+
+    fun onDoneShowingGoogleSignUpClick(){
+        _showGoogleSignUp.value = false
+    }
+
+
     fun onNavigateToRegister(){
         _navigateToRegister.value = true //Trigger navigate to main activity
     }
@@ -45,7 +58,7 @@ class LoginViewModel(application: Application) : BaseAndroidViewModel(applicatio
             try {
                 _showLoadingSpinner.value = true
                 when (val loginResponse = BookBnBApi(getApplication()).authenticate(username.value!!, password.value!!)) {
-                    is ResultWrapper.NetworkError -> showSnackbarMessage(getApplication<Application>().getString(R.string.network_error_msg))
+                    is ResultWrapper.NetworkError -> showSnackbarErrorMessage(getApplication<Application>().getString(R.string.network_error_msg))
                     is ResultWrapper.GenericError -> showGenericError(loginResponse)
                     is ResultWrapper.Success -> onLoginSuccess(loginResponse)
                 }

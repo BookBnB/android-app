@@ -11,9 +11,12 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
+import androidx.recyclerview.widget.DividerItemDecoration
 import com.example.bookbnb.R
+import com.example.bookbnb.adapters.PreguntasRecyclerViewAdapter
 import com.example.bookbnb.databinding.DialogReservaBinding
 import com.example.bookbnb.databinding.FragmentDetallePublicacionHuespedBinding
+import com.example.bookbnb.databinding.FragmentPublicacionesListBinding
 import com.example.bookbnb.ui.BaseFragment
 import com.example.bookbnb.utils.CustomImageUri
 import com.example.bookbnb.utils.ImagesSliderAdapter
@@ -47,7 +50,6 @@ class DetallePublicacionHuespedFragment : BaseFragment() {
         // Allows Data Binding to Observe LiveData with the lifecycle of this Fragment
         binding.lifecycleOwner = this
 
-        binding.detallePublicacionViewModel = viewModel
 
         setImageSliderObserver()
 
@@ -55,19 +57,43 @@ class DetallePublicacionHuespedFragment : BaseFragment() {
 
         setDisplayReservaDialogObserver(inflater)
 
-        viewModel.navigateToReservationComplete.observe(viewLifecycleOwner, Observer {navigate ->
-            if (navigate){
+        setReservationCompleteObserver()
+
+        setSnackbarMessageObserver(viewModel, binding.root)
+
+        // TODO: AGregar spinner a la activity
+        //setSpinnerObserver(viewModel, binding.root) Esto bugea la vista porque no existe un spinner
+
+        val publicacionId = arguments?.getString("publicacionId")
+        setPreguntasList()
+
+        viewModel.onGetDetail(publicacionId!!)
+
+        binding.detallePublicacionViewModel = viewModel
+
+        return binding.root
+    }
+
+    private fun setPreguntasList() {
+        binding.preguntasList.adapter =
+            PreguntasRecyclerViewAdapter() as PreguntasRecyclerViewAdapter
+        binding.preguntasList.addItemDecoration(
+            DividerItemDecoration(
+                context,
+                DividerItemDecoration.VERTICAL
+            )
+        )
+    }
+
+    private fun setReservationCompleteObserver() {
+        viewModel.navigateToReservationComplete.observe(viewLifecycleOwner, Observer { navigate ->
+            if (navigate) {
                 NavHostFragment.findNavController(this).navigate(
                     DetallePublicacionHuespedFragmentDirections.actionDetallePublicacionFragmentToReservaRealizadaFragment()
                 )
                 viewModel.onDoneNavigatingToReservationComplete()
             }
         })
-
-        val publicacionId = arguments?.getString("publicacionId")
-        viewModel.onGetDetail(publicacionId!!)
-
-        return binding.root
     }
 
     private fun setImageSliderObserver() {

@@ -3,6 +3,7 @@ package com.example.bookbnb.viewmodels
 import android.app.Application
 import androidx.lifecycle.*
 import com.example.bookbnb.R
+import com.example.bookbnb.models.Pregunta
 import com.example.bookbnb.models.Publicacion
 import com.example.bookbnb.network.BookBnBApi
 import com.example.bookbnb.network.LoginResponse
@@ -22,17 +23,25 @@ open class DetallePublicacionViewModel(application: Application) : BaseAndroidVi
     val publicacion : LiveData<Publicacion>
         get() = _publicacion
 
-
+    private val _preguntas = MutableLiveData<List<Pregunta>>()
+    val preguntas : MutableLiveData<List<Pregunta>>
+        get() = _preguntas
 
     fun onGetDetail(publicacionId: String) {
         viewModelScope.launch {
             try {
                 _showLoadingSpinner.value = true
                 when (val publicationResponse = BookBnBApi(getApplication()).getPublicacionById(publicacionId)) {
-                    is ResultWrapper.NetworkError -> showSnackbarMessage(getApplication<Application>().getString(
+                    is ResultWrapper.NetworkError -> showSnackbarErrorMessage(getApplication<Application>().getString(
                         R.string.network_error_msg))
                     is ResultWrapper.GenericError -> showGenericError(publicationResponse)
                     is ResultWrapper.Success -> onDetailSuccess(publicationResponse)
+                }
+                when (val preguntasResponse = BookBnBApi(getApplication()).getPreguntas(publicacionId)){
+                    is ResultWrapper.NetworkError -> showSnackbarErrorMessage(getApplication<Application>().getString(
+                        R.string.network_error_msg))
+                    is ResultWrapper.GenericError -> showGenericError(preguntasResponse)
+                    is ResultWrapper.Success -> onGetPreguntasSuccess(preguntasResponse)
                 }
             }
             finally {
@@ -41,6 +50,9 @@ open class DetallePublicacionViewModel(application: Application) : BaseAndroidVi
         }
     }
 
+    private fun onGetPreguntasSuccess(preguntasResponse: ResultWrapper.Success<List<Pregunta>>) {
+        _preguntas.value = preguntasResponse.value
+    }
 
     private fun onDetailSuccess(publicacionResponse: ResultWrapper.Success<Publicacion>) {
         _publicacion.value = publicacionResponse.value

@@ -31,7 +31,7 @@ class ResultadosBusquedaViewModel(application: Application) : BaseAndroidViewMod
             when (val searchResponse = BookBnBApi(getApplication()).searchPublicaciones(
                 coordenadas, tipoAlojamiento, cantHuespedes, minPrice, maxPrice
             )) {
-                is ResultWrapper.NetworkError -> showSnackbarMessage(
+                is ResultWrapper.NetworkError -> showSnackbarErrorMessage(
                     getApplication<Application>().getString(
                         R.string.network_error_msg
                     )

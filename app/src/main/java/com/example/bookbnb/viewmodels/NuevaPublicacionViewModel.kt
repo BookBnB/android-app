@@ -101,7 +101,7 @@ class NuevaPublicacionViewModel(application: Application) : BaseAndroidViewModel
             try {
                 when (val locationsResponse =
                     BookBnBApi(getApplication()).getLocations(_locationText.value!!)) {
-                    is ResultWrapper.NetworkError -> showSnackbarMessage(
+                    is ResultWrapper.NetworkError -> showSnackbarErrorMessage(
                         getApplication<Application>().getString(
                             R.string.network_error_msg
                         )
@@ -162,7 +162,7 @@ class NuevaPublicacionViewModel(application: Application) : BaseAndroidViewModel
         if (_selectedLocation.value != null) {
             _navigateToImagesStep.value = true
         } else {
-            showSnackbarMessage(
+            showSnackbarErrorMessage(
                 getApplication<Application>().getString(
                     R.string.no_location_selected_txt
                 )
@@ -230,20 +230,20 @@ class NuevaPublicacionViewModel(application: Application) : BaseAndroidViewModel
                     _tipoAlojamiento.value!!
                 )
                 when (response) {
-                    is ResultWrapper.NetworkError -> showSnackbarMessage(
+                    is ResultWrapper.NetworkError -> showSnackbarErrorMessage(
                         getApplication<Application>().getString(
                             R.string.network_error_msg
                         )
                     )
                     is ResultWrapper.GenericError -> showGenericError(response)
                     is ResultWrapper.Success -> {
-                        showSnackbarMessage("Su publicación fue creada correctamente.")
+                        showSnackbarSuccessMessage("Su publicación fue creada correctamente.")
                         _navigateToPublicaciones.value = true
                     }
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
-                showSnackbarMessage("Error: ${e.message.toString()}")
+                showSnackbarErrorMessage("Error: ${e.message.toString()}")
             }
             finally{
                 _showLoadingSpinner.value = false
@@ -253,7 +253,7 @@ class NuevaPublicacionViewModel(application: Application) : BaseAndroidViewModel
 
     fun onNavigateToPreviewStep(){
         if (selectedPhotosUri.value!!.isEmpty()) {
-            showSnackbarMessage(
+            showSnackbarErrorMessage(
                 getApplication<Application>().getString(
                     R.string.no_images_selected_txt
                 ))

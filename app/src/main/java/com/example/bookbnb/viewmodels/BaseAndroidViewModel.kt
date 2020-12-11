@@ -1,6 +1,7 @@
 package com.example.bookbnb.viewmodels
 
 import android.app.Application
+import android.graphics.Color
 import android.text.TextUtils
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
@@ -17,20 +18,36 @@ open class BaseAndroidViewModel(application: Application) : AndroidViewModel(app
     val snackbarMessage: LiveData<String?>
         get() = _snackbarMessage
 
+    val _snackbarColor = MutableLiveData<Int>(R.color.black)
+    val snackbarColor: LiveData<Int>
+        get() = _snackbarColor
+
     protected val _toastMessage = MutableLiveData<String?>(null)
     val toastMessage: LiveData<String?>
         get() = _toastMessage
 
     fun showGenericError(response: ResultWrapper.GenericError){
+        _snackbarColor.value = R.color.error
         if (response.error != null){
-            showSnackbarMessage("Error: ${response.error.message}")
+            showSnackbarErrorMessage("Error: ${response.error.message}")
         }
         else{
-            showSnackbarMessage("Error: ${getApplication<Application>().getString(R.string.error_inesperado_txt)}")
+            showSnackbarErrorMessage("Error: ${getApplication<Application>().getString(R.string.error_inesperado_txt)}")
         }
     }
 
+    fun showSnackbarErrorMessage(msg: String){
+        _snackbarColor.value = R.color.error
+        _snackbarMessage.value = msg
+    }
+
+    fun showSnackbarSuccessMessage(msg: String){
+        _snackbarColor.value = R.color.success
+        _snackbarMessage.value = msg
+    }
+
     fun showSnackbarMessage(msg: String){
+        _snackbarColor.value = R.color.black
         _snackbarMessage.value = msg
     }
 

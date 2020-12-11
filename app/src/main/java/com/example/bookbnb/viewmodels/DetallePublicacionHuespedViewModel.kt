@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.example.bookbnb.R
+import com.example.bookbnb.models.Pregunta
 import com.example.bookbnb.network.BookBnBApi
 import com.example.bookbnb.network.ReservarPublicacionResponse
 import com.example.bookbnb.network.ResultWrapper
@@ -41,6 +42,14 @@ class DetallePublicacionHuespedViewModel(application: Application) : DetallePubl
     private val _showReservaDialog = MutableLiveData<Boolean>(false)
     val showReservaDialog : MutableLiveData<Boolean>
         get() = _showReservaDialog
+
+    private val _showPreguntaRealizadaDialog = MutableLiveData<Boolean>(false)
+    val showPreguntaRealizadaDialog : MutableLiveData<Boolean>
+        get() = _showPreguntaRealizadaDialog
+
+    private val _pregunta = MutableLiveData<String>()
+    val pregunta : MutableLiveData<String>
+        get() = _pregunta
 
     fun setReservaTotalPrice(){
         val diff = endDate.value!!.time - startDate.value!!.time
@@ -79,7 +88,7 @@ class DetallePublicacionHuespedViewModel(application: Application) : DetallePubl
                     startDate.value!!,
                     endDate.value!!)
                 when (reservaResponse) {
-                    is ResultWrapper.NetworkError -> showSnackbarMessage(getApplication<Application>().getString(
+                    is ResultWrapper.NetworkError -> showSnackbarErrorMessage(getApplication<Application>().getString(
                         R.string.network_error_msg))
                     is ResultWrapper.GenericError -> showGenericError(reservaResponse)
                     is ResultWrapper.Success -> onReservaSuccess(reservaResponse)
@@ -98,6 +107,44 @@ class DetallePublicacionHuespedViewModel(application: Application) : DetallePubl
 
     fun onDoneNavigatingToReservationComplete(){
         _navigateToReservationComplete.value = false
+    }
+
+    fun onPreguntarButtonClick(){
+        if (pregunta.value.isNullOrEmpty()){
+            showSnackbarErrorMessage("¡Oops! No se agregó ningún texto a la pregunta.")
+            return
+        }
+        viewModelScope.launch {
+            try {
+                _showLoadingSpinner.value = true
+                val preguntaResponse = BookBnBApi(getApplication()).realizarPregunta(
+                    publicacion.value!!.id!!,
+                    pregunta.value!!
+                )
+                when (preguntaResponse) {
+                    is ResultWrapper.NetworkError -> showSnackbarErrorMessage(
+                        getApplication<Application>().getString(
+                            R.string.network_error_msg
+                        )
+                    )
+                    is ResultWrapper.GenericError -> showGenericError(preguntaResponse)
+                    is ResultWrapper.Success -> onPreguntaSuccess(preguntaResponse)
+                }
+            } finally {
+                _showLoadingSpinner.value = false
+            }
+        }
+    }
+
+    private fun onPreguntaSuccess(reservaResponse: ResultWrapper.Success<Pregunta>) {
+        showSnackbarSuccessMessage("¡Su pregunta fue realizada con éxito!")
+        _showPreguntaRealizadaDialog.value = true
+        _pregunta.value = null
+        // TODO: Add pregunta to preguntas
+    }
+
+    fun onDoneShowingPreguntaRealizadaDialog(){
+        _showPreguntaRealizadaDialog.value = false
     }
 }
 
