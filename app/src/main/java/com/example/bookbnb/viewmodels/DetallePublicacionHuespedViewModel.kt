@@ -43,10 +43,6 @@ class DetallePublicacionHuespedViewModel(application: Application) : DetallePubl
     val showReservaDialog : MutableLiveData<Boolean>
         get() = _showReservaDialog
 
-    private val _showPreguntaRealizadaDialog = MutableLiveData<Boolean>(false)
-    val showPreguntaRealizadaDialog : MutableLiveData<Boolean>
-        get() = _showPreguntaRealizadaDialog
-
     private val _pregunta = MutableLiveData<String>()
     val pregunta : MutableLiveData<String>
         get() = _pregunta
@@ -138,13 +134,16 @@ class DetallePublicacionHuespedViewModel(application: Application) : DetallePubl
 
     private fun onPreguntaSuccess(reservaResponse: ResultWrapper.Success<Pregunta>) {
         showSnackbarSuccessMessage("¡Su pregunta fue realizada con éxito!")
-        _showPreguntaRealizadaDialog.value = true
         _pregunta.value = null
-        // TODO: Add pregunta to preguntas
-    }
-
-    fun onDoneShowingPreguntaRealizadaDialog(){
-        _showPreguntaRealizadaDialog.value = false
+        viewModelScope.launch {
+            try {
+                _showLoadingSpinner.value = true
+                loadPreguntas(publicacion.value?.id!!)
+            }
+            finally {
+                _showLoadingSpinner.value = false
+            }
+        }
     }
 }
 

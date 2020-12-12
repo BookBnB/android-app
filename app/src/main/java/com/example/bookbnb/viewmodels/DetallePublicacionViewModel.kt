@@ -27,22 +27,20 @@ open class DetallePublicacionViewModel(application: Application) : BaseAndroidVi
     val preguntas : MutableLiveData<List<Pregunta>>
         get() = _preguntas
 
+    private val _selectedPregunta = MutableLiveData<Pregunta>()
+    val selectedPregunta : MutableLiveData<Pregunta>
+        get() = _selectedPregunta
+
+    private val _selectedPreguntaRespuesta = MutableLiveData<String>()
+    val selectedPreguntaRespuesta : MutableLiveData<String>
+        get() = _selectedPreguntaRespuesta
+
     fun onGetDetail(publicacionId: String) {
         viewModelScope.launch {
             try {
                 _showLoadingSpinner.value = true
-                when (val publicationResponse = BookBnBApi(getApplication()).getPublicacionById(publicacionId)) {
-                    is ResultWrapper.NetworkError -> showSnackbarErrorMessage(getApplication<Application>().getString(
-                        R.string.network_error_msg))
-                    is ResultWrapper.GenericError -> showGenericError(publicationResponse)
-                    is ResultWrapper.Success -> onDetailSuccess(publicationResponse)
-                }
-                when (val preguntasResponse = BookBnBApi(getApplication()).getPreguntas(publicacionId)){
-                    is ResultWrapper.NetworkError -> showSnackbarErrorMessage(getApplication<Application>().getString(
-                        R.string.network_error_msg))
-                    is ResultWrapper.GenericError -> showGenericError(preguntasResponse)
-                    is ResultWrapper.Success -> onGetPreguntasSuccess(preguntasResponse)
-                }
+                loadPublicacion(publicacionId)
+                loadPreguntas(publicacionId)
             }
             finally {
                 _showLoadingSpinner.value = false
@@ -50,12 +48,60 @@ open class DetallePublicacionViewModel(application: Application) : BaseAndroidVi
         }
     }
 
+    protected suspend fun loadPublicacion(publicacionId: String){
+        when (val publicationResponse = BookBnBApi(getApplication()).getPublicacionById(publicacionId)) {
+            is ResultWrapper.NetworkError -> showSnackbarErrorMessage(getApplication<Application>().getString(
+                R.string.network_error_msg))
+            is ResultWrapper.GenericError -> showGenericError(publicationResponse)
+            is ResultWrapper.Success -> onDetailSuccess(publicationResponse)
+        }
+    }
+
+    protected suspend fun loadPreguntas(publicacionId: String){
+        when (val preguntasResponse = BookBnBApi(getApplication()).getPreguntas(publicacionId)){
+            is ResultWrapper.NetworkError -> showSnackbarErrorMessage(getApplication<Application>().getString(
+                R.string.network_error_msg))
+            is ResultWrapper.GenericError -> showGenericError(preguntasResponse)
+            is ResultWrapper.Success -> onGetPreguntasSuccess(preguntasResponse)
+        }
+    }
+
     private fun onGetPreguntasSuccess(preguntasResponse: ResultWrapper.Success<List<Pregunta>>) {
-        _preguntas.value = preguntasResponse.value
+        _preguntas.value = preguntasResponse.value.sortedByDescending { p -> p.creada }
     }
 
     private fun onDetailSuccess(publicacionResponse: ResultWrapper.Success<Publicacion>) {
         _publicacion.value = publicacionResponse.value
+    }
+
+    fun cleanRespuesta(){
+        _selectedPregunta.value = null
+        _selectedPreguntaRespuesta.value = null
+    }
+
+    fun onEnviarRespuesta(){
+        if (_selectedPregunta.value == null){
+            showSnackbarErrorMessage("¡Oops! No se envió la respuesta porque estaba vacía.")
+        }
+        viewModelScope.launch {
+            try {
+                _showLoadingSpinner.value = true
+                val respuestaResponse = BookBnBApi(getApplication()).responderPregunta(publicacion.value?.id!!,
+                    _selectedPregunta.value?.id!!,
+                    _selectedPreguntaRespuesta.value!!)
+                when (respuestaResponse) {
+                    is ResultWrapper.NetworkError -> showSnackbarErrorMessage(getApplication<Application>().getString(
+                        R.string.network_error_msg))
+                    is ResultWrapper.GenericError -> showGenericError(respuestaResponse)
+                    is ResultWrapper.Success -> showSnackbarSuccessMessage("¡Su respuesta fue enviada con éxito!")
+                }
+                cleanRespuesta()
+                loadPreguntas(_publicacion.value?.id!!)
+            }
+            finally {
+                _showLoadingSpinner.value = false
+            }
+        }
     }
 
 }

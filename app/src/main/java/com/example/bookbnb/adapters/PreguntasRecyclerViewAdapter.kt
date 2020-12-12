@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.ListAdapter
 import com.example.bookbnb.databinding.PreguntaItemBinding
 import com.example.bookbnb.models.Pregunta
 
-class PreguntasRecyclerViewAdapter() : ListAdapter<Pregunta, PreguntasRecyclerViewAdapter.PreguntaViewHolder>(DiffCallback){
+class PreguntasRecyclerViewAdapter(val responderListener: ResponderPreguntaListener? = null) : ListAdapter<Pregunta, PreguntasRecyclerViewAdapter.PreguntaViewHolder>(DiffCallback){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PreguntasRecyclerViewAdapter.PreguntaViewHolder {
         return PreguntaViewHolder(
@@ -18,11 +18,14 @@ class PreguntasRecyclerViewAdapter() : ListAdapter<Pregunta, PreguntasRecyclerVi
 
     override fun onBindViewHolder(holder: PreguntaViewHolder, position: Int) {
         val publicacion = getItem(position)
-        holder.bind(publicacion)
+        holder.bind(publicacion, responderListener)
     }
 
     class PreguntaViewHolder(private var binding: PreguntaItemBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(pregunta: Pregunta) {
+        fun bind(pregunta: Pregunta, responderListener: ResponderPreguntaListener?) {
+            if (responderListener != null){
+                binding.responderListener = responderListener
+            }
             binding.property = pregunta
             binding.executePendingBindings()
         }
@@ -37,4 +40,8 @@ class PreguntasRecyclerViewAdapter() : ListAdapter<Pregunta, PreguntasRecyclerVi
             return oldItem.id == newItem.id
         }
     }
+}
+
+class ResponderPreguntaListener(val clickListener: (preguntaId: String) -> Unit) {
+    fun onClick(pregunta: Pregunta) = clickListener(pregunta.id!!)
 }

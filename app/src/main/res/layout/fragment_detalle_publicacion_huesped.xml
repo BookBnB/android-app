@@ -7,6 +7,7 @@
         <variable
             name="detallePublicacionViewModel"
             type="com.example.bookbnb.viewmodels.DetallePublicacionHuespedViewModel" />
+        <import type="android.view.View" />
     </data>
         <ScrollView
             android:layout_width="match_parent"
@@ -138,6 +139,20 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/ultimas_preguntas" />
 
+                <TextView
+                    android:id="@+id/no_hay_preguntas"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_normal"
+                    android:layout_marginTop="@dimen/margin_normal"
+                    android:layout_marginEnd="@dimen/margin_normal"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+                    android:textColor="@color/error"
+                    android:visibility="@{detallePublicacionViewModel.preguntas.size() > 0 ? View.GONE : View.VISIBLE}"
+                    android:text="@string/no_hay_preguntas_txt"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/preguntas_list" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>
 </layout>

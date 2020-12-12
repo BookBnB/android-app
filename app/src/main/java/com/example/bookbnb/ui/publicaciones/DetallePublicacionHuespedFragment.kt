@@ -65,7 +65,7 @@ class DetallePublicacionHuespedFragment : BaseFragment() {
         //setSpinnerObserver(viewModel, binding.root) Esto bugea la vista porque no existe un spinner
 
         val publicacionId = arguments?.getString("publicacionId")
-        setPreguntasList()
+        setPreguntasListAdapter()
 
         viewModel.onGetDetail(publicacionId!!)
 
@@ -74,7 +74,7 @@ class DetallePublicacionHuespedFragment : BaseFragment() {
         return binding.root
     }
 
-    private fun setPreguntasList() {
+    private fun setPreguntasListAdapter() {
         binding.preguntasList.adapter =
             PreguntasRecyclerViewAdapter() as PreguntasRecyclerViewAdapter
         binding.preguntasList.addItemDecoration(

@@ -99,5 +99,10 @@
     <string name="preguntas_title">Preguntas y respuestas</string>
     <string name="preguntar_btn_txt">Preguntar</string>
     <string name="ultimas_preguntas_txt">Últimas preguntas</string>
+    <string name="no_hay_preguntas_txt">Por el momento nadie realizó preguntas. ¡Se el primero!</string>
+    <string name="preguntas_subtitle_anfitrion">Aquí se ven las preguntas que le han realizado los huespedes con sus respuestas</string>
+    <string name="no_hay_preguntas_anfitrion">Por el momento no hay preguntas para esta publicación</string>
+    <string name="responder_pregunta_txt">Responder</string>
+    <string name="responder_consulta_txt">Responder Consulta</string>
 
 </resources>

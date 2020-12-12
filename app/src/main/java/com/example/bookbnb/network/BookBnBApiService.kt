@@ -79,6 +79,14 @@ interface BookBnBApiService {
         @Body preguntaDTO: Pregunta
     ): Pregunta
 
+    @POST("publicaciones/{idPublicacion}/preguntas/{idPregunta}/respuesta")
+    suspend fun postRespuestaPreguntaPublicacion(
+        @Header("Authorization") token: String,
+        @Path("idPublicacion") publicacionId: String,
+        @Path("idPregunta") preguntanId: String,
+        @Body respuestaDTO: Respuesta
+    ): Pregunta
+
     @POST("reservas")
     suspend fun reservarPublicacion(
         @Header("Authorization") token: String,
@@ -122,6 +130,18 @@ class BookBnBApi(var context: Context) {
             throw Exception("No hay una sesión establecida")
         }
         return safeApiCall(Dispatchers.IO) { retrofitService.postPreguntaPublicacion(token, publicacionId, preguntaDTO) }
+    }
+
+    suspend fun responderPregunta(publicacionId: String, preguntaId: String, respuesta: String)  : ResultWrapper<Pregunta> {
+        val respuestaDTO = Respuesta(null, respuesta, null)
+        val token = SessionManager(context).fetchAuthToken()
+        if (token.isNullOrEmpty()) {
+            throw Exception("No hay una sesión establecida")
+        }
+        return safeApiCall(Dispatchers.IO) { retrofitService.postRespuestaPreguntaPublicacion(token,
+            publicacionId,
+            preguntaId,
+            respuestaDTO) }
     }
 
     suspend fun getPublicationsByAnfitrionId(anfitrionId: String) : ResultWrapper<List<Publicacion>>{

@@ -1,5 +1,7 @@
 package com.example.bookbnb.ui.publicaciones
 
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -10,8 +12,15 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
+import androidx.recyclerview.widget.DividerItemDecoration
 import com.example.bookbnb.R
+import com.example.bookbnb.adapters.PreguntasRecyclerViewAdapter
+import com.example.bookbnb.adapters.ResponderPreguntaListener
+import com.example.bookbnb.databinding.DialogReservaBinding
+import com.example.bookbnb.databinding.DialogResponderPreguntaBinding
 import com.example.bookbnb.databinding.FragmentDetallePublicacionAnfitrionBinding
+import com.example.bookbnb.ui.BaseFragment
+import com.example.bookbnb.ui.busqueda.ResultadosBusquedaFragmentDirections
 import com.example.bookbnb.utils.CustomImageUri
 import com.example.bookbnb.utils.ImagesSliderAdapter
 import com.example.bookbnb.viewmodels.DetallePublicacionHuespedViewModel
@@ -19,7 +28,7 @@ import com.example.bookbnb.viewmodels.DetallePublicacionHuespedViewModelFactory
 import com.example.bookbnb.viewmodels.DetallePublicacionViewModel
 import com.example.bookbnb.viewmodels.DetallePublicacionViewModelFactory
 
-class DetallePublicacionAnfitrionFragment : Fragment() {
+class DetallePublicacionAnfitrionFragment : BaseFragment() {
 
     private val viewModel: DetallePublicacionViewModel by lazy {
         val activity = requireNotNull(this.activity) {
@@ -45,16 +54,50 @@ class DetallePublicacionAnfitrionFragment : Fragment() {
         // Allows Data Binding to Observe LiveData with the lifecycle of this Fragment
         binding.lifecycleOwner = this
 
-        binding.detallePublicacionViewModel = viewModel
-
         setImageSliderObserver()
 
+        setSnackbarMessageObserver(viewModel, binding.root)
+
         val publicacionId = arguments?.getString("publicacionId")
+        setPreguntasListAdapter()
+
         viewModel.onGetDetail(publicacionId!!)
+
+        binding.detallePublicacionViewModel = viewModel
 
         return binding.root
     }
 
+    private fun setPreguntasListAdapter() {
+        binding.preguntasList.adapter =
+            PreguntasRecyclerViewAdapter(ResponderPreguntaListener { preguntaId ->
+                viewModel.selectedPregunta.value = viewModel.preguntas.value?.first { p -> p.id == preguntaId }
+                val builder = AlertDialog.Builder(context)
+                val binding: DialogResponderPreguntaBinding = DataBindingUtil.inflate(
+                    LayoutInflater.from(context),
+                    R.layout.dialog_responder_pregunta,
+                    null,
+                    false
+                )
+                binding.publicacionViewModel = viewModel
+                val reservaDialog = builder
+                    .setPositiveButton(
+                        "Responder"
+                    ) { _: DialogInterface?, _: Int -> viewModel.onEnviarRespuesta() }
+                    .setNegativeButton(
+                        "Cancelar"
+                    ) { _: DialogInterface?, _: Int -> viewModel.cleanRespuesta() }
+                    .create()
+                reservaDialog.setView(binding.root)
+                reservaDialog.show()
+            }) as PreguntasRecyclerViewAdapter
+        binding.preguntasList.addItemDecoration(
+            DividerItemDecoration(
+                context,
+                DividerItemDecoration.VERTICAL
+            )
+        )
+    }
 
     private fun setImageSliderObserver() {
         viewModel.publicacion.observe(viewLifecycleOwner, Observer { publicacion ->

@@ -8,9 +8,9 @@ import java.util.*
 
 @JsonClass(generateAdapter = true)
 class Respuesta (
-    var creada: Date,
+    var creada: Date?,
     var descripcion: String,
-    var usuarioId: String
+    var usuarioId: String?
 )
 
 @JsonClass(generateAdapter = true)
@@ -26,5 +26,12 @@ class Pregunta (
             return SimpleDateFormat("dd/MM/yyyy", Locale.ROOT).format(creada)
         }
         return ""
+    }
+
+    fun getRespuestaCreationDateAsShortString() : String{
+        if (respuesta == null){
+            return ""
+        }
+        return SimpleDateFormat("dd/MM/yyyy", Locale.ROOT).format(respuesta?.creada!!)
     }
 }

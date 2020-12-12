@@ -5,8 +5,11 @@
     <data>
         <variable name="property"
             type="com.example.bookbnb.models.Pregunta" />
+        <variable name="responderListener"
+            type="com.example.bookbnb.adapters.ResponderPreguntaListener" />
         <import type="android.view.View" />
     </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/publicacion_container"
         android:layout_width="match_parent"
@@ -33,17 +36,31 @@
             android:id="@+id/fecha_pregunta"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="@{property.creationDateAsShortString}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/pregunta"
-            android:text="@{property.creationDateAsShortString}"
             tools:text="20/04/2020" />
+
+        <com.google.android.material.button.MaterialButton
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:icon="@drawable/ic_chat_24"
+            app:iconTint="@color/primaryColor"
+            android:onClick="@{() -> responderListener.onClick(property)}"
+            android:text="@string/responder_pregunta_txt"
+            tools:visibility="gone"
+            android:visibility="@{responderListener != null &amp;&amp; property.respuesta == null ? View.VISIBLE : View.GONE}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fecha_pregunta" />
 
         <RelativeLayout
             android:id="@+id/respuesta_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
             android:layout_marginStart="@dimen/margin_normal"
+            android:layout_marginTop="4dp"
             android:visibility="@{property.respuesta != null ? View.VISIBLE : View.GONE}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -79,7 +96,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
-                    android:text="@{property.respuesta.creada.toString()}"
+                    android:text="@{property.respuestaCreationDateAsShortString}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/respuesta"
                     tools:text="20/04/2020" />
