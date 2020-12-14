@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable name="property"
+            type="com.example.bookbnb.models.Reserva" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/reserva_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/margin_normal">
+
+        <TextView
+            android:id="@+id/titulo_reserva"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:text="@{property.titulo}"
+            tools:text="Cabañas de las Sierras"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:ignore="MissingConstraints" />
+
+
+        <TextView
+            android:id="@+id/autor_reserva"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_normal"
+            android:layout_marginTop="@dimen/margin_small"
+            android:layout_marginEnd="@dimen/margin_normal"
+            android:text="@{property.autor}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/titulo_reserva"
+            tools:text="Juan Perez"
+            android:drawablePadding="@dimen/margin_min"
+            android:gravity="center_vertical"
+            app:drawableStartCompat="@drawable/ic_location_24" />
+
+        <TextView
+            android:id="@+id/fecha_inicio_reserva"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_normal"
+            android:layout_marginTop="@dimen/margin_small"
+            android:layout_marginEnd="@dimen/margin_normal"
+            android:drawablePadding="@dimen/margin_min"
+            app:drawableStartCompat="@drawable/ic_family_24"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:text="20/11/2020"
+            android:text="@{property.fechaInicio}"
+            tools:ignore="MissingConstraints" />
+
+        <TextView
+            android:id="@+id/fecha_fin_reserva"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_normal"
+            android:layout_marginTop="@dimen/margin_small"
+            android:layout_marginEnd="@dimen/margin_normal"
+            android:drawablePadding="@dimen/margin_min"
+            android:text="@{property.fechaFin}"
+            app:drawableStartCompat="@drawable/ic_homework_24"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fecha_inicio_reserva"
+            tools:text="27/11/2020" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

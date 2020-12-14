@@ -104,5 +104,8 @@
     <string name="no_hay_preguntas_anfitrion">Por el momento no hay preguntas para esta publicación</string>
     <string name="responder_pregunta_txt">Responder</string>
     <string name="responder_consulta_txt">Responder Consulta</string>
+    <string name="reservas_label">Reservas</string>
+    <string name="ver_reservas_lbl">Ver reservas</string>
+    <string name="listaReservas_lbl">Reservas</string>
 
 </resources>

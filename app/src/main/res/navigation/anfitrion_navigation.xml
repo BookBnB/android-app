@@ -89,5 +89,13 @@
         <argument
             android:name="publicacionId"
             app:argType="string" />
+        <action
+            android:id="@+id/action_detallePublicacionAnfitrionFragment_to_listaReservasFragment"
+            app:destination="@id/listaReservasFragment"/>
     </fragment>
+    <fragment
+        android:id="@+id/listaReservasFragment"
+        android:name="com.example.bookbnb.ui.reservas.ListaReservasFragment"
+        android:label="@string/listaReservas_lbl"
+        tools:layout="@layout/fragment_lista_reservas" />
 </navigation>

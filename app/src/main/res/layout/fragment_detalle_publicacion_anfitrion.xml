@@ -23,6 +23,21 @@
                 layout="@layout/detalle_publicacion"
                 bind:detallePublicacionViewModel="@{detallePublicacionViewModel}"/>
 
+            <Button
+                android:id="@+id/verReservasBtn"
+                style="@style/PrimaryButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_normal"
+                android:layout_marginBottom="@dimen/margin_normal"
+                android:layout_marginStart="@dimen/margin_normal"
+                android:layout_marginEnd="@dimen/margin_normal"
+                android:onClick="@{() -> detallePublicacionViewModel.onVerReservasButtonClick()}"
+                android:text="@string/ver_reservas_lbl"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/detallePublicacion" />
+
             <View android:id="@+id/divider_preguntas"
                 style="@style/Divider"
                 android:layout_marginTop="@dimen/margin_normal"

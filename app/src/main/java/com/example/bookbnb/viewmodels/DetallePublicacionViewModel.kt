@@ -35,6 +35,10 @@ open class DetallePublicacionViewModel(application: Application) : BaseAndroidVi
     val selectedPreguntaRespuesta : MutableLiveData<String>
         get() = _selectedPreguntaRespuesta
 
+    private val _navigateToReservationList = MutableLiveData<Boolean>(false)
+    val navigateToReservationList : MutableLiveData<Boolean>
+        get() = _navigateToReservationList
+
     fun onGetDetail(publicacionId: String) {
         viewModelScope.launch {
             try {
@@ -46,6 +50,14 @@ open class DetallePublicacionViewModel(application: Application) : BaseAndroidVi
                 _showLoadingSpinner.value = false
             }
         }
+    }
+
+    fun onVerReservasButtonClick() {
+        _navigateToReservationList.value = true
+    }
+
+    fun onDoneNavigatingToVerReservas(){
+        _navigateToReservationList.value = false
     }
 
     protected suspend fun loadPublicacion(publicacionId: String){
