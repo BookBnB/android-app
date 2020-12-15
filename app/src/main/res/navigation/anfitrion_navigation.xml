@@ -97,5 +97,9 @@
         android:id="@+id/listaReservasFragment"
         android:name="com.example.bookbnb.ui.reservas.ListaReservasFragment"
         android:label="@string/listaReservas_lbl"
-        tools:layout="@layout/fragment_lista_reservas" />
+        tools:layout="@layout/fragment_lista_reservas" >
+        <argument
+            android:name="publicacionId"
+            app:argType="string" />
+    </fragment>
 </navigation>
