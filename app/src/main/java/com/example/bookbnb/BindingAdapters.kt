@@ -16,7 +16,9 @@ import com.example.bookbnb.adapters.PreguntasRecyclerViewAdapter
 import com.example.bookbnb.models.CustomLocation
 import com.example.bookbnb.models.Pregunta
 import com.example.bookbnb.models.Publicacion
+import com.example.bookbnb.models.Reserva
 import com.example.bookbnb.ui.publicaciones.PublicacionRecyclerViewAdapter
+import com.example.bookbnb.ui.reservas.ReservaRecyclerViewAdapter
 import com.google.android.material.slider.RangeSlider
 import com.google.android.material.textfield.TextInputLayout
 import java.text.SimpleDateFormat
@@ -47,6 +49,13 @@ fun setErrorMessage(view: TextInputLayout, errorMessage: String) {
 fun bindRecyclerView(recyclerView: RecyclerView,
                      data: List<Publicacion>?) {
     val adapter = recyclerView.adapter as PublicacionRecyclerViewAdapter
+    adapter.submitList(data)
+}
+
+@BindingAdapter("reservasListData")
+fun bindReservaRecyclerView(recyclerView: RecyclerView,
+                     data: List<Reserva>?) {
+    val adapter = recyclerView.adapter as ReservaRecyclerViewAdapter
     adapter.submitList(data)
 }
 

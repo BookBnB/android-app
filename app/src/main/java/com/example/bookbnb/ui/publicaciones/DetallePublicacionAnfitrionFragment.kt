@@ -21,6 +21,7 @@ import com.example.bookbnb.databinding.DialogResponderPreguntaBinding
 import com.example.bookbnb.databinding.FragmentDetallePublicacionAnfitrionBinding
 import com.example.bookbnb.ui.BaseFragment
 import com.example.bookbnb.ui.busqueda.ResultadosBusquedaFragmentDirections
+import com.example.bookbnb.ui.reservas.ListaReservasFragment
 import com.example.bookbnb.utils.CustomImageUri
 import com.example.bookbnb.utils.ImagesSliderAdapter
 import com.example.bookbnb.viewmodels.DetallePublicacionHuespedViewModel
@@ -65,6 +66,8 @@ class DetallePublicacionAnfitrionFragment : BaseFragment() {
 
         binding.detallePublicacionViewModel = viewModel
 
+        setNavigateToNewPublicacionObserver()
+
         return binding.root
     }
 
@@ -105,6 +108,17 @@ class DetallePublicacionAnfitrionFragment : BaseFragment() {
             adapter.renewItems(publicacion.imagenes.map { CustomImageUri(Uri.parse(it.url)) }
                 .toMutableList())
             binding.detallePublicacion.imageSlider.setSliderAdapter(adapter)
+        })
+    }
+
+    private fun setNavigateToNewPublicacionObserver() {
+        viewModel.navigateToReservationList.observe(viewLifecycleOwner, Observer {
+            if (it) {
+                NavHostFragment.findNavController(this).navigate(
+                    DetallePublicacionAnfitrionFragmentDirections.actionDetallePublicacionAnfitrionFragmentToListaReservasFragment()
+                )
+                viewModel.onDoneNavigatingToReservationList()
+            }
         })
     }
 }

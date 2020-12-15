@@ -1,11 +1,8 @@
 package com.example.bookbnb.viewmodels
 
 import android.app.Application
-import android.se.omapi.Session
-import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.bookbnb.R
 import com.example.bookbnb.models.Publicacion
