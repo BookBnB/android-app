@@ -92,5 +92,17 @@
     <string name="cant_de_huespedes_lbl">Cant. de huespedes</string>
     <string name="tipo_de_alojamiento_lbl">Tipo de alojamiento</string>
     <string name="busqueda_lbl">Búsqueda</string>
+    <string name="web_client_id">738276482581-7phs1oj31pplvh2n5c87d15mfos2791u.apps.googleusercontent.com</string>
+    <string name="ingresa_con_otros_txt">O Ingresá con</string>
+    <string name="ingresa_con_google_lbl">Ingresar con Google</string>
+    <string name="que_queres_saber_text">¿Que querés saber? Preguntale al anfitrión</string>
+    <string name="preguntas_title">Preguntas y respuestas</string>
+    <string name="preguntar_btn_txt">Preguntar</string>
+    <string name="ultimas_preguntas_txt">Últimas preguntas</string>
+    <string name="no_hay_preguntas_txt">Por el momento nadie realizó preguntas. ¡Se el primero!</string>
+    <string name="preguntas_subtitle_anfitrion">Aquí se ven las preguntas que le han realizado los huespedes con sus respuestas</string>
+    <string name="no_hay_preguntas_anfitrion">Por el momento no hay preguntas para esta publicación</string>
+    <string name="responder_pregunta_txt">Responder</string>
+    <string name="responder_consulta_txt">Responder Consulta</string>
 
 </resources>

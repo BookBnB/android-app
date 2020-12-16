@@ -47,7 +47,7 @@
                 android:layout_marginTop="16dp"
                 android:text="@{detallePublicacionViewModel.publicacion.titulo}"
                 tools:text="Cabañas de las Sierras"
-                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/cardView" />

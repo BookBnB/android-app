@@ -2,12 +2,10 @@ package com.example.bookbnb.network
 
 
 import android.content.Context
-import com.example.bookbnb.models.Coordenada
-import com.example.bookbnb.models.CustomImage
-import com.example.bookbnb.models.CustomLocation
-import com.example.bookbnb.models.Publicacion
+import com.example.bookbnb.models.*
 import com.example.bookbnb.utils.SessionManager
 import com.squareup.moshi.Moshi
+import com.squareup.moshi.adapters.Rfc3339DateJsonAdapter
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
@@ -48,10 +46,12 @@ interface BookBnBApiService {
     ): List<CustomLocation>
 
     @GET("publicaciones/{id}")
-    suspend fun getPublicationById(@Header("Authorization") token: String, @Path("id") publicacionId: String) : Publicacion
+    suspend fun getPublicationById(@Header("Authorization") token: String,
+                                   @Path("id") publicacionId: String) : Publicacion
 
     @GET("usuarios/{id}/publicaciones")
-    suspend fun getPublicationsByAnfitrionId(@Header("Authorization") token: String, @Path("id") anfitrionId: String) : List<Publicacion>
+    suspend fun getPublicationsByAnfitrionId(@Header("Authorization") token: String,
+                                             @Path("id") anfitrionId: String) : List<Publicacion>
 
     @GET("publicaciones")
     suspend fun searchPublicaciones(@Header("Authorization") token: String,
@@ -66,6 +66,26 @@ interface BookBnBApiService {
     suspend fun searchByCityCoordinates(@Header("Authorization") token: String,
                                         @Query("coordenadas[latitud]") latitud: Double,
                                         @Query("coordenadas[longitud]") longitud: Double) : List<Publicacion>
+
+
+    @GET("publicaciones/{id}/preguntas")
+    suspend fun getPreguntasPublicacion(@Header("Authorization") token: String,
+                                        @Path("id") publicacionId: String) : List<Pregunta>
+
+    @POST("publicaciones/{id}/preguntas")
+    suspend fun postPreguntaPublicacion(
+        @Header("Authorization") token: String,
+        @Path("id") publicacionId: String,
+        @Body preguntaDTO: Pregunta
+    ): Pregunta
+
+    @POST("publicaciones/{idPublicacion}/preguntas/{idPregunta}/respuesta")
+    suspend fun postRespuestaPreguntaPublicacion(
+        @Header("Authorization") token: String,
+        @Path("idPublicacion") publicacionId: String,
+        @Path("idPregunta") preguntanId: String,
+        @Body respuestaDTO: Respuesta
+    ): Pregunta
 
     @POST("reservas")
     suspend fun reservarPublicacion(
@@ -82,6 +102,7 @@ class BookBnBApi(var context: Context) {
 
         private val moshi = Moshi.Builder()
             .add(KotlinJsonAdapterFactory())
+            .add(Date::class.java, Rfc3339DateJsonAdapter())
             .build()
 
         private val retrofit = Retrofit.Builder()
@@ -92,6 +113,35 @@ class BookBnBApi(var context: Context) {
 
     private val retrofitService: BookBnBApiService by lazy {
         retrofit.create(BookBnBApiService::class.java)
+    }
+
+    suspend fun getPreguntas(publicacionId: String) : ResultWrapper<List<Pregunta>>{
+        val token = SessionManager(context).fetchAuthToken()
+        if (token.isNullOrEmpty()) {
+            throw Exception("No hay una sesión establecida")
+        }
+        return safeApiCall(Dispatchers.IO) { retrofitService.getPreguntasPublicacion(token, publicacionId) }
+    }
+
+    suspend fun realizarPregunta(publicacionId: String, pregunta: String) : ResultWrapper<Pregunta>{
+        val preguntaDTO = Pregunta(null,null, pregunta, null,null)
+        val token = SessionManager(context).fetchAuthToken()
+        if (token.isNullOrEmpty()) {
+            throw Exception("No hay una sesión establecida")
+        }
+        return safeApiCall(Dispatchers.IO) { retrofitService.postPreguntaPublicacion(token, publicacionId, preguntaDTO) }
+    }
+
+    suspend fun responderPregunta(publicacionId: String, preguntaId: String, respuesta: String)  : ResultWrapper<Pregunta> {
+        val respuestaDTO = Respuesta(null, respuesta, null)
+        val token = SessionManager(context).fetchAuthToken()
+        if (token.isNullOrEmpty()) {
+            throw Exception("No hay una sesión establecida")
+        }
+        return safeApiCall(Dispatchers.IO) { retrofitService.postRespuestaPreguntaPublicacion(token,
+            publicacionId,
+            preguntaId,
+            respuestaDTO) }
     }
 
     suspend fun getPublicationsByAnfitrionId(anfitrionId: String) : ResultWrapper<List<Publicacion>>{

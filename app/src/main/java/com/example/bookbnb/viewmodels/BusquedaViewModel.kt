@@ -76,7 +76,7 @@ class BusquedaViewModel(application: Application) : BaseAndroidViewModel(applica
             try {
                 when (val locationsResponse =
                     BookBnBApi(getApplication()).getCities(_destino.value!!)) {
-                    is ResultWrapper.NetworkError -> showSnackbarMessage(
+                    is ResultWrapper.NetworkError -> showSnackbarErrorMessage(
                         getApplication<Application>().getString(
                             R.string.network_error_msg
                         )
@@ -103,7 +103,7 @@ class BusquedaViewModel(application: Application) : BaseAndroidViewModel(applica
             onNavigateToSearchResults()
         }
         else{
-            showSnackbarMessage("No ingresó una ciudad para la búsqueda.")
+            showSnackbarErrorMessage("No ingresó una ciudad para la búsqueda.")
         }
     }
 

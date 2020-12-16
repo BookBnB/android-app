@@ -35,7 +35,7 @@ class PublicacionesViewModel(application: Application) : BaseAndroidViewModel(ap
                         it
                     )
                 }) {
-                is ResultWrapper.NetworkError -> showSnackbarMessage(
+                is ResultWrapper.NetworkError -> showSnackbarErrorMessage(
                     getApplication<Application>().getString(
                         R.string.network_error_msg
                     )

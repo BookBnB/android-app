@@ -12,7 +12,9 @@ import androidx.databinding.InverseBindingListener
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.example.bookbnb.adapters.PreguntasRecyclerViewAdapter
 import com.example.bookbnb.models.CustomLocation
+import com.example.bookbnb.models.Pregunta
 import com.example.bookbnb.models.Publicacion
 import com.example.bookbnb.ui.publicaciones.PublicacionRecyclerViewAdapter
 import com.google.android.material.slider.RangeSlider
@@ -45,6 +47,13 @@ fun setErrorMessage(view: TextInputLayout, errorMessage: String) {
 fun bindRecyclerView(recyclerView: RecyclerView,
                      data: List<Publicacion>?) {
     val adapter = recyclerView.adapter as PublicacionRecyclerViewAdapter
+    adapter.submitList(data)
+}
+
+@BindingAdapter("preguntasListData")
+fun bindPreguntasRecyclerView(recyclerView: RecyclerView,
+                     data: List<Pregunta>?) {
+    val adapter = recyclerView.adapter as PreguntasRecyclerViewAdapter
     adapter.submitList(data)
 }
 

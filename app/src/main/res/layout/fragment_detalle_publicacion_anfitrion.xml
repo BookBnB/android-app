@@ -7,6 +7,7 @@
         <variable
             name="detallePublicacionViewModel"
             type="com.example.bookbnb.viewmodels.DetallePublicacionViewModel" />
+        <import type="android.view.View" />
     </data>
     <ScrollView
         android:layout_width="match_parent"
@@ -21,6 +22,68 @@
             <include android:id="@+id/detallePublicacion"
                 layout="@layout/detalle_publicacion"
                 bind:detallePublicacionViewModel="@{detallePublicacionViewModel}"/>
+
+            <View android:id="@+id/divider_preguntas"
+                style="@style/Divider"
+                android:layout_marginTop="@dimen/margin_normal"
+                android:layout_marginBottom="@dimen/margin_normal"
+                app:layout_constraintTop_toBottomOf="@id/detallePublicacion"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/preguntas_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_normal"
+                android:layout_marginTop="@dimen/margin_normal"
+                android:layout_marginEnd="@dimen/margin_normal"
+                android:text="@string/preguntas_title"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/divider_preguntas" />
+
+            <TextView
+                android:id="@+id/preguntas_subtitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_normal"
+                android:layout_marginTop="@dimen/margin_small"
+                android:layout_marginEnd="@dimen/margin_normal"
+                android:text="@string/preguntas_subtitle_anfitrion"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/preguntas_title" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/preguntas_list"
+                android:name="com.example.bookbnb.ui.publicaciones.DetallePublicacionesHuespedFragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layoutManager="LinearLayoutManager"
+                app:preguntasListData="@{detallePublicacionViewModel.preguntas}"
+                tools:context=".ui.publicaciones.DetallePublicacionHuespedFragment"
+                tools:listitem="@layout/pregunta_item"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/preguntas_subtitle" />
+
+            <TextView
+                android:id="@+id/no_hay_preguntas"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_normal"
+                android:layout_marginTop="@dimen/margin_normal"
+                android:layout_marginEnd="@dimen/margin_normal"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+                android:textColor="@color/error"
+                android:visibility="@{detallePublicacionViewModel.preguntas.size() > 0 ? View.GONE : View.VISIBLE}"
+                android:text="@string/no_hay_preguntas_anfitrion"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/preguntas_list" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 </layout>
