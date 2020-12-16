@@ -1,18 +1,14 @@
 package com.example.bookbnb.viewmodels
 
 import android.app.Application
-import android.content.Intent
-import android.content.SharedPreferences
-import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.*
-import com.example.bookbnb.MainActivity
 import com.example.bookbnb.R
 import com.example.bookbnb.network.BookBnBApi
 import com.example.bookbnb.network.LoginResponse
 import com.example.bookbnb.network.ResultWrapper
 import com.example.bookbnb.utils.SessionManager
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.net.HttpURLConnection
 
 class LoginViewModel(application: Application) : BaseAndroidViewModel(application) {
 
@@ -32,18 +28,29 @@ class LoginViewModel(application: Application) : BaseAndroidViewModel(applicatio
     val navigateToRegister: LiveData<Boolean>
         get() = _navigateToRegister
 
+    private val _showGoogleSignIn = MutableLiveData<Boolean>(false)
+    val showGoogleSignIn: LiveData<Boolean>
+        get() = _showGoogleSignIn
+
     private val _showGoogleSignUp = MutableLiveData<Boolean>(false)
     val showGoogleSignUp: LiveData<Boolean>
         get() = _showGoogleSignUp
 
-    fun onShowGoogleSignUpClick(){
-        _showGoogleSignUp.value = true
+    private val _googleToken = MutableLiveData<String>("")
+    val googleToken: MutableLiveData<String>
+        get() = _googleToken
+
+    fun onShowGoogleSignInClick(){
+        _showGoogleSignIn.value = true
     }
 
-    fun onDoneShowingGoogleSignUpClick(){
+    fun onDoneShowingGoogleSignInClick(){
+        _showGoogleSignIn.value = false
+    }
+
+    fun onDoneShowingGoogleSignUpWithGoogle(){
         _showGoogleSignUp.value = false
     }
-
 
     fun onNavigateToRegister(){
         _navigateToRegister.value = true //Trigger navigate to main activity
@@ -60,6 +67,30 @@ class LoginViewModel(application: Application) : BaseAndroidViewModel(applicatio
                 when (val loginResponse = BookBnBApi(getApplication()).authenticate(username.value!!, password.value!!)) {
                     is ResultWrapper.NetworkError -> showSnackbarErrorMessage(getApplication<Application>().getString(R.string.network_error_msg))
                     is ResultWrapper.GenericError -> showGenericError(loginResponse)
+                    is ResultWrapper.Success -> onLoginSuccess(loginResponse)
+                }
+            }
+            finally {
+                _showLoadingSpinner.value = false
+            }
+        }
+    }
+
+    fun onGoogleLogin(token: String){
+        _googleToken.value = token
+        viewModelScope.launch {
+            try {
+                _showLoadingSpinner.value = true
+                when (val loginResponse = BookBnBApi(getApplication()).authenticate(token)) {
+                    is ResultWrapper.NetworkError -> showSnackbarErrorMessage(getApplication<Application>().getString(R.string.network_error_msg))
+                    is ResultWrapper.GenericError -> {
+                        if (loginResponse.code == HttpURLConnection.HTTP_UNAUTHORIZED) {
+                            _showGoogleSignUp.value = true
+                        }
+                        else{
+                            showGenericError(loginResponse)
+                        }
+                    }
                     is ResultWrapper.Success -> onLoginSuccess(loginResponse)
                 }
             }

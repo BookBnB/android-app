@@ -141,7 +141,7 @@
                 android:text="@string/ingresa_con_google_lbl"
                 android:textColor="#FFFFFF"
                 android:textColorHighlight="#FFFFFF"
-                android:onClick="@{() -> loginViewModel.onShowGoogleSignUpClick()}"
+                android:onClick="@{() -> loginViewModel.onShowGoogleSignInClick()}"
                 android:layout_marginStart="@dimen/margin_normal"
                 android:layout_marginTop="@dimen/margin_normal"
                 android:layout_marginEnd="@dimen/margin_normal"/>
