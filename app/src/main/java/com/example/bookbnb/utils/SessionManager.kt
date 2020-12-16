@@ -51,4 +51,16 @@ class SessionManager (context: Context) {
         val jwtToken = JWT(token)
         return jwtToken.getClaim("id").asString()
     }
+
+    fun getUserEmail(): String?{
+        val token = fetchAuthToken() ?: return null
+        val jwtToken = JWT(token)
+        return jwtToken.getClaim("email").asString()
+    }
+
+    fun getUserRole(): String?{
+        val token = fetchAuthToken() ?: return null
+        val jwtToken = JWT(token)
+        return jwtToken.getClaim("role").asString()
+    }
 }
