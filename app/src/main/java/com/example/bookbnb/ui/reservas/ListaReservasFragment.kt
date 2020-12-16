@@ -7,13 +7,17 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.example.bookbnb.R
 import com.example.bookbnb.adapters.PreguntasRecyclerViewAdapter
 import com.example.bookbnb.databinding.FragmentListaReservasBinding
+import com.example.bookbnb.ui.publicaciones.PublicacionListener
+import com.example.bookbnb.ui.publicaciones.PublicacionRecyclerViewAdapter
+import com.example.bookbnb.ui.publicaciones.PublicacionesFragmentDirections
 import com.example.bookbnb.viewmodels.ListaReservasViewModel
 
-class ListaReservasFragment : Fragment() {
+class ListaReservasAceptadasFragment : Fragment() {
 
     private val viewModel: ListaReservasViewModel by lazy {
         ViewModelProvider(this).get(ListaReservasViewModel::class.java)
@@ -35,17 +39,27 @@ class ListaReservasFragment : Fragment() {
 
         binding.viewModel = viewModel
 
+        val publicacionId = arguments?.getString("publicacionId")
+
         setReservasList(binding)
+        publicacionId?.let { viewModel.onGetReservas(it) }
 
         return binding.root
     }
 
     private fun setReservasList(binding: FragmentListaReservasBinding) {
 
+        binding.reservasList.adapter =
+            ReservaRecyclerViewAdapter(ReservaListener { reservaId ->
+                NavHostFragment.findNavController(this).navigate(
+                    PublicacionesFragmentDirections.actionNavPublicacionesToDetallePublicacionAnfitrionFragment(reservaId)
+                )
+            }) as ReservaRecyclerViewAdapter
+
         binding.reservasList.addItemDecoration(
             DividerItemDecoration(
                 context,
-                DividerItemDecoration.VERTICAL
+                DividerItemDecoration.HORIZONTAL
             )
         )
     }
