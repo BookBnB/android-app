@@ -17,7 +17,7 @@ import com.example.bookbnb.ui.publicaciones.PublicacionRecyclerViewAdapter
 import com.example.bookbnb.ui.publicaciones.PublicacionesFragmentDirections
 import com.example.bookbnb.viewmodels.ListaReservasViewModel
 
-class ListaReservasAceptadasFragment : Fragment() {
+class ListaReservasFragment : Fragment() {
 
     private val viewModel: ListaReservasViewModel by lazy {
         ViewModelProvider(this).get(ListaReservasViewModel::class.java)

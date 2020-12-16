@@ -8,9 +8,10 @@ import androidx.recyclerview.widget.ListAdapter
 import com.example.bookbnb.databinding.ReservaItemBinding
 import com.example.bookbnb.models.Publicacion
 import com.example.bookbnb.models.Reserva
+import com.example.bookbnb.ui.publicaciones.PublicacionListener
 
-class ReservaRecyclerViewAdapter(diffCallback: DiffUtil.ItemCallback<Reserva>) :
-    ListAdapter<Reserva, ReservaRecyclerViewAdapter.ReservaViewHolder>(diffCallback) {
+class ReservaRecyclerViewAdapter(val clickListener: ReservaListener) :
+    ListAdapter<Reserva, ReservaRecyclerViewAdapter.ReservaViewHolder>(DiffCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ReservaViewHolder {
         return ReservaViewHolder(
@@ -30,13 +31,17 @@ class ReservaRecyclerViewAdapter(diffCallback: DiffUtil.ItemCallback<Reserva>) :
         }
     }
 
-    companion object DiffCallback : DiffUtil.ItemCallback<Publicacion>() {
-        override fun areItemsTheSame(oldItem: Publicacion, newItem: Publicacion): Boolean {
+    companion object DiffCallback : DiffUtil.ItemCallback<Reserva>() {
+        override fun areItemsTheSame(oldItem: Reserva, newItem: Reserva): Boolean {
             return oldItem === newItem
         }
 
-        override fun areContentsTheSame(oldItem: Publicacion, newItem: Publicacion): Boolean {
+        override fun areContentsTheSame(oldItem: Reserva, newItem: Reserva): Boolean {
             return oldItem.id == newItem.id
         }
     }
+}
+
+class ReservaListener(val clickListener: (reservaId: String) -> Unit) {
+    fun onClick(reserva: Reserva) = clickListener(reserva.id)
 }

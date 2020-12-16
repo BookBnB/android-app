@@ -20,7 +20,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:text="@{property.publicacionId}"
-            tools:text="Cabañas de las Sierras"
+            tools:text="AX98B2"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
@@ -40,36 +40,31 @@
             app:layout_constraintTop_toBottomOf="@+id/titulo_reserva"
             tools:text="Juan Perez"
             android:drawablePadding="@dimen/margin_min"
-            android:gravity="center_vertical"
-            app:drawableStartCompat="@drawable/ic_location_24" />
+            android:gravity="center_vertical"/>
 
         <TextView
             android:id="@+id/fecha_inicio_reserva"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_normal"
-            android:layout_marginTop="@dimen/margin_small"
-            android:layout_marginEnd="@dimen/margin_normal"
-            android:drawablePadding="@dimen/margin_min"
-            app:drawableStartCompat="@drawable/ic_family_24"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            tools:text="20/11/2020"
+            android:layout_marginRight="10dp"
+            android:gravity="right"
             android:text="@{property.fechaInicio}"
-            tools:ignore="MissingConstraints" />
+            android:textSize="12dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:ignore="MissingConstraints"
+            tools:layout_editor_absoluteY="10dp"
+            tools:text="20/11/2020" />
 
         <TextView
             android:id="@+id/fecha_fin_reserva"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_normal"
-            android:layout_marginTop="@dimen/margin_small"
-            android:layout_marginEnd="@dimen/margin_normal"
-            android:drawablePadding="@dimen/margin_min"
+            android:gravity="right"
+            android:textSize="12dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
             android:text="@{property.fechaFin}"
-            app:drawableStartCompat="@drawable/ic_homework_24"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/fecha_inicio_reserva"
             tools:text="27/11/2020" />
 
