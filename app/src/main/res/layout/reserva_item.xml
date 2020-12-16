@@ -11,20 +11,21 @@
         android:id="@+id/reserva_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="@dimen/margin_normal">
+        android:paddingHorizontal="@dimen/margin_small"
+        android:paddingVertical="@dimen/margin_normal">
 
         <TextView
             android:id="@+id/titulo_reserva"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
             android:text="@{property.publicacionId}"
-            tools:text="AX98B2"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
             android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/fecha_inicio_reserva"
             app:layout_constraintStart_toStartOf="parent"
-            tools:ignore="MissingConstraints" />
+            tools:ignore="MissingConstraints"
+            tools:text="AX98B2" />
 
 
         <TextView
@@ -33,14 +34,13 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_normal"
             android:layout_marginTop="@dimen/margin_small"
-            android:layout_marginEnd="@dimen/margin_normal"
+            android:drawablePadding="@dimen/margin_min"
+            android:gravity="center_vertical"
             android:text="@{property.huespedId}"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/fecha_fin_reserva"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/titulo_reserva"
-            tools:text="Juan Perez"
-            android:drawablePadding="@dimen/margin_min"
-            android:gravity="center_vertical"/>
+            tools:text="Juan Perez" />
 
         <TextView
             android:id="@+id/fecha_inicio_reserva"

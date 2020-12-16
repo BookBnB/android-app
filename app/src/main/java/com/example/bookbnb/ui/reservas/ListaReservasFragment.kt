@@ -17,7 +17,7 @@ import com.example.bookbnb.ui.publicaciones.PublicacionRecyclerViewAdapter
 import com.example.bookbnb.ui.publicaciones.PublicacionesFragmentDirections
 import com.example.bookbnb.viewmodels.ListaReservasViewModel
 
-class ListaReservasFragment : Fragment() {
+class ListaReservasFragment(val publicacionId: String) : Fragment() {
 
     private val viewModel: ListaReservasViewModel by lazy {
         ViewModelProvider(this).get(ListaReservasViewModel::class.java)
@@ -39,10 +39,9 @@ class ListaReservasFragment : Fragment() {
 
         binding.viewModel = viewModel
 
-        val publicacionId = arguments?.getString("publicacionId")
 
         setReservasList(binding)
-        publicacionId?.let { viewModel.onGetReservas(it) }
+        publicacionId.let { viewModel.onGetReservas(it) }
 
         return binding.root
     }
@@ -59,7 +58,7 @@ class ListaReservasFragment : Fragment() {
         binding.reservasList.addItemDecoration(
             DividerItemDecoration(
                 context,
-                DividerItemDecoration.HORIZONTAL
+                DividerItemDecoration.VERTICAL
             )
         )
     }

@@ -107,5 +107,7 @@
     <string name="reservas_label">Reservas</string>
     <string name="ver_reservas_lbl">Ver reservas</string>
     <string name="listaReservas_lbl">Reservas</string>
+    <string name="reservas_aceptas_tab_title">Aceptadas</string>
+    <string name="reservas_pendientes_tab_title">Pendientes</string>
 
 </resources>

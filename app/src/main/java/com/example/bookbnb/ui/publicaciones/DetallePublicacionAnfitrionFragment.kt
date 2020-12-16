@@ -109,7 +109,7 @@ class DetallePublicacionAnfitrionFragment : BaseFragment() {
         viewModel.navigateToReservationList.observe(viewLifecycleOwner, Observer {
             if (it) {
                 NavHostFragment.findNavController(this).navigate(
-                    DetallePublicacionAnfitrionFragmentDirections.actionDetallePublicacionAnfitrionFragmentToListaReservasFragment(publicacionId)
+                    DetallePublicacionAnfitrionFragmentDirections.actionDetallePublicacionAnfitrionFragmentToPagerListasReservasFragment(publicacionId)
                 )
                 viewModel.onDoneNavigatingToReservationList()
             }
