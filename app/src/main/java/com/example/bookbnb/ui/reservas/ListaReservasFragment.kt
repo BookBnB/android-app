@@ -39,7 +39,6 @@ class ListaReservasFragment(val publicacionId: String) : Fragment() {
 
         binding.viewModel = viewModel
 
-
         setReservasList(binding)
         publicacionId.let { viewModel.onGetReservas(it) }
 
@@ -47,7 +46,6 @@ class ListaReservasFragment(val publicacionId: String) : Fragment() {
     }
 
     private fun setReservasList(binding: FragmentListaReservasBinding) {
-
         binding.reservasList.adapter =
             ReservaRecyclerViewAdapter(ReservaListener { reservaId ->
                 NavHostFragment.findNavController(this).navigate(
