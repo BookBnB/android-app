@@ -1,16 +1,11 @@
 package com.example.bookbnb.network
 
+import com.example.bookbnb.models.FirebaseUser
 import com.google.firebase.FirebaseError
 import com.google.firebase.database.*
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 
-
-@IgnoreExtraProperties
-data class User(
-    var name: String? = "",
-    var email: String? = ""
-)
 
 class FirebaseDBService {
     private var database: DatabaseReference = Firebase.database.reference
@@ -18,7 +13,7 @@ class FirebaseDBService {
 
     fun createUserIfNotExists(userId: String, name: String, email: String?,
                              onSuccess: () -> Unit, onFailure: (Exception) -> Unit) {
-        val user = User(name, email)
+        val user = FirebaseUser(name, email)
         database.child(USERS_KEY).addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onCancelled(error: DatabaseError) {
                 TODO("Not yet implemented")

@@ -33,6 +33,10 @@ interface BookBnBApiService {
     @POST("usuarios/google")
     suspend fun registerWithGoogle(@Body registerDTO: GoogleRegisterDTO): RegisterResponse
 
+    @GET("usuarios/{id}")
+    suspend fun getUser(@Header("Authorization") token: String,
+                        @Path("id") userId: String): User
+
     @POST("lugares/direcciones/consulta")
     suspend fun getLocations(
         @Header("Authorization") token: String,
@@ -113,6 +117,14 @@ class BookBnBApi(var context: Context) {
 
     private val retrofitService: BookBnBApiService by lazy {
         retrofit.create(BookBnBApiService::class.java)
+    }
+
+    suspend fun getUser(userId: String) : ResultWrapper<User>{
+        val token = SessionManager(context).fetchAuthToken()
+        if (token.isNullOrEmpty()) {
+            throw Exception("No hay una sesión establecida")
+        }
+        return safeApiCall(Dispatchers.IO) { retrofitService.getUser(token, userId) }
     }
 
     suspend fun getPreguntas(publicacionId: String) : ResultWrapper<List<Pregunta>>{
