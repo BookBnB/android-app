@@ -105,5 +105,7 @@
     <string name="no_hay_preguntas_anfitrion">Por el momento no hay preguntas para esta publicación</string>
     <string name="responder_pregunta_txt">Responder</string>
     <string name="responder_consulta_txt">Responder Consulta</string>
+    <string name="enviar_mensaje_directo_btn">Enviar Mensaje Directo</string>
+    <string name="enviar_mensaje_directo_desc">¿Preferís una conversación privada? ¡Enviale un mensaje directo!</string>
 
 </resources>
