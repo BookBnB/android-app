@@ -19,23 +19,11 @@ class ListaReservasViewModel(application: Application) : BaseAndroidViewModel(ap
     val reservas : LiveData<List<Reserva>>
         get() = _reservas
 
-    fun getReservasAceptadas(): LiveData<List<Reserva>> {
-        return Transformations.map(reservas) {
-            it.filter {
-                it.estado == "aceptada"
-            }
-        }
+    fun setReservasByEstado(estadoReserva: String, reservas: List<Reserva>){
+        _reservas.value = reservas.filter { it.estado == estadoReserva }
     }
 
-    fun getReservasPendientes(): LiveData<List<Reserva>> {
-        return Transformations.map(reservas) {
-            it.filter {
-                it.estado == "pendiente"
-            }
-        }
-    }
-
-    fun onGetReservas(publicacionId: String) {
+    fun onGetReservas(publicacionId: String, estadoReserva: String) {
         viewModelScope.launch {
             val sessionManager = SessionManager(getApplication())
             when (val reservasResponse =
@@ -48,7 +36,7 @@ class ListaReservasViewModel(application: Application) : BaseAndroidViewModel(ap
                     )
                 )
                 is ResultWrapper.GenericError -> showGenericError(reservasResponse)
-                is ResultWrapper.Success -> _reservas.value = reservasResponse.value
+                is ResultWrapper.Success -> setReservasByEstado(estadoReserva, reservasResponse.value)
             }
         }
     }
