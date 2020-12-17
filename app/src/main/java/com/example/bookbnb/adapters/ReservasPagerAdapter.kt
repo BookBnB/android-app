@@ -9,10 +9,6 @@ import com.example.bookbnb.R
 import com.example.bookbnb.ui.reservas.ListaReservasFragment
 
 
-/**
- * A [FragmentPagerAdapter] that returns a fragment corresponding to
- * one of the sections/tabs/pages.
- */
 class ReservasPagerAdapter(
     private val mContext: Context,
     fm: FragmentManager?,

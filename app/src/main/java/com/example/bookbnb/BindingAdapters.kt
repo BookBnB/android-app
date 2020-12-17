@@ -1,11 +1,16 @@
 package com.example.bookbnb
 
+import android.annotation.SuppressLint
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.util.Log
 import android.widget.ArrayAdapter
 import android.widget.ImageView
 import android.widget.ListAdapter
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
+import androidx.core.widget.ImageViewCompat
 import androidx.databinding.BindingAdapter
 import androidx.databinding.InverseBindingAdapter
 import androidx.databinding.InverseBindingListener
@@ -17,6 +22,8 @@ import com.example.bookbnb.models.CustomLocation
 import com.example.bookbnb.models.Pregunta
 import com.example.bookbnb.models.Publicacion
 import com.example.bookbnb.models.Reserva
+import com.example.bookbnb.models.Reserva.Companion.ESTADO_ACEPTADA
+import com.example.bookbnb.models.Reserva.Companion.ESTADO_PENDIENTE
 import com.example.bookbnb.ui.publicaciones.PublicacionRecyclerViewAdapter
 import com.example.bookbnb.ui.reservas.ReservaRecyclerViewAdapter
 import com.google.android.material.slider.RangeSlider
@@ -77,4 +84,14 @@ fun setAdapter(actv: AutoCompleteTextView1, adapter: ArrayAdapter<CustomLocation
 @BindingAdapter("dateShortString")
 fun bindShortDate(txtView: TextView, date: Date){
     txtView.text = SimpleDateFormat("dd/MM/yyyy").format(date)
+}
+
+@BindingAdapter("reservaDrawableTint")
+fun setReservaDrawableTint(image: ImageView, estado: String){
+    val color = when (estado){
+        ESTADO_PENDIENTE -> ContextCompat.getColor(image.context, R.color.reservaPendiente)
+        ESTADO_ACEPTADA -> ContextCompat.getColor(image.context, R.color.reservaAceptada)
+        else -> ContextCompat.getColor(image.context, R.color.primaryDarkColor)
+    }
+    ImageViewCompat.setImageTintList(image, ColorStateList.valueOf(color))
 }
