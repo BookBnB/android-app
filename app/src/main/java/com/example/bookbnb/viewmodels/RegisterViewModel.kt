@@ -127,7 +127,7 @@ class RegisterViewModel(application: Application) : BaseAndroidViewModel(applica
     }
 
     private fun onRegisterSuccess(registerResponse: ResultWrapper.Success<RegisterResponse>) {
-        _snackbarMessage.value = getApplication<Application>().getString(R.string.completed_register_txt)
+        showSnackbarSuccessMessage(getApplication<Application>().getString(R.string.completed_register_txt))
         onNavigateToLogin()
     }
 }

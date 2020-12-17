@@ -24,7 +24,7 @@ interface BookBnBApiService {
     @POST("sesiones")
     suspend fun authenticate(@Body usuarioDTO: LoginDTO): LoginResponse
 
-    @POST("users")
+    @POST("usuarios")
     suspend fun register(@Body registerDTO: RegisterDTO): RegisterResponse
 
     @POST("lugares/direcciones/consulta")
