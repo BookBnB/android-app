@@ -9,5 +9,6 @@ class Reserva(var id: String,
               var fechaInicio: String,
               var fechaFin: String,
               var estado: String,
-              var precioPorNoche: Float
+              var precioPorNoche: Float,
+              var nombreHuesped: String
 )
