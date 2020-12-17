@@ -16,4 +16,8 @@ class Reserva(var id: String,
         val ESTADO_ACEPTADA = "aceptada"
         val ESTADO_PENDIENTE = "pendiente"
     }
+
+    fun isPendiente() : Boolean{
+        return estado == ESTADO_PENDIENTE
+    }
 }

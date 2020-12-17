@@ -109,5 +109,6 @@
     <string name="listaReservas_lbl">Reservas</string>
     <string name="reservas_aceptas_tab_title">Aceptadas</string>
     <string name="reservas_pendientes_tab_title">Pendientes</string>
+    <string name="aceptar_reserva_btn">Aceptar</string>
 
 </resources>
