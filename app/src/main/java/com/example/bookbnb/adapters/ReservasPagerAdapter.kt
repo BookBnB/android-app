@@ -25,8 +25,8 @@ class ReservasPagerAdapter(
 
     override fun getItem(position: Int): Fragment {
         return if (position == 0) {
-            ListaReservasFragment(publicacionId)
-        } else ListaReservasFragment(publicacionId)
+            ListaReservasFragment(publicacionId, "aceptada")
+        } else ListaReservasFragment(publicacionId, "pendiente")
     }
 
     override fun getPageTitle(position: Int): CharSequence? {
