@@ -2,6 +2,7 @@ package com.example.bookbnb.network
 
 
 import android.content.Context
+import android.util.Log
 import com.example.bookbnb.models.*
 import com.example.bookbnb.utils.SessionManager
 import com.squareup.moshi.Moshi
@@ -21,11 +22,17 @@ import java.util.*
 
 
 interface BookBnBApiService {
+    @POST("sesiones/google")
+    suspend fun authenticateWithGoogle(@Body usuarioDTO: GoogleLoginDTO): LoginResponse
+
     @POST("sesiones")
     suspend fun authenticate(@Body usuarioDTO: LoginDTO): LoginResponse
 
     @POST("usuarios")
     suspend fun register(@Body registerDTO: RegisterDTO): RegisterResponse
+
+    @POST("usuarios/google")
+    suspend fun registerWithGoogle(@Body registerDTO: GoogleRegisterDTO): RegisterResponse
 
     @POST("lugares/direcciones/consulta")
     suspend fun getLocations(
@@ -57,6 +64,14 @@ interface BookBnBApiService {
     suspend fun getReservasByPublicacionId(@Header("Authorization") token: String,
                                              @Path("id") publicacionId: String) : List<Reserva>
 
+    @GET("usuarios/bulk")
+    suspend fun getUsersInfoById(@Header("Authorization") token: String,
+                                           @Query("id") id: List<String>) : List<Usuario>
+
+    @PUT("reservas/{id}/aprobacion")
+    suspend fun aceptarReserva(@Header("Authorization") token: String,
+                                 @Path("id") reservaId: String) : ReservaAceptadaResponse
+
     @GET("publicaciones")
     suspend fun searchPublicaciones(@Header("Authorization") token: String,
                                     @Query("coordenadas[latitud]") latitud: Double,
@@ -65,12 +80,6 @@ interface BookBnBApiService {
                                     @Query("cantidadDeHuespedes") cantHuespedes: Int,
                                     @Query("precioPorNocheMinimo") minPrice: Float,
                                     @Query("precioPorNocheMaximo") maxPrice: Float) : List<Publicacion>
-
-    @GET("publicaciones")
-    suspend fun searchByCityCoordinates(@Header("Authorization") token: String,
-                                        @Query("coordenadas[latitud]") latitud: Double,
-                                        @Query("coordenadas[longitud]") longitud: Double) : List<Publicacion>
-
 
     @GET("publicaciones/{id}/preguntas")
     suspend fun getPreguntasPublicacion(@Header("Authorization") token: String,
@@ -164,6 +173,22 @@ class BookBnBApi(var context: Context) {
         return safeApiCall(Dispatchers.IO) { retrofitService.getReservasByPublicacionId(token, publicacionId) }
     }
 
+    suspend fun getUsersInfoById(usersId: List<String>) : ResultWrapper<List<Usuario>>{
+        val token = SessionManager(context).fetchAuthToken()
+        if (token.isNullOrEmpty()) {
+            throw Exception("No hay una sesión establecida")
+        }
+        return safeApiCall(Dispatchers.IO) { retrofitService.getUsersInfoById(token, usersId) }
+    }
+
+    suspend fun aceptarReserva(reservaId: String) : ResultWrapper<ReservaAceptadaResponse>{
+        val token = SessionManager(context).fetchAuthToken()
+        if (token.isNullOrEmpty()) {
+            throw Exception("No hay una sesión establecida")
+        }
+        return safeApiCall(Dispatchers.IO) { retrofitService.aceptarReserva(token, reservaId) }
+    }
+
     suspend fun reservarPublicacion(
         publicacionId: String,
         startDate: Date,
@@ -232,14 +257,6 @@ class BookBnBApi(var context: Context) {
         }
     }
 
-    suspend fun searchByCityCoordinates(coordenadas: Coordenada) : ResultWrapper<List<Publicacion>>{
-        val token = SessionManager(context).fetchAuthToken()
-        if (token.isNullOrEmpty()){
-            throw Exception("No hay una sesión establecida")
-        }
-        return safeApiCall(Dispatchers.IO) { retrofitService.searchByCityCoordinates(token, coordenadas.latitud, coordenadas.longitud) }
-    }
-
     suspend fun getCities(location: String): ResultWrapper<List<CustomLocation>> {
         val locationDTO = LocationDTO(location, 5)
         val token = SessionManager(context).fetchAuthToken()
@@ -258,6 +275,12 @@ class BookBnBApi(var context: Context) {
         return safeApiCall(Dispatchers.IO) { retrofitService.getLocations(token, locationDTO) }
     }
 
+    suspend fun register(googleToken: String, rol: String): ResultWrapper<RegisterResponse> {
+        val registracion = GoogleRegisterDTO(googleToken, rol)
+        val response = safeApiCall(Dispatchers.IO) { retrofitService.registerWithGoogle(registracion) }
+        return response
+    }
+
     suspend fun register(
         email: String,
         password: String,
@@ -272,14 +295,14 @@ class BookBnBApi(var context: Context) {
         return response
     }
 
+    suspend fun authenticate(googleToken: String): ResultWrapper<LoginResponse> {
+        val user = GoogleLoginDTO(googleToken)
+        return safeApiCall(Dispatchers.IO) { retrofitService.authenticateWithGoogle(user) }
+    }
+
     suspend fun authenticate(username: String, password: String): ResultWrapper<LoginResponse> {
         val user = LoginDTO(username, password)
-        try {
-            return safeApiCall(Dispatchers.IO) { retrofitService.authenticate(user) }
-        } catch (e: Exception) {
-            //TODO: ???
-            throw (e)
-        }
+        return safeApiCall(Dispatchers.IO) { retrofitService.authenticate(user) }
     }
 
     private suspend fun <T> safeApiCall(
@@ -290,11 +313,16 @@ class BookBnBApi(var context: Context) {
             try {
                 ResultWrapper.Success(apiCall.invoke())
             } catch (throwable: Throwable) {
+                Log.d("BookBnbApiService", "ERROR MSG: ${throwable.message}", throwable)
+                Log.d("BookBnbApiService", "ERROR CAUSE: ${throwable.cause}")
+                throwable.printStackTrace()
                 when (throwable) {
                     is IOException -> ResultWrapper.NetworkError
                     is HttpException -> {
                         val code = throwable.code()
                         val errorResponse = convertErrorBody(throwable)
+                        Log.d("BookBnbApiService", "HTTP ERROR CODE: ${throwable.code()}")
+                        Log.d("BookBnbApiService", "HTTP ERROR RESPONSE: ${errorResponse?.toString()}")
                         ResultWrapper.GenericError(code, errorResponse)
                     }
                     else -> {

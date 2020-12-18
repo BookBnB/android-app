@@ -16,6 +16,13 @@ data class CrearPublicacionResponse(
 data class LocationDTO(var consulta: String, var limite: Int)
 
 @JsonClass(generateAdapter = true)
+data class GoogleRegisterDTO(
+    var token: String,
+    var role: String
+)
+
+
+@JsonClass(generateAdapter = true)
 data class RegisterDTO(
     var email: String,
     var password: String,
@@ -23,11 +30,17 @@ data class RegisterDTO(
     var surname: String,
     var phone: String?,
     var city: String?,
-    var role: String)
+    var role: String
+)
 
 data class RegisterResponse(
     var email: String,
     val role: String
+)
+
+@JsonClass(generateAdapter = true)
+data class GoogleLoginDTO(
+    var token: String
 )
 
 @JsonClass(generateAdapter = true)
@@ -44,6 +57,11 @@ data class ReservaDTO(
     var publicacionId: String,
     var fechaInicio: String,
     var fechaFin: String
+)
+
+data class ReservaAceptadaResponse(
+    var success: Boolean,
+    var message: String
 )
 
 data class ReservarPublicacionResponse(

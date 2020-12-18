@@ -1,22 +1,29 @@
 package com.example.bookbnb.ui.login
 
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
 import android.widget.RelativeLayout
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
+import com.auth0.android.jwt.JWT
 import com.example.bookbnb.MainActivity
 import com.example.bookbnb.R
+import com.example.bookbnb.databinding.DialogRegisterBinding
 import com.example.bookbnb.databinding.FragmentLoginBinding
 import com.example.bookbnb.ui.BaseFragment
 import com.example.bookbnb.viewmodels.LoginViewModel
 import com.example.bookbnb.viewmodels.LoginViewModelFactory
+import com.example.bookbnb.viewmodels.RegisterViewModel
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -48,12 +55,6 @@ class LoginFragment : BaseFragment(){
         if (account != null) {
             Log.w(TAG, account.idToken.toString())
             mGoogleSignInClient.signOut()
-            //val sessionManager = SessionManager(this)
-            //sessionManager.saveUserId(account.id)
-            //goToMainActivity()
-        } else {
-            //val sessionManager = SessionManager(this)
-            //sessionManager.removeUserId()
         }
     }
 
@@ -85,6 +86,7 @@ class LoginFragment : BaseFragment(){
 
         setNavigateToMainActivityObserver()
         setNavigateToRegisterObserver()
+        setSignInWithGoogleObserver()
         setSignUpWithGoogleObserver()
         setSpinnerObserver(viewModel, requireActivity().findViewById(R.id.spinner_holder))
         setSnackbarMessageObserver(viewModel, requireActivity().findViewById(R.id.login_activity_layout))
@@ -92,12 +94,21 @@ class LoginFragment : BaseFragment(){
         return binding.root
     }
 
-    private fun setSignUpWithGoogleObserver(){
-        viewModel.showGoogleSignUp.observe(viewLifecycleOwner, Observer { show ->
+    private fun setSignInWithGoogleObserver(){
+        viewModel.showGoogleSignIn.observe(viewLifecycleOwner, Observer { show ->
             if (show){
                 val signInIntent = mGoogleSignInClient!!.signInIntent
                 startActivityForResult(signInIntent, REQ_ONE_TAP)
-                viewModel.onDoneShowingGoogleSignUpClick()
+                viewModel.onDoneShowingGoogleSignInClick()
+            }
+        })
+    }
+
+    private fun setSignUpWithGoogleObserver(){
+        viewModel.showGoogleSignUp.observe(viewLifecycleOwner, Observer { show ->
+            if (show){
+                showGoogleSignUpDialog(viewModel.googleToken.value!!)
+                viewModel.onDoneShowingGoogleSignUpWithGoogle()
             }
         })
     }
@@ -135,13 +146,62 @@ class LoginFragment : BaseFragment(){
     fun handleSignInResult(completedTask: Task<GoogleSignInAccount>) {
         try {
             val account: GoogleSignInAccount = completedTask.getResult(ApiException::class.java)!!
-            // TODO: Signed in successfully, send token to server to create user or log the user in.
             Log.w(TAG, account.idToken.toString())
+            viewModel.onGoogleLogin(account.idToken!!)
         } catch (e: ApiException) {
             // The ApiException status code indicates the detailed failure reason.
             // Please refer to the GoogleSignInStatusCodes class reference for more information.
             Log.w(TAG, "signInResult:failed code=" + e.getStatusCode());
-            // TODO: Show error
+            viewModel.showSnackbarErrorMessage("Algo salió mal al querer contactarse con google. Detalles: ${e.message}")
         }
+    }
+
+    private fun showGoogleSignUpDialog(token: String){
+        val binding: DialogRegisterBinding = DataBindingUtil.inflate(
+            LayoutInflater.from(context),
+            R.layout.dialog_register,
+            null,
+            false
+        )
+        var registerViewModel = RegisterViewModel(requireActivity().application)
+        registerViewModel.setDataFromGoogleToken(token)
+        setLogUserWithGoogleAfterRegistrationObserver(registerViewModel)
+        binding.registerViewModel = registerViewModel
+        setPossibleUserTypes(binding)
+        val registerDialog = buildGoogleSignupDialog(registerViewModel::registerGoogleUser,
+            registerViewModel::cancelGoogleRegister, binding.root)
+        registerDialog.show()
+    }
+
+    private fun setLogUserWithGoogleAfterRegistrationObserver(registerViewModel: RegisterViewModel){
+        registerViewModel.logUserWithGoogle.observe(viewLifecycleOwner, Observer { logUser ->
+            if (logUser){
+                viewModel.onGoogleLogin(registerViewModel.googleToken.value!!)
+                registerViewModel.onLogUserWithGoogleEnd()
+            }
+        })
+    }
+
+    private fun buildGoogleSignupDialog(onPositiveBtnClick: () -> Unit,
+                                        onNegativeBtnClick: () -> Unit,
+                                        view: View) : AlertDialog{
+        val builder = AlertDialog.Builder(context)
+        val registerDialog = builder
+            .setPositiveButton(
+                "Registrarse"
+            ) { _: DialogInterface?, _: Int -> onPositiveBtnClick() }
+            .setNegativeButton(
+                "Cancelar"
+            ) { _: DialogInterface?, _: Int -> onNegativeBtnClick() }
+            .create()
+        registerDialog.setView(view)
+        return registerDialog
+    }
+
+    private fun setPossibleUserTypes(binding: DialogRegisterBinding) {
+        val items = listOf(getString(R.string.user_type_huesped), getString(R.string.user_type_anfitrion))
+        val adapter = ArrayAdapter(requireContext(), R.layout.dropdown_item, items)
+        (binding.userTypeTextField.editText as? AutoCompleteTextView)?.setAdapter(adapter)
+        (binding.userTypeTextField.editText as? AutoCompleteTextView)?.setText(getString(R.string.user_type_huesped), false) //Defaults to huesped
     }
 }

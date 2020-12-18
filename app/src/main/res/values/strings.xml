@@ -78,6 +78,7 @@
     <string name="rango_precio_format">(Entre %s ETH/Noche y %s ETH/Noche)</string>
     <string name="precio_total_format">El precio total es %s ETH</string>
     <string name="precio_detail_format">$ %s por noche</string>
+    <string name="google_register_format">Bienvenido %s, como es tu primera vez necesitamos saber ¿Querés ser huesped o anfitrión?</string>
     <string name="cant_huespedes_format">Hasta %s huespedes</string>
     <string name="preview_step_help">Paso 4: Revise todos los datos que ingresó para finalizar la publicación de su alojamiento.</string>
     <string name="previsualizacion_lbl">Previsualización</string>
@@ -109,6 +110,10 @@
     <string name="listaReservas_lbl">Reservas</string>
     <string name="reservas_aceptas_tab_title">Aceptadas</string>
     <string name="reservas_pendientes_tab_title">Pendientes</string>
+    <string name="confirmar_reserva_aceptada">¿Esta seguro de que desea aceptar la reserva {}?</string>
+    <string name="reserva_aceptada">Reserva {} aceptada</string>
     <string name="aceptar_reserva_btn">Aceptar</string>
+    <string name="reserva_aceptada_format">¡Hecho! La reserva con código %s fue aceptada.</string>
+    <string name="aceptar_reserva_format">¿Está seguro que desea aceptar la reserva %s? Esto rechazará todas las pendientes que se solapen con la aceptada.</string>
 
 </resources>

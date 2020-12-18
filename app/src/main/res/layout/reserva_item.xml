@@ -6,6 +6,9 @@
         <variable name="property"
             type="com.example.bookbnb.models.Reserva" />
         <import type="android.view.View" />
+        <variable
+            name="aceptarListener"
+            type="com.example.bookbnb.ui.reservas.ReservaListener" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -56,7 +59,7 @@
             android:layout_marginBottom="@dimen/margin_small"
             android:drawablePadding="@dimen/margin_min"
             android:gravity="center_vertical"
-            android:text="@{property.huespedId}"
+            android:text="@{property.nombreHuesped}"
             app:layout_constraintBottom_toTopOf="@+id/materialButton2"
             app:layout_constraintEnd_toStartOf="@+id/fecha_fin_reserva"
             app:layout_constraintHorizontal_bias="0.5"
@@ -108,6 +111,7 @@
             android:visibility="@{property.isPendiente() ? View.VISIBLE : View.GONE}"
             app:icon="@drawable/ic_aceptar"
             app:iconTint="@color/primaryColor"
+            android:onClick="@{() -> aceptarListener.onClick(property)}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"

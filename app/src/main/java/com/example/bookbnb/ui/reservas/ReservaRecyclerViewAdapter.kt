@@ -21,12 +21,13 @@ class ReservaRecyclerViewAdapter(val clickListener: ReservaListener) :
 
     override fun onBindViewHolder(holder: ReservaViewHolder, position: Int) {
         val reserva = getItem(position)
-        holder.bind(reserva)
+        holder.bind(reserva, clickListener)
     }
 
     class ReservaViewHolder(private var binding: ReservaItemBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(reserva: Reserva) {
+        fun bind(reserva: Reserva, clickListener: ReservaListener) {
             binding.property = reserva
+            binding.aceptarListener = clickListener
             binding.executePendingBindings()
         }
     }

@@ -1,6 +1,5 @@
 package com.example.bookbnb.models
 
-import com.example.bookbnb.R
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
@@ -10,11 +9,12 @@ class Reserva(var id: String,
               var fechaInicio: String,
               var fechaFin: String,
               var estado: String,
-              var precioPorNoche: Float
-){
+              var precioPorNoche: Float,
+              var nombreHuesped: String?
+) {
     companion object{
         val ESTADO_ACEPTADA = "aceptada"
-        val ESTADO_PENDIENTE = "pendiente"
+        val ESTADO_PENDIENTE = "pendiente de aceptacion"
     }
 
     fun isPendiente() : Boolean{
