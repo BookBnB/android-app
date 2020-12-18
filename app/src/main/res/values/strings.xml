@@ -109,8 +109,8 @@
     <string name="listaReservas_lbl">Reservas</string>
     <string name="reservas_aceptas_tab_title">Aceptadas</string>
     <string name="reservas_pendientes_tab_title">Pendientes</string>
-    <string name="aceptar_reserva_btn">Aceptar</string>
     <string name="confirmar_reserva_aceptada">¿Esta seguro de que desea aceptar la reserva {}?</string>
     <string name="reserva_aceptada">Reserva {} aceptada</string>
+    <string name="aceptar_reserva_btn">Aceptar</string>
 
 </resources>
