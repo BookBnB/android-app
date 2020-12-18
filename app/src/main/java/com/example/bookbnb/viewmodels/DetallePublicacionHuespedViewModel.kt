@@ -15,6 +15,10 @@ import java.util.*
 import java.util.concurrent.TimeUnit
 
 class DetallePublicacionHuespedViewModel(application: Application) : DetallePublicacionViewModel(application){
+    private val _navigateToChat = MutableLiveData<Boolean>(false)
+    val navigateToChat : MutableLiveData<Boolean>
+        get() = _navigateToChat
+
     private val _displayDisponibilidadDialog = MutableLiveData<Boolean>(false)
     val displayDisponibilidadDialog : MutableLiveData<Boolean>
         get() = _displayDisponibilidadDialog
@@ -144,6 +148,14 @@ class DetallePublicacionHuespedViewModel(application: Application) : DetallePubl
                 _showLoadingSpinner.value = false
             }
         }
+    }
+
+    fun onNavigateToChat(){
+        _navigateToChat.value = true
+    }
+
+    fun onEndNavigatingToChat(){
+        _navigateToChat.value = false
     }
 }
 

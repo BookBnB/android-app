@@ -20,6 +20,7 @@ import com.example.bookbnb.databinding.FragmentPublicacionesListBinding
 import com.example.bookbnb.ui.BaseFragment
 import com.example.bookbnb.utils.CustomImageUri
 import com.example.bookbnb.utils.ImagesSliderAdapter
+import com.example.bookbnb.utils.SessionManager
 import com.example.bookbnb.viewmodels.DetallePublicacionHuespedViewModel
 import com.example.bookbnb.viewmodels.DetallePublicacionHuespedViewModelFactory
 import com.google.android.material.datepicker.MaterialDatePicker
@@ -67,11 +68,29 @@ class DetallePublicacionHuespedFragment : BaseFragment() {
         val publicacionId = arguments?.getString("publicacionId")
         setPreguntasListAdapter()
 
+        setNavigateToChatObserver()
+
         viewModel.onGetDetail(publicacionId!!)
 
         binding.detallePublicacionViewModel = viewModel
 
         return binding.root
+    }
+
+    private fun setNavigateToChatObserver() {
+        viewModel.navigateToChat.observe(viewLifecycleOwner, Observer { navigate ->
+            if (navigate) {
+                val sessionManager = SessionManager(requireContext())
+                NavHostFragment.findNavController(this).navigate(
+                    DetallePublicacionHuespedFragmentDirections
+                        .actionDetallePublicacionFragmentToChatFragment(
+                            sessionManager.getUserId()!!,
+                            viewModel.publicacion.value?.anfitrion?.id!!
+                        )
+                )
+                viewModel.onEndNavigatingToChat()
+            }
+        })
     }
 
     private fun setPreguntasListAdapter() {

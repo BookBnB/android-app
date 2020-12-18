@@ -14,6 +14,9 @@ class TipoDeAlojamientoProvider{
 
 }
 
+@JsonClass(generateAdapter = true)
+class Anfitrion(val id: String)
+
 class CustomImage(var url: String)
 @JsonClass(generateAdapter = true)
 class Publicacion(var id: String? = null,
@@ -23,5 +26,6 @@ class Publicacion(var id: String? = null,
                   var direccion: CustomLocation,
                   var cantidadDeHuespedes: Int,
                   var imagenes: List<CustomImage>,
-                  var tipoDeAlojamiento: String
+                  var tipoDeAlojamiento: String,
+                  var anfitrion: Anfitrion? = null
 )
