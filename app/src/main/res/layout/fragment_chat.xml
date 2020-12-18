@@ -15,16 +15,16 @@
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
         android:paddingTop="@dimen/activity_vertical_margin"
-        tools:context=".ui.chat.ChatFragment"
-        android:background="@color/primaryTextColor">
+        tools:context=".ui.chat.ChatFragment">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/messageRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_above="@+id/linearLayout"
+            android:layout_marginBottom="1dp"
             tools:context=".ui.publicaciones.PublicacionesFragment"
-            tools:listitem="@layout/chat_message_item"/>
+            tools:listitem="@layout/chat_message_item" />
 
         <LinearLayout
             android:id="@+id/linearLayout"
@@ -52,12 +52,5 @@
 
         </LinearLayout>
 
-        <ProgressBar
-            android:id="@+id/progressBar"
-            style="?android:attr/progressBarStyleLarge"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"/>
     </RelativeLayout>
 </layout>

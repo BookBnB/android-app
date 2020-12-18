@@ -14,33 +14,35 @@
         android:id="@+id/publicacion_container"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/margin_normal">
+        android:layout_marginBottom="@dimen/margin_small">
 
         <com.google.android.material.textview.MaterialTextView
-            android:background="#FFFFFF"
-            android:padding="@dimen/margin_normal"
-            android:id="@+id/pregunta"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/roboto"
-            android:text="@{property.descripcion}"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
-            android:textColor="@color/black"
-            app:fontFamily="@font/roboto"
-            app:layout_constraintHorizontal_chainStyle="spread"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="Hola!" />
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/fecha_pregunta"
+            android:id="@+id/title_msg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/roboto"
             android:text="@{property.creationDateAsShortString}"
-            app:layout_constraintStart_toEndOf="@+id/pregunta"
-            app:layout_constraintTop_toBottomOf="@+id/pregunta"
-            tools:text="20/04/2020 14:34" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:textStyle="bold"
+            android:textColor="@color/primaryColor"
+            tools:text="Franco Fusaro (20/04/2020 14:34):" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/pregunta"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto"
+            android:padding="@dimen/margin_small"
+            android:text="@{property.descripcion}"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+            android:textColor="@color/black"
+            app:fontFamily="@font/roboto"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/title_msg"
+            tools:text="Hola! Como estas? Largo el mensaje eeh jajaja pero a ver que pasa si se va para abajo" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
