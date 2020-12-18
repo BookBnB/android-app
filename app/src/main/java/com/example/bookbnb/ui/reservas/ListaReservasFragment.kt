@@ -15,9 +15,10 @@ import com.example.bookbnb.R
 import com.example.bookbnb.databinding.DialogConfirmacionReservaBinding
 import com.example.bookbnb.databinding.DialogReservaAceptadaBinding
 import com.example.bookbnb.databinding.FragmentListaReservasBinding
+import com.example.bookbnb.ui.BaseFragment
 import com.example.bookbnb.viewmodels.ListaReservasViewModel
 
-class ListaReservasFragment(val publicacionId: String, val estadoReserva: String) : Fragment() {
+class ListaReservasFragment(val publicacionId: String, val estadoReserva: String) : BaseFragment() {
 
     private val viewModel: ListaReservasViewModel by lazy {
         ViewModelProvider(this).get(ListaReservasViewModel::class.java)
@@ -41,6 +42,8 @@ class ListaReservasFragment(val publicacionId: String, val estadoReserva: String
 
         setReservasList(binding)
         publicacionId.let { viewModel.onGetReservas(it, estadoReserva) }
+
+        setSnackbarMessageObserver(viewModel, binding.root)
 
         setConfirmacionReservaObserver(inflater)
         setReservaAceptadaObserver(inflater)

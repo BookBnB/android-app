@@ -10,7 +10,7 @@ class Reserva(var id: String,
               var fechaFin: String,
               var estado: String,
               var precioPorNoche: Float,
-              var nombreHuesped: String
+              var nombreHuesped: String?
 ) {
     companion object{
         val ESTADO_ACEPTADA = "aceptada"
