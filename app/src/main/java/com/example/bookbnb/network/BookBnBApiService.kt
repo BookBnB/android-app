@@ -2,6 +2,7 @@ package com.example.bookbnb.network
 
 
 import android.content.Context
+import android.util.Log
 import com.example.bookbnb.models.*
 import com.example.bookbnb.utils.SessionManager
 import com.squareup.moshi.Moshi
@@ -59,12 +60,11 @@ interface BookBnBApiService {
 
     @GET("usuarios/bulk")
     suspend fun getUsersInfoById(@Header("Authorization") token: String,
-                                           @Query("id") id: String) : List<Usuario>
+                                           @Query("id") id: List<String>) : List<Usuario>
 
     @PUT("reservas/{id}/aprobacion")
     suspend fun aceptarReserva(@Header("Authorization") token: String,
-                                 @Path("id") reservaId: String,
-                                @Body reserva: ReservaAceptadaDTO) : Reserva
+                                 @Path("id") reservaId: String) : ReservaAceptadaResponse
 
     @GET("publicaciones")
     suspend fun searchPublicaciones(@Header("Authorization") token: String,
@@ -173,7 +173,7 @@ class BookBnBApi(var context: Context) {
         return safeApiCall(Dispatchers.IO) { retrofitService.getReservasByPublicacionId(token, publicacionId) }
     }
 
-    suspend fun getUsersInfoById(usersId: String) : ResultWrapper<List<Usuario>>{
+    suspend fun getUsersInfoById(usersId: List<String>) : ResultWrapper<List<Usuario>>{
         val token = SessionManager(context).fetchAuthToken()
         if (token.isNullOrEmpty()) {
             throw Exception("No hay una sesión establecida")
@@ -181,13 +181,12 @@ class BookBnBApi(var context: Context) {
         return safeApiCall(Dispatchers.IO) { retrofitService.getUsersInfoById(token, usersId) }
     }
 
-    suspend fun aceptarReserva(reservaId: String) : ResultWrapper<Reserva>{
-        val reserva = ReservaAceptadaDTO(reservaId, Reserva.ESTADO_ACEPTADA)
+    suspend fun aceptarReserva(reservaId: String) : ResultWrapper<ReservaAceptadaResponse>{
         val token = SessionManager(context).fetchAuthToken()
         if (token.isNullOrEmpty()) {
             throw Exception("No hay una sesión establecida")
         }
-        return safeApiCall(Dispatchers.IO) { retrofitService.aceptarReserva(token, reservaId, reserva) }
+        return safeApiCall(Dispatchers.IO) { retrofitService.aceptarReserva(token, reservaId) }
     }
 
     suspend fun reservarPublicacion(
@@ -316,11 +315,16 @@ class BookBnBApi(var context: Context) {
             try {
                 ResultWrapper.Success(apiCall.invoke())
             } catch (throwable: Throwable) {
+                Log.d("BookBnbApiService", "ERROR MSG: ${throwable.message}", throwable)
+                Log.d("BookBnbApiService", "ERROR CAUSE: ${throwable.cause}")
+                throwable.printStackTrace()
                 when (throwable) {
                     is IOException -> ResultWrapper.NetworkError
                     is HttpException -> {
                         val code = throwable.code()
                         val errorResponse = convertErrorBody(throwable)
+                        Log.d("BookBnbApiService", "HTTP ERROR CODE: ${throwable.code()}")
+                        Log.d("BookBnbApiService", "HTTP ERROR RESPONSE: ${errorResponse?.toString()}")
                         ResultWrapper.GenericError(code, errorResponse)
                     }
                     else -> {

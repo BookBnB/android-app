@@ -16,7 +16,7 @@ class ListaReservasViewModel(application: Application) : BaseAndroidViewModel(ap
 
     private val _reservas = MutableLiveData<List<Reserva>>()
 
-    val reservas : LiveData<List<Reserva>>
+    val reservas : MutableLiveData<List<Reserva>>
         get() = _reservas
 
     private val _showConfirmacionReserva = MutableLiveData<Boolean>(false)
@@ -65,7 +65,6 @@ class ListaReservasViewModel(application: Application) : BaseAndroidViewModel(ap
 
     fun onGetReservas(publicacionId: String, estadoReserva: String) {
         viewModelScope.launch {
-            val sessionManager = SessionManager(getApplication())
             when (val reservasResponse =
                     BookBnBApi(getApplication()).getReservasByPublicacionId(
                         publicacionId
@@ -90,18 +89,18 @@ class ListaReservasViewModel(application: Application) : BaseAndroidViewModel(ap
 
     fun onGetUserInfoById(idUsuarios: List<String>) {
         viewModelScope.launch {
-            val sessionManager = SessionManager(getApplication())
-            when (val usuariosResponse =
-                BookBnBApi(getApplication()).getUsersInfoById(
-                    idUsuarios.joinToString(separator = "&id=")
-                )) {
-                is ResultWrapper.NetworkError -> showSnackbarErrorMessage(
-                    getApplication<Application>().getString(
-                        R.string.network_error_msg
+            if (idUsuarios.isNotEmpty()) {
+                val sessionManager = SessionManager(getApplication())
+                when (val usuariosResponse =
+                    BookBnBApi(getApplication()).getUsersInfoById(idUsuarios)) {
+                    is ResultWrapper.NetworkError -> showSnackbarErrorMessage(
+                        getApplication<Application>().getString(
+                            R.string.network_error_msg
+                        )
                     )
-                )
-                is ResultWrapper.GenericError -> showGenericError(usuariosResponse)
-                is ResultWrapper.Success -> setNombreHuesped(usuariosResponse.value)
+                    is ResultWrapper.GenericError -> showGenericError(usuariosResponse)
+                    is ResultWrapper.Success -> setNombreHuesped(usuariosResponse.value)
+                }
             }
         }
     }
@@ -115,8 +114,9 @@ class ListaReservasViewModel(application: Application) : BaseAndroidViewModel(ap
     }
 
     fun onAceptacionReserva(reservaId: String) {
-        showConfirmacionReserva.value = true
+        // First set the ultima reserva aceptada value so it does not crash later
         _ultimaReservaAceptada.value = reservaId
+        showConfirmacionReserva.value = true
     }
 
 }

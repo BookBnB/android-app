@@ -45,8 +45,8 @@ class ListaReservasFragment(val publicacionId: String, val estadoReserva: String
 
         setSnackbarMessageObserver(viewModel, binding.root)
 
-        setConfirmacionReservaObserver(inflater)
-        setReservaAceptadaObserver(inflater)
+        setConfirmacionReservaObserver()
+        setReservaAceptadaObserver()
 
         return binding.root
     }
@@ -65,7 +65,7 @@ class ListaReservasFragment(val publicacionId: String, val estadoReserva: String
         )
     }
 
-    private fun setConfirmacionReservaObserver(inflater: LayoutInflater) {
+    private fun setConfirmacionReservaObserver() {
         viewModel.showConfirmacionReserva.observe(viewLifecycleOwner, Observer { display ->
             if (display) {
                 val builder = AlertDialog.Builder(context)
@@ -75,11 +75,6 @@ class ListaReservasFragment(val publicacionId: String, val estadoReserva: String
                     null,
                     false
                 )
-
-                binding.textoConfirmacionReserva.text.toString().replace("{}",
-                    viewModel.ultimaReservaAceptada.value!!
-                )
-
                 binding.reservasViewModel = viewModel
                 val reservaAceptadaDialog = builder
                     .setPositiveButton(
@@ -96,7 +91,7 @@ class ListaReservasFragment(val publicacionId: String, val estadoReserva: String
         })
     }
 
-    private fun setReservaAceptadaObserver(inflater: LayoutInflater) {
+    private fun setReservaAceptadaObserver() {
         viewModel.showReservaAceptada.observe(viewLifecycleOwner, Observer { display ->
             if (display) {
                 val builder = AlertDialog.Builder(context)
@@ -106,12 +101,8 @@ class ListaReservasFragment(val publicacionId: String, val estadoReserva: String
                     null,
                     false
                 )
-
-                binding.textoReservaAceptada.text.toString().replace("{}",
-                    viewModel.ultimaReservaAceptada.value!!
-                )
-
                 binding.reservasViewModel = viewModel
+
                 val reservaAceptadaDialog = builder
                     .setPositiveButton(
                         "Aceptar"

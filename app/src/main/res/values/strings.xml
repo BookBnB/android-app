@@ -112,5 +112,7 @@
     <string name="confirmar_reserva_aceptada">¿Esta seguro de que desea aceptar la reserva {}?</string>
     <string name="reserva_aceptada">Reserva {} aceptada</string>
     <string name="aceptar_reserva_btn">Aceptar</string>
+    <string name="reserva_aceptada_format">¡Hecho! La reserva con código %s fue aceptada.</string>
+    <string name="aceptar_reserva_format">¿Está seguro que desea aceptar la reserva %s? Esto rechazará todas las pendientes que se solapen con la aceptada.</string>
 
 </resources>

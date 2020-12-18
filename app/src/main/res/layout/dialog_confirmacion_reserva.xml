@@ -18,7 +18,7 @@
             android:layout_marginStart="@dimen/margin_small"
             android:layout_marginEnd="@dimen/margin_small"
             android:padding="24dp"
-            android:text="@string/confirmar_reserva_aceptada"
+            android:text="@{@string/aceptar_reserva_format(reservasViewModel.ultimaReservaAceptada)}"
             android:textAlignment="center"
             android:textSize="18sp"
             android:textStyle="bold"
