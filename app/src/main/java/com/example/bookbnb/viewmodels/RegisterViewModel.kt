@@ -7,6 +7,7 @@ import android.widget.EditText
 import androidx.databinding.BindingAdapter
 import androidx.databinding.ObservableArrayList
 import androidx.lifecycle.*
+import com.auth0.android.jwt.JWT
 import com.example.bookbnb.R
 import com.example.bookbnb.network.BookBnBApi
 import com.example.bookbnb.network.LoginResponse
@@ -18,6 +19,7 @@ import kotlinx.coroutines.launch
 
 class RegisterViewModel(application: Application) : BaseAndroidViewModel(application) {
     private val MIN_PASS_LENGTH = 8
+    private val GOOGLE_TOKEN_NAME_KEY = "given_name"
     private val _email = MutableLiveData<String>("")
     val email: MutableLiveData<String>
         get() = _email
@@ -50,6 +52,18 @@ class RegisterViewModel(application: Application) : BaseAndroidViewModel(applica
     private val _confirmPassword = MutableLiveData<String>("")
     val confirmPassword: MutableLiveData<String>
         get() = _confirmPassword
+
+    private val _googleToken = MutableLiveData<String>("")
+    val googleToken: MutableLiveData<String>
+        get() = _googleToken
+
+    private val _logUserWithGoogle = MutableLiveData<Boolean>(false)
+    val logUserWithGoogle: MutableLiveData<Boolean>
+        get() = _logUserWithGoogle
+
+    fun onLogUserWithGoogleEnd(){
+        _logUserWithGoogle.value = false
+    }
 
     val formErrors = ObservableArrayList<FormErrors>()
 
@@ -95,12 +109,17 @@ class RegisterViewModel(application: Application) : BaseAndroidViewModel(applica
         return formErrors.isEmpty()
     }
 
+    private fun getUserTypeForApi(): String{
+        return if (_userType.value!! == getApplication<Application>().getString(R.string.user_type_anfitrion))
+            "host" else "guest"
+    }
+
     fun onRegister() {
         viewModelScope.launch {
             try {
                 _showLoadingSpinner.value = true
                 if (isFormValid()) {
-                    val role = if (_userType.value!! == getApplication<Application>().getString(R.string.user_type_anfitrion)) "host" else "guest"
+                    val role = getUserTypeForApi()
                     val registerResponse =
                         BookBnBApi(getApplication()).register(
                             _email.value!!,
@@ -129,6 +148,42 @@ class RegisterViewModel(application: Application) : BaseAndroidViewModel(applica
     private fun onRegisterSuccess(registerResponse: ResultWrapper.Success<RegisterResponse>) {
         showSnackbarSuccessMessage(getApplication<Application>().getString(R.string.completed_register_txt))
         onNavigateToLogin()
+    }
+
+    fun registerGoogleUser() {
+        viewModelScope.launch {
+            try {
+                _showLoadingSpinner.value = true
+                val role = getUserTypeForApi()
+                val registerResponse =
+                    BookBnBApi(getApplication()).register(_googleToken.value!!,
+                        role)
+                when (registerResponse) {
+                    is ResultWrapper.NetworkError -> showSnackbarErrorMessage(
+                        getApplication<Application>().getString(
+                            R.string.network_error_msg
+                        )
+                    )
+                    is ResultWrapper.GenericError -> showGenericError(registerResponse)
+                    is ResultWrapper.Success -> {
+                        _logUserWithGoogle.value = true
+                        showSnackbarSuccessMessage("¡Registro completado!")
+                    }
+                }
+            } finally {
+                _showLoadingSpinner.value = false
+            }
+        }
+    }
+
+    fun cancelGoogleRegister(){
+        _nombre.value = ""
+        _googleToken.value = ""
+    }
+
+    fun setDataFromGoogleToken(token: String){
+        _googleToken.value = token
+        _nombre.value = JWT(token).getClaim(GOOGLE_TOKEN_NAME_KEY).asString()
     }
 }
 
