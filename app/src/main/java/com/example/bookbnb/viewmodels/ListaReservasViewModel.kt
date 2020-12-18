@@ -3,7 +3,6 @@ package com.example.bookbnb.viewmodels
 import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
 import androidx.lifecycle.viewModelScope
 import com.example.bookbnb.R
 import com.example.bookbnb.models.Reserva
@@ -20,10 +19,48 @@ class ListaReservasViewModel(application: Application) : BaseAndroidViewModel(ap
     val reservas : LiveData<List<Reserva>>
         get() = _reservas
 
+    private val _showConfirmacionReserva = MutableLiveData<Boolean>(false)
+    val showConfirmacionReserva: MutableLiveData<Boolean>
+        get() = _showConfirmacionReserva
+
+    private val _showReservaAceptada = MutableLiveData<Boolean>(false)
+    val showReservaAceptada: MutableLiveData<Boolean>
+        get() = _showReservaAceptada
+
+    private val _ultimaReservaAceptada = MutableLiveData<String>()
+    val ultimaReservaAceptada: MutableLiveData<String>
+        get() = _ultimaReservaAceptada
+
     fun setReservasByEstado(estadoReserva: String, reservas: List<Reserva>){
         _reservas.value = reservas.filter { it.estado == estadoReserva }
         val idUsuarios = reservas.map{it.huespedId}
         onGetUserInfoById(idUsuarios)
+    }
+
+    fun confirmarReserva() {
+        viewModelScope.launch {
+            val sessionManager = SessionManager(getApplication())
+            when (val reservasResponse =
+                BookBnBApi(getApplication()).aceptarReserva(
+                    ultimaReservaAceptada.value!!
+                )) {
+                is ResultWrapper.NetworkError -> showSnackbarErrorMessage(
+                    getApplication<Application>().getString(
+                        R.string.network_error_msg
+                    )
+                )
+                is ResultWrapper.GenericError -> showGenericError(reservasResponse)
+                is ResultWrapper.Success -> onReservaAceptada()
+            }
+        }
+    }
+
+    fun onReservaAceptada() {
+        showReservaAceptada.value = true
+    }
+
+    fun cerrarDialog(){
+        ultimaReservaAceptada.value = null
     }
 
     fun onGetReservas(publicacionId: String, estadoReserva: String) {
@@ -67,6 +104,19 @@ class ListaReservasViewModel(application: Application) : BaseAndroidViewModel(ap
                 is ResultWrapper.Success -> setNombreHuesped(usuariosResponse.value)
             }
         }
+    }
+
+    fun onDoneShowingConfirmacionReserva() {
+        _showConfirmacionReserva.value = false
+    }
+
+    fun onDoneShowingReservaAceptada() {
+        _showReservaAceptada.value = false
+    }
+
+    fun onAceptacionReserva(reservaId: String) {
+        showConfirmacionReserva.value = true
+        _ultimaReservaAceptada.value = reservaId
     }
 
 }

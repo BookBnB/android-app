@@ -46,6 +46,11 @@ data class ReservaDTO(
     var fechaFin: String
 )
 
+data class ReservaAceptadaDTO(
+    var id: String,
+    var estado: String
+)
+
 data class ReservarPublicacionResponse(
     var id: String,
     var publicacionId: String,

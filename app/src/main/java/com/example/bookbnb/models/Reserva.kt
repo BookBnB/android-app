@@ -11,4 +11,13 @@ class Reserva(var id: String,
               var estado: String,
               var precioPorNoche: Float,
               var nombreHuesped: String
-)
+) {
+    companion object{
+        val ESTADO_ACEPTADA = "aceptada"
+        val ESTADO_PENDIENTE = "pendiente de aceptacion"
+    }
+
+    fun isPendiente() : Boolean{
+        return estado == ESTADO_PENDIENTE
+    }
+}
