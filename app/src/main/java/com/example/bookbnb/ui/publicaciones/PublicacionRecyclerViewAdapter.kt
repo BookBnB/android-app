@@ -4,12 +4,9 @@ import android.net.Uri
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
-import com.example.bookbnb.R
 import com.example.bookbnb.databinding.PublicacionItemBinding
-import com.example.bookbnb.models.CustomImage
 import com.example.bookbnb.models.Publicacion
 import com.example.bookbnb.utils.CustomImageUri
 import com.example.bookbnb.utils.ImagesSliderAdapter

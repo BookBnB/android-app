@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import com.example.bookbnb.R
 import com.example.bookbnb.databinding.FragmentNuevaPublicacionInfoBinding
 import com.example.bookbnb.databinding.FragmentPublicacionesListBinding
+import com.example.bookbnb.ui.BaseFragment
 import com.example.bookbnb.ui.busqueda.ResultadosBusquedaFragmentDirections
 import com.example.bookbnb.viewmodels.PublicacionesViewModel
 
@@ -21,7 +22,7 @@ import com.example.bookbnb.viewmodels.PublicacionesViewModel
 /**
  * A fragment representing a list of Items.
  */
-class PublicacionesFragment : Fragment() {
+class PublicacionesFragment : BaseFragment() {
 
     private val viewModel: PublicacionesViewModel by lazy {
         ViewModelProvider(this).get(PublicacionesViewModel::class.java)
@@ -38,16 +39,20 @@ class PublicacionesFragment : Fragment() {
             R.layout.fragment_publicaciones_list,
             container,
             false)
-        //val binding = FragmentPublicacionesListBinding.inflate(inflater)
 
         // Allows Data Binding to Observe LiveData with the lifecycle of this Fragment
         binding.lifecycleOwner = this
 
         binding.viewModel = viewModel
 
+        setSnackbarMessageObserver(viewModel, binding.root)
+
+        setSpinnerObserver(viewModel, requireActivity().findViewById(R.id.spinner_holder))
+
         setPublicacionesList(binding)
 
         setNavigateToNewPublicacionObserver()
+
 
         return binding.root
     }

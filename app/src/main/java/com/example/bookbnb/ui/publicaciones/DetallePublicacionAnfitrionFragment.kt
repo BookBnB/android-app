@@ -4,7 +4,6 @@ import android.app.AlertDialog
 import android.content.DialogInterface
 import android.net.Uri
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,15 +15,11 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import com.example.bookbnb.R
 import com.example.bookbnb.adapters.PreguntasRecyclerViewAdapter
 import com.example.bookbnb.adapters.ResponderPreguntaListener
-import com.example.bookbnb.databinding.DialogReservaBinding
 import com.example.bookbnb.databinding.DialogResponderPreguntaBinding
 import com.example.bookbnb.databinding.FragmentDetallePublicacionAnfitrionBinding
 import com.example.bookbnb.ui.BaseFragment
-import com.example.bookbnb.ui.busqueda.ResultadosBusquedaFragmentDirections
 import com.example.bookbnb.utils.CustomImageUri
 import com.example.bookbnb.utils.ImagesSliderAdapter
-import com.example.bookbnb.viewmodels.DetallePublicacionHuespedViewModel
-import com.example.bookbnb.viewmodels.DetallePublicacionHuespedViewModelFactory
 import com.example.bookbnb.viewmodels.DetallePublicacionViewModel
 import com.example.bookbnb.viewmodels.DetallePublicacionViewModelFactory
 
@@ -64,6 +59,8 @@ class DetallePublicacionAnfitrionFragment : BaseFragment() {
         viewModel.onGetDetail(publicacionId!!)
 
         binding.detallePublicacionViewModel = viewModel
+
+        setNavigateToReservasListObserver(publicacionId)
 
         return binding.root
     }
@@ -105,6 +102,17 @@ class DetallePublicacionAnfitrionFragment : BaseFragment() {
             adapter.renewItems(publicacion.imagenes.map { CustomImageUri(Uri.parse(it.url)) }
                 .toMutableList())
             binding.detallePublicacion.imageSlider.setSliderAdapter(adapter)
+        })
+    }
+
+    private fun setNavigateToReservasListObserver(publicacionId: String) {
+        viewModel.navigateToReservationList.observe(viewLifecycleOwner, Observer {
+            if (it) {
+                NavHostFragment.findNavController(this).navigate(
+                    DetallePublicacionAnfitrionFragmentDirections.actionDetallePublicacionAnfitrionFragmentToPagerListasReservasFragment(publicacionId)
+                )
+                viewModel.onDoneNavigatingToReservationList()
+            }
         })
     }
 }

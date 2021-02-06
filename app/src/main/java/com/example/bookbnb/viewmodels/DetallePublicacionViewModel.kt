@@ -6,15 +6,8 @@ import com.example.bookbnb.R
 import com.example.bookbnb.models.Pregunta
 import com.example.bookbnb.models.Publicacion
 import com.example.bookbnb.network.BookBnBApi
-import com.example.bookbnb.network.LoginResponse
-import com.example.bookbnb.network.ReservarPublicacionResponse
 import com.example.bookbnb.network.ResultWrapper
-import com.example.bookbnb.utils.SessionManager
 import kotlinx.coroutines.launch
-import java.lang.Float.parseFloat
-import java.util.*
-import java.util.concurrent.TimeUnit
-import kotlin.math.round
 
 open class DetallePublicacionViewModel(application: Application) : BaseAndroidViewModel(application) {
 
@@ -35,6 +28,10 @@ open class DetallePublicacionViewModel(application: Application) : BaseAndroidVi
     val selectedPreguntaRespuesta : MutableLiveData<String>
         get() = _selectedPreguntaRespuesta
 
+    private val _navigateToReservationList = MutableLiveData<Boolean>(false)
+    val navigateToReservationList : MutableLiveData<Boolean>
+        get() = _navigateToReservationList
+
     fun onGetDetail(publicacionId: String) {
         viewModelScope.launch {
             try {
@@ -46,6 +43,14 @@ open class DetallePublicacionViewModel(application: Application) : BaseAndroidVi
                 _showLoadingSpinner.value = false
             }
         }
+    }
+
+    fun onVerReservasButtonClick() {
+        _navigateToReservationList.value = true
+    }
+
+    fun onDoneNavigatingToReservationList(){
+        _navigateToReservationList.value = false
     }
 
     protected suspend fun loadPublicacion(publicacionId: String){

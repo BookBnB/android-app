@@ -1,11 +1,8 @@
 package com.example.bookbnb.viewmodels
 
 import android.app.Application
-import android.se.omapi.Session
-import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.bookbnb.R
 import com.example.bookbnb.models.Publicacion
@@ -28,20 +25,26 @@ class PublicacionesViewModel(application: Application) : BaseAndroidViewModel(ap
 
     init{
         viewModelScope.launch {
-            val sessionManager = SessionManager(getApplication())
-            when (val publicacionesResponse =
-                sessionManager.getUserId()?.let {
-                    BookBnBApi(getApplication()).getPublicationsByAnfitrionId(
-                        it
+            try {
+                _showLoadingSpinner.value = true
+                val sessionManager = SessionManager(getApplication())
+                when (val publicacionesResponse =
+                    sessionManager.getUserId()?.let {
+                        BookBnBApi(getApplication()).getPublicationsByAnfitrionId(
+                            it
+                        )
+                    }) {
+                    is ResultWrapper.NetworkError -> showSnackbarErrorMessage(
+                        getApplication<Application>().getString(
+                            R.string.network_error_msg
+                        )
                     )
-                }) {
-                is ResultWrapper.NetworkError -> showSnackbarErrorMessage(
-                    getApplication<Application>().getString(
-                        R.string.network_error_msg
-                    )
-                )
-                is ResultWrapper.GenericError -> showGenericError(publicacionesResponse)
-                is ResultWrapper.Success -> _publicaciones.value = publicacionesResponse.value
+                    is ResultWrapper.GenericError -> showGenericError(publicacionesResponse)
+                    is ResultWrapper.Success -> _publicaciones.value = publicacionesResponse.value
+                }
+            }
+            finally {
+                _showLoadingSpinner.value = false
             }
         }
     }

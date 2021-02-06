@@ -107,5 +107,15 @@
     <string name="responder_consulta_txt">Responder Consulta</string>
     <string name="enviar_mensaje_directo_btn">Enviar Mensaje Directo</string>
     <string name="enviar_mensaje_directo_desc">¿Preferís una conversación privada? ¡Enviale un mensaje directo!</string>
+    <string name="reservas_label">Reservas</string>
+    <string name="ver_reservas_lbl">Ver reservas</string>
+    <string name="listaReservas_lbl">Reservas</string>
+    <string name="reservas_aceptas_tab_title">Aceptadas</string>
+    <string name="reservas_pendientes_tab_title">Pendientes</string>
+    <string name="confirmar_reserva_aceptada">¿Esta seguro de que desea aceptar la reserva {}?</string>
+    <string name="reserva_aceptada">Reserva {} aceptada</string>
+    <string name="aceptar_reserva_btn">Aceptar</string>
+    <string name="reserva_aceptada_format">¡Hecho! La reserva con código %s fue aceptada.</string>
+    <string name="aceptar_reserva_format">¿Está seguro que desea aceptar la reserva %s? Esto rechazará todas las pendientes que se solapen con la aceptada.</string>
 
 </resources>
