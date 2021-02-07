@@ -15,10 +15,10 @@ import com.example.bookbnb.viewmodels.ChatViewModel
 import com.example.bookbnb.viewmodels.ChatViewModelViewModelFactory
 
 class ChatFragment : BaseFragment() {
-
+/*
     private val mFirebaseAdapter: FirebaseRecyclerAdapter<FirebaseChatMessage, MessageViewHolder>? =
         null
-
+*/
     private val viewModel: ChatViewModel by lazy {
         val activity = requireNotNull(this.activity) {
             "You can only access the viewModel after onActivityCreated()"

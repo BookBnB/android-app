@@ -31,12 +31,6 @@ class ListaReservasViewModel(application: Application) : BaseAndroidViewModel(ap
     val ultimaReservaAceptada: MutableLiveData<String>
         get() = _ultimaReservaAceptada
 
-    fun setReservasByEstado(estadoReserva: String, reservas: List<Reserva>){
-        _reservas.value = reservas.filter { it.estado == estadoReserva }
-        val idUsuarios = reservas.map{it.huespedId}
-        onGetUserInfoById(idUsuarios)
-    }
-
     fun confirmarReserva() {
         viewModelScope.launch {
             val sessionManager = SessionManager(getApplication())
@@ -65,6 +59,7 @@ class ListaReservasViewModel(application: Application) : BaseAndroidViewModel(ap
 
     fun onGetReservas(publicacionId: String, estadoReserva: String) {
         viewModelScope.launch {
+            var reservasAux: List<Reserva> = listOf <Reserva>()
             when (val reservasResponse =
                     BookBnBApi(getApplication()).getReservasByPublicacionId(
                         publicacionId
@@ -75,34 +70,40 @@ class ListaReservasViewModel(application: Application) : BaseAndroidViewModel(ap
                     )
                 )
                 is ResultWrapper.GenericError -> showGenericError(reservasResponse)
-                is ResultWrapper.Success -> setReservasByEstado(estadoReserva, reservasResponse.value)
-            }
-        }
-    }
-
-    fun setNombreHuesped(usuarios: List<Usuario>) {
-        val usuariosById = usuarios.map { it.id to it }.toMap()
-
-        reservas.value?.forEach { it.nombreHuesped = usuariosById[it.huespedId]?.name + " " +  usuariosById[it.huespedId]?.surname}
-
-    }
-
-    fun onGetUserInfoById(idUsuarios: List<String>) {
-        viewModelScope.launch {
-            if (idUsuarios.isNotEmpty()) {
-                val sessionManager = SessionManager(getApplication())
-                when (val usuariosResponse =
-                    BookBnBApi(getApplication()).getUsersInfoById(idUsuarios)) {
-                    is ResultWrapper.NetworkError -> showSnackbarErrorMessage(
-                        getApplication<Application>().getString(
-                            R.string.network_error_msg
-                        )
-                    )
-                    is ResultWrapper.GenericError -> showGenericError(usuariosResponse)
-                    is ResultWrapper.Success -> setNombreHuesped(usuariosResponse.value)
+                is ResultWrapper.Success -> {
+                    reservasAux = reservasResponse.value.filter { it.estado == estadoReserva }
                 }
             }
+            if (reservasAux.isNotEmpty()){
+                val idUsuarios = reservasAux.map { it.huespedId }
+                val usuarios = getNombresUsuarios(idUsuarios)
+                setNombreHuespedes(usuarios, reservasAux)
+            }
+            reservas.value = reservasAux
         }
+    }
+
+    private suspend fun getNombresUsuarios(idUsuarios: List<String>) : List<Usuario>
+    {
+        var usuarios: List<Usuario> = listOf<Usuario>()
+        if (idUsuarios.isNotEmpty()) {
+            when (val usuariosResponse =
+                BookBnBApi(getApplication()).getUsersInfoById(idUsuarios.distinct())) {
+                is ResultWrapper.NetworkError -> showSnackbarErrorMessage(
+                    getApplication<Application>().getString(
+                        R.string.network_error_msg
+                    )
+                )
+                is ResultWrapper.GenericError -> showGenericError(usuariosResponse)
+                is ResultWrapper.Success -> usuarios = usuariosResponse.value
+            }
+        }
+        return usuarios
+    }
+
+    fun setNombreHuespedes(usuarios: List<Usuario>, reservasAux: List<Reserva>) {
+        val usuariosById = usuarios.map { it.id to it }.toMap()
+        reservasAux.forEach { it.nombreHuesped = usuariosById[it.huespedId]?.name + " " +  usuariosById[it.huespedId]?.surname}
     }
 
     fun onDoneShowingConfirmacionReserva() {
