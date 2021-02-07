@@ -57,23 +57,9 @@ class ListaReservasViewModel(application: Application) : BaseAndroidViewModel(ap
         ultimaReservaAceptada.value = null
     }
 
-    fun onGetReservas(publicacionId: String, estadoReserva: String) {
+    fun getReservasByEstado(publicacionId: String, estadoReserva: String) {
         viewModelScope.launch {
-            var reservasAux: List<Reserva> = listOf <Reserva>()
-            when (val reservasResponse =
-                    BookBnBApi(getApplication()).getReservasByPublicacionId(
-                        publicacionId
-                    )) {
-                is ResultWrapper.NetworkError -> showSnackbarErrorMessage(
-                    getApplication<Application>().getString(
-                        R.string.network_error_msg
-                    )
-                )
-                is ResultWrapper.GenericError -> showGenericError(reservasResponse)
-                is ResultWrapper.Success -> {
-                    reservasAux = reservasResponse.value.filter { it.estado == estadoReserva }
-                }
-            }
+            val reservasAux: List<Reserva> = getReservasList(publicacionId, estadoReserva)
             if (reservasAux.isNotEmpty()){
                 val idUsuarios = reservasAux.map { it.huespedId }
                 val usuarios = getNombresUsuarios(idUsuarios)
@@ -81,6 +67,28 @@ class ListaReservasViewModel(application: Application) : BaseAndroidViewModel(ap
             }
             reservas.value = reservasAux
         }
+    }
+
+    private suspend fun getReservasList(
+        publicacionId: String,
+        estadoReserva: String
+    ): List<Reserva> {
+        var reservasAux: List<Reserva> = listOf<Reserva>()
+        when (val reservasResponse =
+            BookBnBApi(getApplication()).getReservasByPublicacionId(
+                publicacionId
+            )) {
+            is ResultWrapper.NetworkError -> showSnackbarErrorMessage(
+                getApplication<Application>().getString(
+                    R.string.network_error_msg
+                )
+            )
+            is ResultWrapper.GenericError -> showGenericError(reservasResponse)
+            is ResultWrapper.Success -> {
+                reservasAux = reservasResponse.value.filter { it.estado == estadoReserva }
+            }
+        }
+        return reservasAux
     }
 
     private suspend fun getNombresUsuarios(idUsuarios: List<String>) : List<Usuario>
