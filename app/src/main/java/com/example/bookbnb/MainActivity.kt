@@ -42,7 +42,7 @@ class MainActivity : AppCompatActivity() {
         }
         else{
             createFirebaseUser(sessionManager.getUserId()!!)
-            if (sessionManager.getUserRole() == "host"){
+            if (sessionManager.isUserHost()){
                 val intent = Intent(this, AnfitrionActivity::class.java)
                 startActivity(intent)
             }
@@ -55,6 +55,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun createFirebaseUser(userId: String){
+        val sessionMgr = SessionManager(this)
         lifecycleScope.launch {
             when (val userResponse = BookBnBApi(application).getUser(userId)) {
                 /*is ResultWrapper.NetworkError -> showSnackbarErrorMessage(getApplication<Application>().getString(R.string.network_error_msg))
@@ -62,6 +63,7 @@ class MainActivity : AppCompatActivity() {
                 is ResultWrapper.Success -> {
                     val firebaseService = FirebaseDBService()
                     val user: User = userResponse.value
+                    sessionMgr.saveUserFullName(user.getFullName())
                     firebaseService.createUserIfNotExists(
                         userId,
                         user.getFullName(),

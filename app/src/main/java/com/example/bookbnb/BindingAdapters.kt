@@ -17,6 +17,8 @@ import androidx.databinding.InverseBindingListener
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.example.bookbnb.adapters.ChatMessagesRecyclerViewAdapter
+import com.example.bookbnb.adapters.ChatsRecyclerViewAdapter
 import com.example.bookbnb.adapters.PreguntasRecyclerViewAdapter
 import com.example.bookbnb.models.CustomLocation
 import com.example.bookbnb.models.Pregunta
@@ -24,6 +26,8 @@ import com.example.bookbnb.models.Publicacion
 import com.example.bookbnb.models.Reserva
 import com.example.bookbnb.models.Reserva.Companion.ESTADO_ACEPTADA
 import com.example.bookbnb.models.Reserva.Companion.ESTADO_PENDIENTE
+import com.example.bookbnb.models.chat.FirebaseChat
+import com.example.bookbnb.models.chat.FirebaseChatMessage
 import com.example.bookbnb.ui.publicaciones.PublicacionRecyclerViewAdapter
 import com.example.bookbnb.ui.reservas.ReservaRecyclerViewAdapter
 import com.google.android.material.slider.RangeSlider
@@ -63,6 +67,22 @@ fun bindRecyclerView(recyclerView: RecyclerView,
 fun bindReservaRecyclerView(recyclerView: RecyclerView,
                      data: List<Reserva>?) {
     val adapter = recyclerView.adapter as ReservaRecyclerViewAdapter
+    adapter.submitList(data)
+}
+
+@BindingAdapter("messagesListData")
+fun bindMessagesRecyclerView(recyclerView: RecyclerView,
+                              data: List<FirebaseChatMessage>?) {
+    val adapter = recyclerView.adapter as ChatMessagesRecyclerViewAdapter
+    adapter.submitList(data)
+    data?.count()?.let { recyclerView.scrollToPosition(it.minus(1)) }
+    //TODO: Solve full reloading of list with addChildHandler?
+}
+
+@BindingAdapter("chatsListData")
+fun bindChatsRecyclerView(recyclerView: RecyclerView,
+                             data: List<FirebaseChat>?) {
+    val adapter = recyclerView.adapter as ChatsRecyclerViewAdapter
     adapter.submitList(data)
 }
 

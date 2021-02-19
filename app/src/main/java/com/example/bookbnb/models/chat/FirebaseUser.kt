@@ -1,4 +1,4 @@
-package com.example.bookbnb.models
+package com.example.bookbnb.models.chat
 
 import com.google.firebase.database.IgnoreExtraProperties
 

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="viewModel"
+            type="com.example.bookbnb.viewmodels.ChatsViewModel" />
+    </data>
+<androidx.recyclerview.widget.RecyclerView
+    android:id="@+id/chatsList"
+    android:name="com.example.bookbnb.ui.chat.FireBaseChatsFragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layoutManager="LinearLayoutManager"
+    app:chatsListData="@{viewModel.chats}"
+    tools:context=".ui.chat.ChatsFragment"
+    tools:listitem="@layout/chat_item" />
+</layout>
