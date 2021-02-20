@@ -47,7 +47,6 @@ class FirebaseDBService {
     fun updateChat(huespedUserId: String, anfitrionUserId: String){
         database.child(USERS_KEY).addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onCancelled(error: DatabaseError) {
-                TODO("Not yet implemented")
             }
 
             override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -56,16 +55,14 @@ class FirebaseDBService {
                 val userAnfitrion =
                     dataSnapshot.child(anfitrionUserId).getValue(FirebaseUser::class.java)
                 val chatId = getChatId(huespedUserId, anfitrionUserId)
-                val huespedChat = FirebaseChat(
+                val chat = FirebaseChat(
                     chatId,
-                    userAnfitrion?.name
+                    userHuesped?.name,
+                    userAnfitrion?.name,
+                    huespedUserId,
+                    anfitrionUserId
                 )
-                val anfitrionChat = FirebaseChat(
-                    chatId,
-                    userHuesped?.name
-                )
-                database.child(CHATS_KEY).child(chatId).setValue(huespedChat)
-                database.child(CHATS_KEY).child(chatId).setValue(anfitrionChat)
+                database.child(CHATS_KEY).child(chatId).setValue(chat)
             }
         })
     }

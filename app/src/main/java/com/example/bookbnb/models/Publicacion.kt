@@ -27,5 +27,7 @@ class Publicacion(var id: String? = null,
                   var cantidadDeHuespedes: Int,
                   var imagenes: List<CustomImage>,
                   var tipoDeAlojamiento: String,
-                  var anfitrion: Anfitrion? = null
+                  var anfitrion: Anfitrion? = null,
+                  val estado: String? = null,
+                  var calificacion: Float? = null
 )

@@ -8,8 +8,8 @@ import com.example.bookbnb.models.chat.FirebaseChat
 import com.example.bookbnb.models.chat.FirebaseChatMessage
 
 class ChatsViewModel(application: Application) : BaseAndroidViewModel(application) {
-    private val _chats = MutableLiveData<List<FirebaseChat>>(mutableListOf<FirebaseChat>())
-    val chats: MutableLiveData<List<FirebaseChat>>
+    private val _chats = MutableLiveData<List<FirebaseChatVM>>(mutableListOf<FirebaseChatVM>())
+    val chats: MutableLiveData<List<FirebaseChatVM>>
         get() = _chats
 }
 

@@ -31,7 +31,7 @@ class DetallePublicacionHuespedFragment : BaseFragment() {
         val activity = requireNotNull(this.activity) {
             "You can only access the viewModel after onActivityCreated()"
         }
-        ViewModelProvider(activity, DetallePublicacionHuespedViewModelFactory(activity.application))
+        ViewModelProvider(this, DetallePublicacionHuespedViewModelFactory(activity.application))
             .get(DetallePublicacionHuespedViewModel::class.java)
     }
 

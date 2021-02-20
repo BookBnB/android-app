@@ -29,7 +29,7 @@
             android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
             android:textColor="@color/design_default_color_error"
             android:visibility="@{resultadosBusquedaViewModel.publicaciones.size() == 0 ? View.VISIBLE : View.GONE}"
-            android:text="¡Oops! No se encontraron alojamientos publicados con esos criterios... ¿Quizás es el destino que quiere que vaya a otro destino?"
+            android:text="@string/emptyBusquedaText"
             tools:visibility="gone">
 
         </com.google.android.material.textview.MaterialTextView>

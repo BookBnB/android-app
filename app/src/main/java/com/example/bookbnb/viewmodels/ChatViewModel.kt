@@ -16,8 +16,8 @@ class ChatViewModel(application: Application, var huespedId: String, var anfitri
     val messageText: MutableLiveData<String>
         get() = _messageText
 
-    private val _messages = MutableLiveData<List<FirebaseChatMessage>>(mutableListOf<FirebaseChatMessage>())
-    val messages: MutableLiveData<List<FirebaseChatMessage>>
+    private val _messages = MutableLiveData<MutableList<FirebaseChatMessage>>(mutableListOf<FirebaseChatMessage>())
+    val messages: MutableLiveData<MutableList<FirebaseChatMessage>>
         get() = _messages
 
     fun onSendClick(){

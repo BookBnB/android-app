@@ -101,4 +101,22 @@
             android:name="publicacionId"
             app:argType="string" />
     </fragment>
+    <fragment
+        android:id="@+id/chats_fragment"
+        android:name="com.example.bookbnb.ui.chat.ChatsFragment"
+        android:label="Chats">
+        <action
+            android:id="@+id/action_chats_to_chatFragment"
+            app:destination="@id/chatFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/chatFragment"
+        android:name="com.example.bookbnb.ui.chat.ChatFragment"
+        android:label="Chat" >
+        <argument
+            android:name="userHuespedId"
+            app:argType="string" />
+        <argument android:name="userAnfitrionId"
+            app:argType="string" />
+    </fragment>
 </navigation>

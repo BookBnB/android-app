@@ -1,6 +1,7 @@
 package com.example.bookbnb.ui.chat
 
 import android.os.Bundle
+import android.se.omapi.Session
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,6 +21,7 @@ import com.example.bookbnb.ui.BaseFragment
 import com.example.bookbnb.utils.SessionManager
 import com.example.bookbnb.viewmodels.ChatsViewModel
 import com.example.bookbnb.viewmodels.ChatsViewModelFactory
+import com.example.bookbnb.viewmodels.FirebaseChatVM
 import com.google.firebase.database.*
 import com.google.firebase.database.ktx.database
 import com.google.firebase.database.ktx.getValue
@@ -72,12 +74,20 @@ class ChatsFragment() : BaseFragment() {
 
         val sessionMgr = SessionManager(requireContext())
         val userId = sessionMgr.getUserId()
-        chatsReference = Firebase.database.reference
-                .child("chats").orderByKey().startAt(userId).endAt(userId + "\uf8ff")
+        chatsReference = if (sessionMgr.isUserHost()){
+            Firebase.database.reference
+                .child("chats").orderByChild("userAnfitrionId").startAt(userId).endAt(userId + "\uf8ff")
+        } else{
+            Firebase.database.reference
+                .child("chats").orderByChild("userHuespedId").startAt(userId).endAt(userId + "\uf8ff")
+        }
         val chatsListener = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 val chats = dataSnapshot.getValue<HashMap<String, FirebaseChat>>()
-                viewModel.chats.value = chats?.map{c -> c.value}
+                viewModel.chats.value = chats?.map{c ->
+                    val chatTitle = if (sessionMgr.isUserHost()) c.value.userHuespedName else c.value.userAnfitrionName
+                    FirebaseChatVM(c.value.chatId, chatTitle)
+                }
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
@@ -98,7 +108,7 @@ class ChatsFragment() : BaseFragment() {
         binding.chatsList.adapter = ChatsRecyclerViewAdapter(ChatClickListener { chatId ->
             val userIds = FirebaseDBService().getUserIdsFromChatId(chatId)
             NavHostFragment.findNavController(this).navigate(
-                ChatsFragmentDirections.actionChatsHuespedToChatFragment(userIds[0], userIds[1])
+                ChatsFragmentDirections.actionChatsToChatFragment(userIds[0], userIds[1])
             )
         })
         binding.chatsList.addItemDecoration(

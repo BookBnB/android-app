@@ -14,15 +14,15 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import com.example.bookbnb.R
 import com.example.bookbnb.adapters.ChatMessagesRecyclerViewAdapter
 import com.example.bookbnb.databinding.FragmentChatBinding
+import com.example.bookbnb.models.chat.FirebaseChat
 import com.example.bookbnb.models.chat.FirebaseChatMessage
 import com.example.bookbnb.network.FirebaseDBService
 import com.example.bookbnb.ui.BaseFragment
+import com.example.bookbnb.utils.SessionManager
+import com.example.bookbnb.utils.notifyObserver
 import com.example.bookbnb.viewmodels.ChatViewModel
 import com.example.bookbnb.viewmodels.ChatViewModelViewModelFactory
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.*
 import com.google.firebase.database.ktx.database
 import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
@@ -36,7 +36,7 @@ class ChatFragment : BaseFragment() {
         val activity = requireNotNull(this.activity) {
             "You can only access the viewModel after onActivityCreated()"
         }
-        ViewModelProvider(activity, ChatViewModelViewModelFactory(activity.application,
+        ViewModelProvider(this, ChatViewModelViewModelFactory(activity.application,
             requireArguments().getString("userHuespedId")!!,
             requireArguments().getString("userAnfitrionId")!!))
             .get(ChatViewModel::class.java)
@@ -44,9 +44,8 @@ class ChatFragment : BaseFragment() {
 
     private lateinit var binding: FragmentChatBinding
 
-    private lateinit var messagesReference: DatabaseReference
-
-    private var messagesListener: ValueEventListener? = null
+    private lateinit var childMessagesReference: DatabaseReference
+    private var childListener: ChildEventListener? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -73,28 +72,47 @@ class ChatFragment : BaseFragment() {
         val firebaseDbSvc = FirebaseDBService()
         firebaseDbSvc.updateChat(viewModel.huespedId, viewModel.anfitrionId)
 
-        messagesReference = Firebase.database.reference
-            .child("messages").child(viewModel.chatId)
+        childMessagesReference = Firebase.database.reference.child("messages").child(viewModel.chatId)
 
-        val messagesListener = object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                val messages = dataSnapshot.getValue<HashMap<String, FirebaseChatMessage>>()
-                viewModel.messages.value = messages?.map{m -> m.value }?.sortedBy { m -> Date(m.timestamp["time"] as Long) }
+        val childMessagesListener = object : ChildEventListener{
+            override fun onCancelled(error: DatabaseError) {
             }
 
-            override fun onCancelled(databaseError: DatabaseError) {
-                // Getting Post failed, log a message
-                // [START_EXCLUDE]
-                Toast.makeText(requireContext(), "Failed to load post.",
-                    Toast.LENGTH_SHORT).show()
-                // [END_EXCLUDE]
+            override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {
             }
+
+            override fun onChildChanged(dataSnapshot: DataSnapshot, previousChildName: String?) {
+            }
+
+            override fun onChildAdded(dataSnapshot: DataSnapshot, previousChildName: String?) {
+                viewModel.messages.value!!.add(dataSnapshot.getValue<FirebaseChatMessage>()!!)
+                viewModel.messages.notifyObserver()
+            }
+
+            override fun onChildRemoved(snapshot: DataSnapshot) {
+                TODO("Not yet implemented")
+            }
+
         }
-        messagesReference.addValueEventListener(messagesListener)
-        this.messagesListener = messagesListener
+        childMessagesReference.addChildEventListener(childMessagesListener)
+        this.childListener = childMessagesListener
+
+
+        Firebase.database.reference.child("chats").child(viewModel.chatId).addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onCancelled(error: DatabaseError) {
+                TODO("Not yet implemented")
+            }
+
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                val sessMgr = SessionManager(requireContext())
+                (requireActivity() as? AppCompatActivity)?.supportActionBar?.title = if (sessMgr.isUserHost())
+                    dataSnapshot.getValue<FirebaseChat>()!!.userHuespedName
+                else
+                    dataSnapshot.getValue<FirebaseChat>()!!.userAnfitrionName
+            }
+        })
 
         binding.messageRecyclerView.adapter = ChatMessagesRecyclerViewAdapter()
-        (requireActivity() as? AppCompatActivity)?.supportActionBar?.title = viewModel.chatId
 
         return binding.root
     }
@@ -102,11 +120,10 @@ class ChatFragment : BaseFragment() {
     override fun onStop() {
         super.onStop()
 
-        // Remove post value event listener
-        messagesListener?.let {
-            messagesReference.removeEventListener(it)
+        childListener?.let {
+            childMessagesReference.removeEventListener(it)
         }
-
+        hideKeyboard()
         // Clean up comments listener
         //adapter?.cleanupListener()
     }

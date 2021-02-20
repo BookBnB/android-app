@@ -118,5 +118,7 @@
     <string name="reserva_aceptada_format">¡Hecho! La reserva con código %s fue aceptada.</string>
     <string name="aceptar_reserva_format">¿Está seguro que desea aceptar la reserva %s? Esto rechazará todas las pendientes que se solapen con la aceptada.</string>
     <string name="messages_lbl">Mensajes</string>
+    <string name="emptyBusquedaText">¡Oops! No se encontraron alojamientos publicados con esos criterios... ¿Quizás es el destino que quiere que vaya a otro destino?</string>
+    <string name="emptyChatsText">Todavia no hay conversaciones mediante mensajes directos...</string>
 
 </resources>

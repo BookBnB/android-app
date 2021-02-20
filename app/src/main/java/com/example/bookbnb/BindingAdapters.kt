@@ -30,6 +30,7 @@ import com.example.bookbnb.models.chat.FirebaseChat
 import com.example.bookbnb.models.chat.FirebaseChatMessage
 import com.example.bookbnb.ui.publicaciones.PublicacionRecyclerViewAdapter
 import com.example.bookbnb.ui.reservas.ReservaRecyclerViewAdapter
+import com.example.bookbnb.viewmodels.FirebaseChatVM
 import com.google.android.material.slider.RangeSlider
 import com.google.android.material.textfield.TextInputLayout
 import java.text.SimpleDateFormat
@@ -75,13 +76,13 @@ fun bindMessagesRecyclerView(recyclerView: RecyclerView,
                               data: List<FirebaseChatMessage>?) {
     val adapter = recyclerView.adapter as ChatMessagesRecyclerViewAdapter
     adapter.submitList(data)
-    data?.count()?.let { recyclerView.scrollToPosition(it.minus(1)) }
-    //TODO: Solve full reloading of list with addChildHandler?
+    recyclerView.adapter!!.notifyDataSetChanged()
+    recyclerView.scrollToPosition(data!!.size - 1)
 }
 
 @BindingAdapter("chatsListData")
 fun bindChatsRecyclerView(recyclerView: RecyclerView,
-                             data: List<FirebaseChat>?) {
+                             data: List<FirebaseChatVM>?) {
     val adapter = recyclerView.adapter as ChatsRecyclerViewAdapter
     adapter.submitList(data)
 }

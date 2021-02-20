@@ -11,7 +11,7 @@
     </group>
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/chats_huesped"
+            android:id="@+id/chats_fragment"
             android:icon="@drawable/ic_email_24"
             android:title="@string/messages_lbl" />
     </group>

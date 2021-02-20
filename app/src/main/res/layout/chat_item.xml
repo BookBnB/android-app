@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
     <data>
         <variable name="property"
-            type="com.example.bookbnb.models.chat.FirebaseChat" />
+            type="com.example.bookbnb.viewmodels.FirebaseChatVM" />
         <variable name="clickListener"
             type="com.example.bookbnb.adapters.ChatClickListener" />
     </data>
