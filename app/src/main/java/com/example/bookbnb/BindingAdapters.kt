@@ -17,6 +17,8 @@ import androidx.databinding.InverseBindingListener
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.example.bookbnb.adapters.ChatMessagesRecyclerViewAdapter
+import com.example.bookbnb.adapters.ChatsRecyclerViewAdapter
 import com.example.bookbnb.adapters.PreguntasRecyclerViewAdapter
 import com.example.bookbnb.models.CustomLocation
 import com.example.bookbnb.models.Pregunta
@@ -24,8 +26,11 @@ import com.example.bookbnb.models.Publicacion
 import com.example.bookbnb.models.Reserva
 import com.example.bookbnb.models.Reserva.Companion.ESTADO_ACEPTADA
 import com.example.bookbnb.models.Reserva.Companion.ESTADO_PENDIENTE
+import com.example.bookbnb.models.chat.FirebaseChat
+import com.example.bookbnb.models.chat.FirebaseChatMessage
 import com.example.bookbnb.ui.publicaciones.PublicacionRecyclerViewAdapter
 import com.example.bookbnb.ui.reservas.ReservaRecyclerViewAdapter
+import com.example.bookbnb.viewmodels.FirebaseChatVM
 import com.google.android.material.slider.RangeSlider
 import com.google.android.material.textfield.TextInputLayout
 import java.text.SimpleDateFormat
@@ -63,6 +68,22 @@ fun bindRecyclerView(recyclerView: RecyclerView,
 fun bindReservaRecyclerView(recyclerView: RecyclerView,
                      data: List<Reserva>?) {
     val adapter = recyclerView.adapter as ReservaRecyclerViewAdapter
+    adapter.submitList(data)
+}
+
+@BindingAdapter("messagesListData")
+fun bindMessagesRecyclerView(recyclerView: RecyclerView,
+                              data: List<FirebaseChatMessage>?) {
+    val adapter = recyclerView.adapter as ChatMessagesRecyclerViewAdapter
+    adapter.submitList(data)
+    recyclerView.adapter!!.notifyDataSetChanged()
+    recyclerView.scrollToPosition(data!!.size - 1)
+}
+
+@BindingAdapter("chatsListData")
+fun bindChatsRecyclerView(recyclerView: RecyclerView,
+                             data: List<FirebaseChatVM>?) {
+    val adapter = recyclerView.adapter as ChatsRecyclerViewAdapter
     adapter.submitList(data)
 }
 

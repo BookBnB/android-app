@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -41,7 +40,7 @@ class ListaReservasFragment(val publicacionId: String, val estadoReserva: String
         binding.viewModel = viewModel
 
         setReservasList(binding)
-        publicacionId.let { viewModel.onGetReservas(it, estadoReserva) }
+        publicacionId.let { viewModel.getReservasByEstado(it, estadoReserva) }
 
         setSnackbarMessageObserver(viewModel, binding.root)
 

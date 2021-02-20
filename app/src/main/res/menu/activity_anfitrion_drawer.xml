@@ -12,5 +12,9 @@
             android:id="@+id/nav_publicaciones"
             android:icon="@drawable/ic_book_24"
             android:title="@string/publicaciones_label" />
+        <item
+            android:id="@+id/chats_fragment"
+            android:icon="@drawable/ic_email_24"
+            android:title="@string/messages_lbl" />
     </group>
 </menu>

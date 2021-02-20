@@ -5,21 +5,22 @@
     <data>
         <import type="android.view.View"/>
         <variable
-            name="resultadosBusquedaViewModel"
-            type="com.example.bookbnb.viewmodels.ResultadosBusquedaViewModel" />
+            name="viewModel"
+            type="com.example.bookbnb.viewmodels.ChatsViewModel" />
     </data>
+
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/resultados_busqueda"
-            android:name="com.example.bookbnb.ui.busqueda.ResultadosBusquedaFragment"
+            android:id="@+id/chatsList"
+            android:name="com.example.bookbnb.ui.chat.FireBaseChatsFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layoutManager="LinearLayoutManager"
-            app:publicacionesListData="@{resultadosBusquedaViewModel.publicaciones}"
-            tools:context=".ui.busqueda.ResultadosBusquedaFragment"
-            tools:listitem="@layout/publicacion_item" />
+            app:chatsListData="@{viewModel.chats}"
+            tools:context=".ui.chat.ChatsFragment"
+            tools:listitem="@layout/chat_item" />
         <com.google.android.material.textview.MaterialTextView
             android:layout_margin="@dimen/margin_normal"
             android:layout_width="match_parent"
@@ -28,10 +29,12 @@
             android:textAlignment="center"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
             android:textColor="@color/design_default_color_error"
-            android:visibility="@{resultadosBusquedaViewModel.publicaciones.size() == 0 ? View.VISIBLE : View.GONE}"
-            android:text="@string/emptyBusquedaText"
+            android:visibility="@{viewModel.chats.size() == 0 ? View.VISIBLE : View.GONE}"
+            android:text="@string/emptyChatsText"
             tools:visibility="gone">
 
         </com.google.android.material.textview.MaterialTextView>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+
 </layout>

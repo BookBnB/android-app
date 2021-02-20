@@ -16,6 +16,7 @@ class SessionManager (context: Context) {
 
     companion object {
         const val USER_TOKEN = "user_token"
+        const val USER_FULL_NAME = "user_full_name"
     }
 
     fun logout(activity: Activity){
@@ -50,5 +51,31 @@ class SessionManager (context: Context) {
         val token = fetchAuthToken() ?: return null
         val jwtToken = JWT(token)
         return jwtToken.getClaim("id").asString()
+    }
+
+    fun getUserEmail(): String?{
+        val token = fetchAuthToken() ?: return null
+        val jwtToken = JWT(token)
+        return jwtToken.getClaim("email").asString()
+    }
+
+    fun getUserRole(): String?{
+        val token = fetchAuthToken() ?: return null
+        val jwtToken = JWT(token)
+        return jwtToken.getClaim("role").asString()
+    }
+
+    fun saveUserFullName(name: String) {
+        val editor = prefs.edit()
+        editor.putString(USER_FULL_NAME, name)
+        editor.apply()
+    }
+
+    fun getUserFullName() : String?{
+        return prefs.getString(USER_FULL_NAME, null)
+    }
+
+    fun isUserHost() : Boolean{
+        return getUserRole() == "host"
     }
 }

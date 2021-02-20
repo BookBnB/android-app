@@ -105,6 +105,8 @@
     <string name="no_hay_preguntas_anfitrion">Por el momento no hay preguntas para esta publicación</string>
     <string name="responder_pregunta_txt">Responder</string>
     <string name="responder_consulta_txt">Responder Consulta</string>
+    <string name="enviar_mensaje_directo_btn">Enviar Mensaje Directo</string>
+    <string name="enviar_mensaje_directo_desc">¿Preferís una conversación privada? ¡Enviale un mensaje directo!</string>
     <string name="reservas_label">Reservas</string>
     <string name="ver_reservas_lbl">Ver reservas</string>
     <string name="listaReservas_lbl">Reservas</string>
@@ -115,5 +117,8 @@
     <string name="aceptar_reserva_btn">Aceptar</string>
     <string name="reserva_aceptada_format">¡Hecho! La reserva con código %s fue aceptada.</string>
     <string name="aceptar_reserva_format">¿Está seguro que desea aceptar la reserva %s? Esto rechazará todas las pendientes que se solapen con la aceptada.</string>
+    <string name="messages_lbl">Mensajes</string>
+    <string name="emptyBusquedaText">¡Oops! No se encontraron alojamientos publicados con esos criterios... ¿Quizás es el destino que quiere que vaya a otro destino?</string>
+    <string name="emptyChatsText">Todavia no hay conversaciones mediante mensajes directos...</string>
 
 </resources>
