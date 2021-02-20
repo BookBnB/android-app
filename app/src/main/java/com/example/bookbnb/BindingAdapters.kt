@@ -29,6 +29,7 @@ import com.example.bookbnb.models.Reserva.Companion.ESTADO_PENDIENTE
 import com.example.bookbnb.models.chat.FirebaseChat
 import com.example.bookbnb.models.chat.FirebaseChatMessage
 import com.example.bookbnb.ui.publicaciones.PublicacionRecyclerViewAdapter
+import com.example.bookbnb.ui.reservas.HuespedReservasRecyclerViewAdapter
 import com.example.bookbnb.ui.reservas.ReservaRecyclerViewAdapter
 import com.example.bookbnb.viewmodels.FirebaseChatVM
 import com.google.android.material.slider.RangeSlider
@@ -68,6 +69,13 @@ fun bindRecyclerView(recyclerView: RecyclerView,
 fun bindReservaRecyclerView(recyclerView: RecyclerView,
                      data: List<Reserva>?) {
     val adapter = recyclerView.adapter as ReservaRecyclerViewAdapter
+    adapter.submitList(data)
+}
+
+@BindingAdapter("huespedReservasListData")
+fun bindHuespedReservaRecyclerView(recyclerView: RecyclerView,
+                            data: List<Reserva>?) {
+    val adapter = recyclerView.adapter as HuespedReservasRecyclerViewAdapter
     adapter.submitList(data)
 }
 

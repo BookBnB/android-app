@@ -52,7 +52,7 @@ class AnfitrionActivity : AppCompatActivity() {
             // Passing each menu ID as a set of Ids because each
             // menu should be considered as top level destinations.
             appBarConfiguration = AppBarConfiguration(setOf(
-                R.id.nav_home, R.id.nav_publicaciones), drawerLayout)
+                R.id.nav_home, R.id.nav_publicaciones, R.id.chats_fragment), drawerLayout)
             setupActionBarWithNavController(navController, appBarConfiguration)
             navView.setupWithNavController(navController)
 

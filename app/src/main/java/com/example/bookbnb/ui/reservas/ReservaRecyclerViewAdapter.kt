@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
+import com.example.bookbnb.databinding.HuespedReservaItemBinding
 import com.example.bookbnb.databinding.ReservaItemBinding
 import com.example.bookbnb.models.Publicacion
 import com.example.bookbnb.models.Reserva
@@ -25,6 +26,39 @@ class ReservaRecyclerViewAdapter(val clickListener: ReservaListener) :
     }
 
     class ReservaViewHolder(private var binding: ReservaItemBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(reserva: Reserva, clickListener: ReservaListener) {
+            binding.property = reserva
+            binding.aceptarListener = clickListener
+            binding.executePendingBindings()
+        }
+    }
+
+    companion object DiffCallback : DiffUtil.ItemCallback<Reserva>() {
+        override fun areItemsTheSame(oldItem: Reserva, newItem: Reserva): Boolean {
+            return oldItem === newItem
+        }
+
+        override fun areContentsTheSame(oldItem: Reserva, newItem: Reserva): Boolean {
+            return oldItem.id == newItem.id
+        }
+    }
+}
+
+class HuespedReservasRecyclerViewAdapter(val clickListener: ReservaListener) :
+    ListAdapter<Reserva, HuespedReservasRecyclerViewAdapter.HuespedReservaViewHolder>(DiffCallback) {
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HuespedReservaViewHolder {
+        return HuespedReservaViewHolder(
+            HuespedReservaItemBinding.inflate(
+                LayoutInflater.from(parent.context), parent, false))
+    }
+
+    override fun onBindViewHolder(holder: HuespedReservaViewHolder, position: Int) {
+        val reserva = getItem(position)
+        holder.bind(reserva, clickListener)
+    }
+
+    class HuespedReservaViewHolder(private var binding: HuespedReservaItemBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(reserva: Reserva, clickListener: ReservaListener) {
             binding.property = reserva
             binding.aceptarListener = clickListener

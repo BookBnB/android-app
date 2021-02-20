@@ -120,5 +120,6 @@
     <string name="messages_lbl">Mensajes</string>
     <string name="emptyBusquedaText">¡Oops! No se encontraron alojamientos publicados con esos criterios... ¿Quizás es el destino que quiere que vaya a otro destino?</string>
     <string name="emptyChatsText">Todavia no hay conversaciones mediante mensajes directos...</string>
+    <string name="mis_reservas_text">Mis Reservas</string>
 
 </resources>

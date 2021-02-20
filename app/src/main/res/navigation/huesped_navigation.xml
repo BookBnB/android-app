@@ -102,4 +102,8 @@
             android:id="@+id/action_chats_to_chatFragment"
             app:destination="@id/chatFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/huesped_reservas_fragment"
+        android:name="com.example.bookbnb.ui.reservas.HuespedReservasFragment"
+        android:label="Mis Reservas" />
 </navigation>
