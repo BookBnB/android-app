@@ -6,13 +6,22 @@ import androidx.lifecycle.*
 import com.example.bookbnb.R
 import com.example.bookbnb.models.Coordenada
 import com.example.bookbnb.models.CustomLocation
+import com.example.bookbnb.models.Publicacion
 import com.example.bookbnb.network.BookBnBApi
 import com.example.bookbnb.network.ResultWrapper
 import kotlinx.coroutines.launch
 import java.lang.Exception
+import java.util.*
 import kotlin.math.round
 
 class BusquedaViewModel(application: Application) : BaseAndroidViewModel(application) {
+    private val _publicaciones = MutableLiveData<List<Publicacion>>()
+    val publicaciones : LiveData<List<Publicacion>>
+        get() = _publicaciones
+
+    private val _publicacionActual = MutableLiveData<Publicacion>()
+    val publicacionActual : MutableLiveData<Publicacion>
+        get() = _publicacionActual
 
     private val _selectedLocation = MutableLiveData<CustomLocation>()
     val selectedLocation: MutableLiveData<CustomLocation>
@@ -30,7 +39,7 @@ class BusquedaViewModel(application: Application) : BaseAndroidViewModel(applica
     val selectedMinPrice : MutableLiveData<Float>
         get() = _selectedMinPrice
 
-    private val _selectedMaxPrice = MutableLiveData<Float>(1f)
+    private val _selectedMaxPrice = MutableLiveData<Float>(0.5f)
     val selectedMaxPrice : MutableLiveData<Float>
         get() = _selectedMaxPrice
 
@@ -50,13 +59,49 @@ class BusquedaViewModel(application: Application) : BaseAndroidViewModel(applica
     val coordenadas: MutableLiveData<Coordenada>
         get() = _coordenadas
 
+    private val _startDate = MutableLiveData<Date>()
+    val startDate : MutableLiveData<Date>
+        get() = _startDate
+
+    private val _endDate = MutableLiveData<Date>()
+    val endDate : MutableLiveData<Date>
+        get() = _endDate
+
+    private val _displayDatePickerDialog = MutableLiveData<Boolean>(false)
+    val displayDatePickerDialog : MutableLiveData<Boolean>
+        get() = _displayDatePickerDialog
+
+    fun resetResults(){
+        _publicaciones.value = null
+    }
+
+    fun getResults() {
+        viewModelScope.launch {
+
+            when (val searchResponse = BookBnBApi(getApplication()).searchPublicaciones(
+                _selectedLocation.value!!.coordenadas, _selectedTipoAlojamiento.value!!, _selectedCantHuespedes.value!!,
+                _selectedMinPrice.value!!, selectedMaxPrice.value!!, _startDate.value, _endDate.value
+            )) {
+                is ResultWrapper.NetworkError -> showSnackbarErrorMessage(
+                    getApplication<Application>().getString(
+                        R.string.network_error_msg
+                    )
+                )
+                is ResultWrapper.GenericError -> showGenericError(searchResponse)
+                is ResultWrapper.Success -> onSearchSuccess(searchResponse)
+            }
+        }
+    }
+
+    private fun onSearchSuccess(searchResponse: ResultWrapper.Success<List<Publicacion>>) {
+        _publicaciones.value = searchResponse.value
+    }
+
     fun onNavigateToSearchResults() {
-        _coordenadas.value = _selectedLocation.value!!.coordenadas
         _navigateToSearchResults.value = true
     }
 
     fun onDoneNavigateToSearchResults() {
-        _coordenadas.value = null
         _navigateToSearchResults.value = false
     }
 
@@ -108,8 +153,21 @@ class BusquedaViewModel(application: Application) : BaseAndroidViewModel(applica
     }
 
     fun updateSelectedPrice(values: MutableList<Float>){
-        _selectedMinPrice.value = values.min()?.round(3)?.toFloat()
-        _selectedMaxPrice.value = values.max()?.round(3)?.toFloat()
+        _selectedMinPrice.value = values.min()?.round(4)?.toFloat()
+        _selectedMaxPrice.value = values.max()?.round(4)?.toFloat()
+    }
+
+    fun setDisponibilidadElegida(start: Long?, end: Long?){
+        _startDate.value = if (start != null) Date(start) else null
+        _endDate.value = if (end != null) Date(end) else null
+    }
+
+    fun displayDatePickerDialog(){
+        _displayDatePickerDialog.value = true
+    }
+
+    fun onDoneDisplayingDatePickerDialog() {
+        _displayDatePickerDialog.value = false
     }
 
 }

@@ -3,6 +3,7 @@ package com.example.bookbnb.ui.busqueda
 import android.app.Activity
 import android.content.Context
 import android.os.Bundle
+import android.text.InputType
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -22,9 +23,13 @@ import com.example.bookbnb.models.TipoDeAlojamientoProvider
 import com.example.bookbnb.ui.BaseFragment
 import com.example.bookbnb.viewmodels.BusquedaViewModel
 import com.example.bookbnb.viewmodels.BusquedaViewModelFactory
+import com.google.android.material.datepicker.CalendarConstraints
+import com.google.android.material.datepicker.DateValidatorPointForward
+import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.slider.LabelFormatter.LABEL_GONE
 import com.google.android.material.slider.RangeSlider
 import com.google.android.material.slider.Slider
+import java.util.*
 
 class BusquedaLocationFragment : BaseFragment() {
 
@@ -57,8 +62,11 @@ class BusquedaLocationFragment : BaseFragment() {
         binding.busquedaViewModel = viewModel
         binding.lifecycleOwner = this
 
+        removeDatesInputListeners()
+
         setLocationTextObserver()
         setSuggestionOnClick()
+        setDatePickerObserver()
 
         onNavigateToSearchResults()
         setPossibleTiposAlojamiento()
@@ -70,8 +78,50 @@ class BusquedaLocationFragment : BaseFragment() {
         }
 
         setPriceSlider()
+        viewModel.resetResults()
 
         return binding.root
+    }
+
+    private fun removeDatesInputListeners() {
+        // We do this so binding can trigger datepicker and user is not able to write in the textboxes
+        binding.checkinDate.inputType = InputType.TYPE_NULL
+        binding.checkinDate.keyListener = null
+        binding.checkinTextField.setEndIconOnClickListener{
+            binding.checkinDate.text?.clear()
+            binding.checkoutDate.text?.clear()
+            viewModel.setDisponibilidadElegida(null, null)
+        }
+        binding.checkoutDate.inputType = InputType.TYPE_NULL
+        binding.checkoutDate.keyListener = null
+        binding.checkoutTextField.setEndIconOnClickListener{
+            binding.checkinDate.text?.clear()
+            binding.checkoutDate.text?.clear()
+            viewModel.setDisponibilidadElegida(null, null)
+        }
+    }
+
+    private fun setDatePickerObserver() {
+        viewModel.displayDatePickerDialog.observe(viewLifecycleOwner, Observer { display ->
+            if (display) {
+                val builder = MaterialDatePicker.Builder.dateRangePicker()
+                builder.setTitleText(getString(R.string.seleccion_fechas_text))
+                val calendarConstraintsBuilder = CalendarConstraints.Builder()
+                calendarConstraintsBuilder.setValidator(DateValidatorPointForward.now())
+                builder.setCalendarConstraints(calendarConstraintsBuilder.build())
+                if (viewModel.startDate.value != null && viewModel.endDate.value != null) {
+                    builder.setSelection(androidx.core.util.Pair(viewModel.startDate.value?.time, viewModel.endDate.value?.time))
+                }
+                val picker = builder.build()
+                picker.show(childFragmentManager, picker.toString())
+                picker.addOnPositiveButtonClickListener {
+                    if (it.first != null && it.second != null) {
+                        viewModel.setDisponibilidadElegida(it.first!!, it.second!!)
+                    }
+                }
+                viewModel.onDoneDisplayingDatePickerDialog()
+            }
+        })
     }
 
     private fun setPriceSlider() {
@@ -94,15 +144,9 @@ class BusquedaLocationFragment : BaseFragment() {
 
     private fun onNavigateToSearchResults() {
         viewModel.navigateToSearchResults.observe(viewLifecycleOwner, Observer {
-            if (it && viewModel.coordenadas.value != null) {
+            if (it && viewModel.selectedLocation.value != null) {
                 NavHostFragment.findNavController(this).navigate(
-                    BusquedaLocationFragmentDirections.actionBusquedaLocationFragmentToResultadosBusquedaFragment(
-                        viewModel.coordenadas.value!!,
-                        viewModel.selectedTipoAlojamiento.value!!,
-                        viewModel.selectedCantHuespedes.value!!,
-                        viewModel.selectedMinPrice.value!!,
-                        viewModel.selectedMaxPrice.value!!
-                    )
+                    BusquedaLocationFragmentDirections.actionBusquedaLocationFragmentToResultadosBusquedaFragment()
                 )
                 viewModel.onDoneNavigateToSearchResults()
             }

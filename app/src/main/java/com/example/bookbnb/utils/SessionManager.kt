@@ -7,6 +7,7 @@ import android.content.SharedPreferences
 import com.auth0.android.jwt.JWT
 import com.example.bookbnb.LoginActivity
 import com.example.bookbnb.R
+import com.example.bookbnb.network.MyFirebaseMessagingService
 
 /**
  * Session manager to save and fetch data from SharedPreferences
@@ -21,6 +22,7 @@ class SessionManager (context: Context) {
 
     fun logout(activity: Activity){
         removeAuthToken()
+        MyFirebaseMessagingService().disableFCM() // Disables notification token
         activity.startActivity(Intent(activity, LoginActivity::class.java))
         activity.finish()
     }

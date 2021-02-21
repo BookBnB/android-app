@@ -28,7 +28,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:reservaDrawableTint="@{property.estado}" />
+            app:reservaDrawableTint="@{property.estado}"/>
 
         <TextView
             android:id="@+id/titulo_reserva"
@@ -58,12 +58,12 @@
             android:layout_marginEnd="@dimen/margin_small"
             android:drawablePadding="@dimen/margin_min"
             android:gravity="center_vertical"
-            android:text="@{property.nombreHuesped}"
+            android:text="@{property.estado.toUpperCase()}"
             app:layout_constraintEnd_toStartOf="@+id/fecha_fin_reserva"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/reserved_image"
             app:layout_constraintTop_toBottomOf="@+id/titulo_reserva"
-            tools:text="Juan Perez" />
+            tools:text="RECHAZADA" />
 
         <TextView
             android:id="@+id/fecha_inicio_reserva"

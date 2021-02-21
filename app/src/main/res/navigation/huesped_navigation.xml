@@ -28,16 +28,14 @@
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@android:anim/slide_in_left"
-            app:popExitAnim="@android:anim/slide_out_right" />
+            app:popExitAnim="@android:anim/slide_out_right" >
+        </action>
     </fragment>
     <fragment
         android:id="@+id/resultadosBusquedaFragment"
         android:name="com.example.bookbnb.ui.busqueda.ResultadosBusquedaFragment"
         android:label="@string/resultados_lbl"
         tools:layout="@layout/fragment_resultados_busqueda">
-        <argument
-            android:name="coordenadas"
-            app:argType="com.example.bookbnb.models.Coordenada" />
         <action
             android:id="@+id/action_resultadosBusquedaFragment_to_detallePublicacionFragment"
             app:destination="@id/detallePublicacionFragment"
@@ -45,18 +43,6 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@android:anim/slide_in_left"
             app:popExitAnim="@android:anim/slide_out_right"/>
-        <argument
-            android:name="tipoAlojamiento"
-            app:argType="string" />
-        <argument
-            android:name="cantHuespedes"
-            app:argType="integer" />
-        <argument
-            android:name="minPrice"
-            app:argType="float" />
-        <argument
-            android:name="maxPrice"
-            app:argType="float" />
     </fragment>
     <fragment
         android:id="@+id/detallePublicacionFragment"
@@ -77,6 +63,14 @@
         <action
             android:id="@+id/action_detallePublicacionFragment_to_chatFragment"
             app:destination="@id/chatFragment" />
+        <argument
+            android:name="startDate"
+            app:argType="java.util.Date"
+            app:nullable="true" />
+        <argument
+            android:name="endDate"
+            app:argType="java.util.Date"
+            app:nullable="true" />
     </fragment>
     <fragment
         android:id="@+id/reservaRealizadaFragment"

@@ -26,6 +26,7 @@ import com.example.bookbnb.models.Publicacion
 import com.example.bookbnb.models.Reserva
 import com.example.bookbnb.models.Reserva.Companion.ESTADO_ACEPTADA
 import com.example.bookbnb.models.Reserva.Companion.ESTADO_PENDIENTE
+import com.example.bookbnb.models.Reserva.Companion.ESTADO_RECHAZADA
 import com.example.bookbnb.models.chat.FirebaseChat
 import com.example.bookbnb.models.chat.FirebaseChatMessage
 import com.example.bookbnb.ui.publicaciones.PublicacionRecyclerViewAdapter
@@ -111,8 +112,10 @@ fun setAdapter(actv: AutoCompleteTextView1, adapter: ArrayAdapter<CustomLocation
 }
 
 @BindingAdapter("dateShortString")
-fun bindShortDate(txtView: TextView, date: Date){
-    txtView.text = SimpleDateFormat("dd/MM/yyyy").format(date)
+fun bindShortDate(txtView: TextView, date: Date?){
+    date?.let {
+        txtView.text = SimpleDateFormat("dd/MM/yyyy").format(date)
+    }
 }
 
 @BindingAdapter("reservaDrawableTint")
@@ -120,6 +123,7 @@ fun setReservaDrawableTint(image: ImageView, estado: String){
     val color = when (estado){
         ESTADO_PENDIENTE -> ContextCompat.getColor(image.context, R.color.reservaPendiente)
         ESTADO_ACEPTADA -> ContextCompat.getColor(image.context, R.color.reservaAceptada)
+        ESTADO_RECHAZADA -> ContextCompat.getColor(image.context, R.color.error)
         else -> ContextCompat.getColor(image.context, R.color.primaryDarkColor)
     }
     ImageViewCompat.setImageTintList(image, ColorStateList.valueOf(color))

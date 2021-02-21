@@ -28,7 +28,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/margin_normal"
-                android:text="Indique los parametros de su búsqueda para poder brindarle las opciones adecuadas a sus necesidades"
+                android:text="@string/busqueda_text"
                 android:textColor="@color/secondaryTextColor"
                 android:textStyle="bold" />
         </FrameLayout>
@@ -52,7 +52,7 @@
                 android:drawableStart="@drawable/ic_baseline_search_36"
                 android:drawableTint="@android:color/darker_gray"
                 android:ellipsize="end"
-                android:hint="Ciudad de Mendoza, Mendoza, Argentina"
+                android:hint="@string/busqueda_hint"
                 android:inputType="text"
                 android:maxLines="1"
                 android:padding="8dp"
@@ -61,13 +61,73 @@
 
         </androidx.cardview.widget.CardView>
 
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/checkin_text_field"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_normal"
+            android:layout_marginStart="@dimen/margin_normal"
+            android:layout_marginEnd="@dimen/margin_small"
+            android:ems="10"
+            android:hint="@string/checkin_hint"
+            app:layout_constraintEnd_toStartOf="@+id/checkout_text_field"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cardView2"
+            app:endIconMode="clear_text"
+            app:endIconDrawable="@drawable/ic_delete_24"
+            app:startIconDrawable="@drawable/ic_calendar_24">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/checkin_date"
+                android:drawablePadding="-4dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                app:dateShortString="@{busquedaViewModel.startDate}"
+                android:focusable="false"
+                android:onClick="@{() -> busquedaViewModel.displayDatePickerDialog()}" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/checkout_text_field"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/margin_normal"
+            android:layout_marginStart="@dimen/margin_small"
+            android:layout_marginEnd="@dimen/margin_normal"
+            android:ems="10"
+            android:hint="@string/checkout_hint"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/checkin_text_field"
+            app:layout_constraintTop_toBottomOf="@+id/cardView2"
+            app:endIconMode="clear_text"
+            app:endIconDrawable="@drawable/ic_delete_24"
+            app:startIconDrawable="@drawable/ic_calendar_24">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/checkout_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:drawablePadding="-4dp"
+                app:dateShortString="@{busquedaViewModel.endDate}"
+                android:focusable="false"
+                android:onClick="@{() -> busquedaViewModel.displayDatePickerDialog()}" />
+        </com.google.android.material.textfield.TextInputLayout>
+
         <TextView
             android:id="@+id/textView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_normal"
             android:layout_marginTop="@dimen/margin_normal"
-            android:text="Cantidad de huespedes"
+            android:text="@string/cantidad_huespedes_text"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/number_picker" />
@@ -83,7 +143,7 @@
             android:layout_marginEnd="@dimen/margin_normal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/textView"
-            app:layout_constraintTop_toBottomOf="@+id/cardView2"
+            app:layout_constraintTop_toBottomOf="@+id/checkin_text_field"
             app:np_dividerColor="@color/primaryColor"
             app:np_max="9"
             app:np_min="1"
@@ -137,7 +197,7 @@
             android:layout_marginTop="@dimen/margin_normal"
             android:layout_marginEnd="@dimen/margin_normal"
             android:valueFrom="0.0"
-            android:valueTo="1.0"
+            android:valueTo="0.5"
             app:values="@array/initial_slider_values"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
@@ -151,7 +211,7 @@
             android:layout_marginTop="@dimen/margin_small"
             android:layout_marginEnd="@dimen/margin_normal"
             android:textAlignment="viewEnd"
-            tools:text="(Entre 0.0 ETH/Noche y 1.0 ETH/Noche)"
+            tools:text="(Entre 0.0 ETH/Noche y 0.5 ETH/Noche)"
             android:text="@{@string/rango_precio_format(busquedaViewModel.selectedMinPrice, busquedaViewModel.selectedMaxPrice)}"
             android:textAppearance="@style/TextAppearance.AppCompat.Small"
             android:textColor="@color/primaryDarkColor"

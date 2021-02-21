@@ -87,7 +87,10 @@ interface BookBnBApiService {
                                     @Query("tipoDeAlojamiento") tipoAlojamiento: String?,
                                     @Query("cantidadDeHuespedes") cantHuespedes: Int,
                                     @Query("precioPorNocheMinimo") minPrice: Float,
-                                    @Query("precioPorNocheMaximo") maxPrice: Float) : List<Publicacion>
+                                    @Query("precioPorNocheMaximo") maxPrice: Float,
+                                    @Query("fechaInicio") fechaInicio: String?,
+                                    @Query("fechaFin") fechaFin: String?,
+                                    @Query("estado") estado: String = "Creada") : List<Publicacion>
 
     @GET("publicaciones/{id}/preguntas")
     suspend fun getPreguntasPublicacion(@Header("Authorization") token: String,
@@ -265,19 +268,25 @@ class BookBnBApi(var context: Context) {
                                     tipoAlojamiento: String?,
                                     cantHuespedes: Int,
                                     minPrice: Float,
-                                    maxPrice: Float)
+                                    maxPrice: Float,
+                                    fechaInicio: Date?,
+                                    fechaFin: Date?)
             : ResultWrapper<List<Publicacion>>{
         val token = SessionManager(context).fetchAuthToken()
         if (token.isNullOrEmpty()){
             throw Exception("No hay una sesión establecida")
         }
+        val startDate = fechaInicio?.let { SimpleDateFormat(DATE_ISO_FORMAT).format(fechaInicio) }
+        val endDate = fechaFin?.let { SimpleDateFormat(DATE_ISO_FORMAT).format(fechaFin) }
         return safeApiCall(Dispatchers.IO) { retrofitService.searchPublicaciones(token,
             coordenadas.latitud,
             coordenadas.longitud,
-            if (tipoAlojamiento == "Todos") null else tipoAlojamiento, //If Todos is selected then i pass null to api
+            if (tipoAlojamiento == "Todos") null else tipoAlojamiento, //If 'Todos'is selected then i pass null to api
             cantHuespedes,
             minPrice,
-            maxPrice)
+            maxPrice,
+            startDate,
+            endDate)
         }
     }
 
