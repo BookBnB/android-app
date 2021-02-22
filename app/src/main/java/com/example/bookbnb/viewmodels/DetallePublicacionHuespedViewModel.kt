@@ -68,6 +68,9 @@ class DetallePublicacionHuespedViewModel(application: Application) : DetallePubl
     fun setDisponibilidadElegida(start: Long, end: Long){
         startDate.value = Date(start)
         endDate.value = Date(end)
+    }
+
+    fun showReservaDialog(){
         _showReservaDialog.value = true
     }
 
@@ -156,6 +159,10 @@ class DetallePublicacionHuespedViewModel(application: Application) : DetallePubl
 
     fun onEndNavigatingToChat(){
         _navigateToChat.value = false
+    }
+
+    fun hasDisponibilidadElegida(): Boolean {
+        return _startDate.value != null && _endDate.value != null
     }
 }
 

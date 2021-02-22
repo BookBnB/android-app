@@ -68,6 +68,10 @@ interface BookBnBApiService {
     suspend fun getReservasByPublicacionId(@Header("Authorization") token: String,
                                              @Path("id") publicacionId: String) : List<Reserva>
 
+    @GET("usuarios/{id}/reservas")
+    suspend fun getReservasByUserId(@Header("Authorization") token: String,
+                                           @Path("id") userId: String) : List<Reserva>
+
     @GET("usuarios/bulk")
     suspend fun getUsersInfoById(@Header("Authorization") token: String,
                                            @Query("id") id: List<String>) : List<Usuario>
@@ -83,7 +87,10 @@ interface BookBnBApiService {
                                     @Query("tipoDeAlojamiento") tipoAlojamiento: String?,
                                     @Query("cantidadDeHuespedes") cantHuespedes: Int,
                                     @Query("precioPorNocheMinimo") minPrice: Float,
-                                    @Query("precioPorNocheMaximo") maxPrice: Float) : List<Publicacion>
+                                    @Query("precioPorNocheMaximo") maxPrice: Float,
+                                    @Query("fechaInicio") fechaInicio: String?,
+                                    @Query("fechaFin") fechaFin: String?,
+                                    @Query("estado") estado: String = "Creada") : List<Publicacion>
 
     @GET("publicaciones/{id}/preguntas")
     suspend fun getPreguntasPublicacion(@Header("Authorization") token: String,
@@ -185,6 +192,14 @@ class BookBnBApi(var context: Context) {
         return safeApiCall(Dispatchers.IO) { retrofitService.getReservasByPublicacionId(token, publicacionId) }
     }
 
+    suspend fun getReservasByUserId(userId: String) : ResultWrapper<List<Reserva>>{
+        val token = SessionManager(context).fetchAuthToken()
+        if (token.isNullOrEmpty()) {
+            throw Exception("No hay una sesión establecida")
+        }
+        return safeApiCall(Dispatchers.IO) { retrofitService.getReservasByUserId(token, userId) }
+    }
+
     suspend fun getUsersInfoById(usersId: List<String>) : ResultWrapper<List<Usuario>>{
         val token = SessionManager(context).fetchAuthToken()
         if (token.isNullOrEmpty()) {
@@ -253,19 +268,25 @@ class BookBnBApi(var context: Context) {
                                     tipoAlojamiento: String?,
                                     cantHuespedes: Int,
                                     minPrice: Float,
-                                    maxPrice: Float)
+                                    maxPrice: Float,
+                                    fechaInicio: Date?,
+                                    fechaFin: Date?)
             : ResultWrapper<List<Publicacion>>{
         val token = SessionManager(context).fetchAuthToken()
         if (token.isNullOrEmpty()){
             throw Exception("No hay una sesión establecida")
         }
+        val startDate = fechaInicio?.let { SimpleDateFormat(DATE_ISO_FORMAT).format(fechaInicio) }
+        val endDate = fechaFin?.let { SimpleDateFormat(DATE_ISO_FORMAT).format(fechaFin) }
         return safeApiCall(Dispatchers.IO) { retrofitService.searchPublicaciones(token,
             coordenadas.latitud,
             coordenadas.longitud,
-            if (tipoAlojamiento == "Todos") null else tipoAlojamiento, //If Todos is selected then i pass null to api
+            if (tipoAlojamiento == "Todos") null else tipoAlojamiento, //If 'Todos'is selected then i pass null to api
             cantHuespedes,
             minPrice,
-            maxPrice)
+            maxPrice,
+            startDate,
+            endDate)
         }
     }
 

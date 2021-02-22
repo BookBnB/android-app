@@ -16,7 +16,6 @@ import com.example.bookbnb.R
 import com.example.bookbnb.adapters.PreguntasRecyclerViewAdapter
 import com.example.bookbnb.databinding.DialogReservaBinding
 import com.example.bookbnb.databinding.FragmentDetallePublicacionHuespedBinding
-import com.example.bookbnb.databinding.FragmentPublicacionesListBinding
 import com.example.bookbnb.ui.BaseFragment
 import com.example.bookbnb.utils.CustomImageUri
 import com.example.bookbnb.utils.ImagesSliderAdapter
@@ -24,6 +23,7 @@ import com.example.bookbnb.utils.SessionManager
 import com.example.bookbnb.viewmodels.DetallePublicacionHuespedViewModel
 import com.example.bookbnb.viewmodels.DetallePublicacionHuespedViewModelFactory
 import com.google.android.material.datepicker.MaterialDatePicker
+import java.util.*
 
 class DetallePublicacionHuespedFragment : BaseFragment() {
 
@@ -65,7 +65,13 @@ class DetallePublicacionHuespedFragment : BaseFragment() {
         // TODO: AGregar spinner a la activity
         //setSpinnerObserver(viewModel, binding.root) Esto bugea la vista porque no existe un spinner
 
-        val publicacionId = arguments?.getString("publicacionId")
+        val args = requireArguments()
+        val publicacionId = args.getString("publicacionId")
+        val startDate: Date? = args.getSerializable("startDate") as Date?
+        val endDate: Date? = args.getSerializable("endDate") as Date?
+        startDate?.time?.let { start -> endDate?.time?.let { end ->
+            viewModel.setDisponibilidadElegida(start, end)
+        } }
         setPreguntasListAdapter()
 
         setNavigateToChatObserver()
@@ -108,7 +114,7 @@ class DetallePublicacionHuespedFragment : BaseFragment() {
         viewModel.navigateToReservationComplete.observe(viewLifecycleOwner, Observer { navigate ->
             if (navigate) {
                 NavHostFragment.findNavController(this).navigate(
-                    DetallePublicacionHuespedFragmentDirections.actionDetallePublicacionFragmentToReservaRealizadaFragment()
+                    DetallePublicacionHuespedFragmentDirections.actionDetallePublicacionFragmentToReservaRealizadaFragment(viewModel.reservaRealizadaId.value!!)
                 )
                 viewModel.onDoneNavigatingToReservationComplete()
             }
@@ -127,13 +133,19 @@ class DetallePublicacionHuespedFragment : BaseFragment() {
     private fun setDisplayDisponibilidadObserver() {
         viewModel.displayDisponibilidadDialog.observe(viewLifecycleOwner, Observer { display ->
             if (display) {
-                val builder = MaterialDatePicker.Builder.dateRangePicker()
-                builder.setTitleText("Seleccione la fecha de llegada y de salida")
-                val picker = builder.build()
-                picker.show(childFragmentManager, picker.toString())
-                picker.addOnPositiveButtonClickListener {
-                    if (it.first != null && it.second != null) {
-                        viewModel.setDisponibilidadElegida(it.first!!, it.second!!)
+                if (viewModel.hasDisponibilidadElegida()){
+                    viewModel.showReservaDialog()
+                }
+                else {
+                    val builder = MaterialDatePicker.Builder.dateRangePicker()
+                    builder.setTitleText("Seleccione la fecha de llegada y de salida")
+                    val picker = builder.build()
+                    picker.show(childFragmentManager, picker.toString())
+                    picker.addOnPositiveButtonClickListener {
+                        if (it.first != null && it.second != null) {
+                            viewModel.setDisponibilidadElegida(it.first!!, it.second!!)
+                            viewModel.showReservaDialog()
+                        }
                     }
                 }
                 viewModel.onDoneReservaButtonClick()

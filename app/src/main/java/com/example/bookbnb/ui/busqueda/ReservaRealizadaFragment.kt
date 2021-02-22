@@ -14,20 +14,13 @@ import com.example.bookbnb.viewmodels.DetallePublicacionViewModel
 import com.example.bookbnb.viewmodels.DetallePublicacionViewModelFactory
 
 class ReservaRealizadaFragment : Fragment() {
-    private val viewModel: DetallePublicacionHuespedViewModel by lazy {
-        val activity = requireNotNull(this.activity) {
-            "You can only access the viewModel after onActivityCreated()"
-        }
-        ViewModelProvider(activity, DetallePublicacionHuespedViewModelFactory(activity.application))
-            .get(DetallePublicacionHuespedViewModel::class.java)
-    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         val view =inflater.inflate(R.layout.fragment_reserva_realizada, container, false)
 
-        view.findViewById<TextView>(R.id.reservaIdTextView)?.text = viewModel.reservaRealizadaId.value
+        view.findViewById<TextView>(R.id.reservaIdTextView)?.text = requireArguments().getString("reservaId")
         // Inflate the layout for this fragment
         return view
     }

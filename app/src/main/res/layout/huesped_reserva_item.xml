@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable name="property"
+            type="com.example.bookbnb.models.Reserva" />
+        <import type="android.view.View" />
+        <variable
+            name="aceptarListener"
+            type="com.example.bookbnb.ui.reservas.ReservaListener" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/reserva_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="@dimen/margin_small"
+        android:paddingVertical="@dimen/margin_small">
+
+        <ImageView
+            android:id="@+id/reserved_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_small"
+            android:layout_marginBottom="@dimen/margin_small"
+            android:src="@drawable/ic_reservado"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:reservaDrawableTint="@{property.estado}"/>
+
+        <TextView
+            android:id="@+id/titulo_reserva"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_small"
+            android:layout_marginTop="@dimen/margin_small"
+            android:layout_marginEnd="@dimen/margin_small"
+            android:text="@{property.id}"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/autor_reserva"
+            app:layout_constraintEnd_toStartOf="@+id/fecha_inicio_reserva"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/reserved_image"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="MissingConstraints"
+            tools:text="AX98B2" />
+
+
+        <TextView
+            android:id="@+id/autor_reserva"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_small"
+            android:layout_marginTop="@dimen/margin_small"
+            android:layout_marginEnd="@dimen/margin_small"
+            android:drawablePadding="@dimen/margin_min"
+            android:gravity="center_vertical"
+            android:text="@{property.estado.toUpperCase()}"
+            app:layout_constraintEnd_toStartOf="@+id/fecha_fin_reserva"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/reserved_image"
+            app:layout_constraintTop_toBottomOf="@+id/titulo_reserva"
+            tools:text="RECHAZADA" />
+
+        <TextView
+            android:id="@+id/fecha_inicio_reserva"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_small"
+            android:layout_marginEnd="@dimen/margin_small"
+            android:drawableTint="@color/primaryDarkColor"
+            android:gravity="center"
+            android:text="@{property.fechaInicio}"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+            app:drawableStartCompat="@drawable/ic_check_in"
+            app:layout_constraintBottom_toTopOf="@+id/fecha_fin_reserva"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed"
+            tools:ignore="MissingConstraints"
+            tools:text="20/11/2020" />
+
+        <TextView
+            android:id="@+id/fecha_fin_reserva"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_small"
+            android:layout_marginEnd="@dimen/margin_small"
+            android:layout_marginBottom="@dimen/margin_small"
+            android:drawableTint="@color/primaryDarkColor"
+            android:gravity="center"
+            android:text="@{property.fechaFin}"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+            app:drawableStartCompat="@drawable/ic_check_out"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fecha_inicio_reserva"
+            tools:text="27/11/2020" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

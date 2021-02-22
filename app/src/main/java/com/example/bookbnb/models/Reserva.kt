@@ -14,7 +14,8 @@ class Reserva(var id: String,
 ) {
     companion object{
         val ESTADO_ACEPTADA = "aceptada"
-        val ESTADO_PENDIENTE = "pendiente de aceptacion"
+        val ESTADO_PENDIENTE = "creada"
+        val ESTADO_RECHAZADA = "rechazada"
     }
 
     fun isPendiente() : Boolean{

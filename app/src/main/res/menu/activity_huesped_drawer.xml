@@ -15,4 +15,10 @@
             android:icon="@drawable/ic_email_24"
             android:title="@string/messages_lbl" />
     </group>
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/huesped_reservas_fragment"
+            android:icon="@drawable/ic_hotel_24"
+            android:title="@string/mis_reservas_text" />
+    </group>
 </menu>

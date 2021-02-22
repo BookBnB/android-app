@@ -1,42 +1,30 @@
 package com.example.bookbnb.ui.busqueda
 
-import android.app.Application
 import android.os.Bundle
-import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewModelScope
 import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.example.bookbnb.R
 import com.example.bookbnb.databinding.FragmentResultadosBusquedaBinding
-import com.example.bookbnb.models.Coordenada
-import com.example.bookbnb.models.Publicacion
-import com.example.bookbnb.network.BookBnBApi
-import com.example.bookbnb.network.ResultWrapper
 import com.example.bookbnb.ui.BaseFragment
 import com.example.bookbnb.ui.publicaciones.PublicacionListener
 import com.example.bookbnb.ui.publicaciones.PublicacionRecyclerViewAdapter
-import com.example.bookbnb.viewmodels.ResultadosBusquedaViewModel
-import com.example.bookbnb.viewmodels.ResultadosBusquedaViewModelFactory
-import kotlinx.coroutines.launch
+import com.example.bookbnb.viewmodels.BusquedaViewModel
+import com.example.bookbnb.viewmodels.BusquedaViewModelFactory
 
 class ResultadosBusquedaFragment : BaseFragment(){
 
-    private val viewModel: ResultadosBusquedaViewModel by lazy {
+    private val viewModel: BusquedaViewModel by lazy {
         val activity = requireNotNull(this.activity) {
             "You can only access the viewModel after onActivityCreated()"
         }
-        ViewModelProvider(activity, ResultadosBusquedaViewModelFactory(activity.application))
-            .get(ResultadosBusquedaViewModel::class.java)
+        ViewModelProvider(activity, BusquedaViewModelFactory(activity.application))
+            .get(BusquedaViewModel::class.java)
     }
-
     private lateinit var binding: FragmentResultadosBusquedaBinding
 
     override fun onCreateView(
@@ -55,7 +43,8 @@ class ResultadosBusquedaFragment : BaseFragment(){
 
         binding.resultadosBusqueda.adapter = PublicacionRecyclerViewAdapter(PublicacionListener { publicacionId ->
             NavHostFragment.findNavController(this).navigate(
-                    ResultadosBusquedaFragmentDirections.actionResultadosBusquedaFragmentToDetallePublicacionFragment(publicacionId)
+                    ResultadosBusquedaFragmentDirections.actionResultadosBusquedaFragmentToDetallePublicacionFragment(publicacionId,
+                        viewModel.startDate.value, viewModel.endDate.value)
                 )
         }, true) as PublicacionRecyclerViewAdapter
 
@@ -65,13 +54,8 @@ class ResultadosBusquedaFragment : BaseFragment(){
                 DividerItemDecoration.VERTICAL
             )
         )
-        val args = requireArguments()
-        val coordenadas = args.getParcelable<Coordenada>("coordenadas")
-        val tipoAlojamiento = args.getString("tipoAlojamiento")
-        val cantHuespedes = args.getInt("cantHuespedes")
-        val minPrice = args.getFloat("minPrice")
-        val maxPrice = args.getFloat("maxPrice")
-        viewModel.getResults(coordenadas!!, tipoAlojamiento!!, cantHuespedes, minPrice, maxPrice)
+
+        viewModel.getResults()
 
         binding.resultadosBusquedaViewModel = viewModel
 

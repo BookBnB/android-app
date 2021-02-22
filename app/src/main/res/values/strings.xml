@@ -120,5 +120,12 @@
     <string name="messages_lbl">Mensajes</string>
     <string name="emptyBusquedaText">¡Oops! No se encontraron alojamientos publicados con esos criterios... ¿Quizás es el destino que quiere que vaya a otro destino?</string>
     <string name="emptyChatsText">Todavia no hay conversaciones mediante mensajes directos...</string>
+    <string name="mis_reservas_text">Mis Reservas</string>
+    <string name="busqueda_text">Indique los parametros de su búsqueda para poder brindarle las opciones adecuadas a sus necesidades</string>
+    <string name="busqueda_hint">Ciudad de Mendoza, Mendoza, Argentina</string>
+    <string name="cantidad_huespedes_text">Cantidad de huespedes</string>
+    <string name="checkin_hint">Check In</string>
+    <string name="checkout_hint">Check Out</string>
+    <string name="seleccion_fechas_text">Seleccione la fecha de llegada y de salida</string>
 
 </resources>

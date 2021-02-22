@@ -6,7 +6,7 @@
         <import type="android.view.View"/>
         <variable
             name="resultadosBusquedaViewModel"
-            type="com.example.bookbnb.viewmodels.ResultadosBusquedaViewModel" />
+            type="com.example.bookbnb.viewmodels.BusquedaViewModel" />
     </data>
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"

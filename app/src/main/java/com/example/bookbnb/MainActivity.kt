@@ -20,9 +20,11 @@ import com.auth0.android.jwt.JWT
 import com.example.bookbnb.models.User
 import com.example.bookbnb.network.BookBnBApi
 import com.example.bookbnb.network.FirebaseDBService
+import com.example.bookbnb.network.MyFirebaseMessagingService
 import com.example.bookbnb.network.ResultWrapper
 import com.example.bookbnb.utils.SessionManager
 import com.google.android.material.navigation.NavigationView
+import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.coroutines.launch
 
 
@@ -42,6 +44,7 @@ class MainActivity : AppCompatActivity() {
         }
         else{
             createFirebaseUser(sessionManager.getUserId()!!)
+            MyFirebaseMessagingService().enableFCM() // Enables notification token
             if (sessionManager.isUserHost()){
                 val intent = Intent(this, AnfitrionActivity::class.java)
                 startActivity(intent)
