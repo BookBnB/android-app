@@ -38,6 +38,11 @@ interface BookBnBApiService {
     suspend fun getUser(@Header("Authorization") token: String,
                         @Path("id") userId: String): User
 
+    @PUT("usuarios/{id}/tokens_notificacion")
+    suspend fun saveNotificationToken(@Header("Authorization") userToken: String,
+                        @Path("id") userId: String,
+                                      @Body token: NotificationTokenDTO)
+
     @POST("lugares/direcciones/consulta")
     suspend fun getLocations(
         @Header("Authorization") token: String,
@@ -137,6 +142,15 @@ class BookBnBApi(var context: Context) {
 
     private val retrofitService: BookBnBApiService by lazy {
         retrofit.create(BookBnBApiService::class.java)
+    }
+
+    suspend fun saveNotificationToken(notificationToken: String) {
+        val userToken = SessionManager(context).fetchAuthToken()
+        val userId = SessionManager(context).getUserId()
+        if (userToken.isNullOrEmpty()) {
+            throw Exception("No hay una sesión establecida")
+        }
+        safeApiCall(Dispatchers.IO) { retrofitService.saveNotificationToken(userToken, userId!!, NotificationTokenDTO(notificationToken)) }
     }
 
     suspend fun getUser(userId: String) : ResultWrapper<User>{
@@ -376,4 +390,5 @@ class BookBnBApi(var context: Context) {
             null
         }
     }
+
 }

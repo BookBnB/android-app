@@ -71,3 +71,9 @@ data class ReservarPublicacionResponse(
     var estado: String,
     var precioPorNoche: Float
 )
+
+
+@JsonClass(generateAdapter = true)
+data class NotificationTokenDTO(
+    var token: String
+)

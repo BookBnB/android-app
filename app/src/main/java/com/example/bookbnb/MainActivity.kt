@@ -6,6 +6,7 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
@@ -23,6 +24,7 @@ import com.example.bookbnb.network.FirebaseDBService
 import com.example.bookbnb.network.MyFirebaseMessagingService
 import com.example.bookbnb.network.ResultWrapper
 import com.example.bookbnb.utils.SessionManager
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.coroutines.launch
@@ -53,6 +55,20 @@ class MainActivity : AppCompatActivity() {
                 val intent = Intent(this, HuespedActivity::class.java)
                 startActivity(intent)
             }
+            FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+                if (!task.isSuccessful) {
+                    Log.w("FIREBASE TOKEN", "Fetching FCM registration token failed", task.exception)
+                    return@OnCompleteListener
+                }
+
+                // Get new FCM registration token
+                val token = task.result
+
+                // Log and toast
+                val msg = token
+                Log.d("FIREBASE TOKEN", msg!!)
+                Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
+            })
         }
         finish()
     }
