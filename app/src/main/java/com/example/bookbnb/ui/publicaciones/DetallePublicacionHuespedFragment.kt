@@ -114,7 +114,7 @@ class DetallePublicacionHuespedFragment : BaseFragment() {
         viewModel.navigateToReservationComplete.observe(viewLifecycleOwner, Observer { navigate ->
             if (navigate) {
                 NavHostFragment.findNavController(this).navigate(
-                    DetallePublicacionHuespedFragmentDirections.actionDetallePublicacionFragmentToReservaRealizadaFragment()
+                    DetallePublicacionHuespedFragmentDirections.actionDetallePublicacionFragmentToReservaRealizadaFragment(viewModel.reservaRealizadaId.value!!)
                 )
                 viewModel.onDoneNavigatingToReservationComplete()
             }
