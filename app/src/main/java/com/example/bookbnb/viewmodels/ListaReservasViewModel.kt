@@ -11,6 +11,8 @@ import com.example.bookbnb.network.BookBnBApi
 import com.example.bookbnb.network.ResultWrapper
 import com.example.bookbnb.utils.SessionManager
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.*
 
 class ListaReservasViewModel(application: Application) : BaseAndroidViewModel(application) {
 
@@ -60,12 +62,26 @@ class ListaReservasViewModel(application: Application) : BaseAndroidViewModel(ap
     fun getReservasByEstado(publicacionId: String, estadoReserva: String) {
         viewModelScope.launch {
             val reservasAux: List<Reserva> = getReservasList(publicacionId, estadoReserva)
+            var pastReservas = mutableListOf<Reserva>()
+            var nextReservas = mutableListOf<Reserva>()
             if (reservasAux.isNotEmpty()){
                 val idUsuarios = reservasAux.map { it.huespedId }
                 val usuarios = getNombresUsuarios(idUsuarios)
                 setNombreHuespedes(usuarios, reservasAux)
+                var format = SimpleDateFormat("yyyy-MM-dd", Locale.US)
+                reservasAux.map {
+                    if (it.isFinished()){
+                        pastReservas.add(it)
+                    }
+                    else{
+                        nextReservas.add(it)
+                    }
+                }
+                pastReservas.sortByDescending { format.parse(it.fechaFin)!!.time }
+                nextReservas.sortBy { format.parse(it.fechaInicio)!!.time }
             }
-            reservas.value = reservasAux
+            var sortedReservas = nextReservas + pastReservas
+            reservas.value = sortedReservas
         }
     }
 

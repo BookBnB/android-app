@@ -62,6 +62,7 @@ class ListaReservasFragment(val publicacionId: String, val estadoReserva: String
                 DividerItemDecoration.VERTICAL
             )
         )
+        binding.reservasList.itemAnimator = null;
     }
 
     private fun setConfirmacionReservaObserver() {

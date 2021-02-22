@@ -17,7 +17,8 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/margin_normal">
 
             <include android:id="@+id/detallePublicacion"
                 layout="@layout/detalle_publicacion"
@@ -64,7 +65,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/margin_normal"
-                android:layout_marginTop="@dimen/margin_small"
+                android:layout_marginTop="@dimen/margin_normal"
                 android:layout_marginEnd="@dimen/margin_normal"
                 android:text="@string/preguntas_subtitle_anfitrion"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"

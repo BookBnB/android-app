@@ -3,8 +3,10 @@ package com.example.bookbnb.ui.reservas
 import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
+import com.example.bookbnb.R
 import com.example.bookbnb.databinding.HuespedReservaItemBinding
 import com.example.bookbnb.databinding.ReservaItemBinding
 import com.example.bookbnb.models.Publicacion
@@ -23,6 +25,12 @@ class ReservaRecyclerViewAdapter(val clickListener: ReservaListener) :
     override fun onBindViewHolder(holder: ReservaViewHolder, position: Int) {
         val reserva = getItem(position)
         holder.bind(reserva, clickListener)
+        if (reserva.isFinished()){
+            holder.itemView.let{
+                it.background = ResourcesCompat.getDrawable(it.resources, R.drawable.grayReservas, null)
+                it.alpha = 0.5f
+            }
+        }
     }
 
     class ReservaViewHolder(private var binding: ReservaItemBinding) : RecyclerView.ViewHolder(binding.root) {

@@ -34,9 +34,9 @@
             android:id="@+id/titulo_reserva"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_small"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="@dimen/margin_small"
-            android:layout_marginEnd="@dimen/margin_small"
+            android:layout_marginEnd="8dp"
             android:text="@{property.id}"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
             android:textStyle="bold"
@@ -45,6 +45,7 @@
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/reserved_image"
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="spread_inside"
             tools:ignore="MissingConstraints"
             tools:text="AX98B2" />
 
@@ -59,13 +60,31 @@
             android:layout_marginBottom="@dimen/margin_small"
             android:drawablePadding="@dimen/margin_min"
             android:gravity="center_vertical"
-            android:text="@{property.nombreHuesped}"
+            android:text="@{@string/nombre_huesped_reserva(property.nombreHuesped)}"
             app:layout_constraintBottom_toTopOf="@+id/materialButton2"
             app:layout_constraintEnd_toStartOf="@+id/fecha_fin_reserva"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/reserved_image"
             app:layout_constraintTop_toBottomOf="@+id/titulo_reserva"
-            tools:text="Juan Perez" />
+            tools:text="Huesped: Juan Perez" />
+
+        <TextView
+            android:id="@+id/precio_reserva"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_small"
+            android:layout_marginTop="@dimen/margin_small"
+            android:layout_marginEnd="@dimen/margin_small"
+            android:layout_marginBottom="@dimen/margin_small"
+            android:drawablePadding="@dimen/margin_min"
+            android:gravity="center_vertical"
+            android:text="@{@string/precio_total_reserva(property.calcularPrecioTotal())}"
+            app:layout_constraintBottom_toTopOf="@+id/materialButton2"
+            app:layout_constraintEnd_toStartOf="@+id/fecha_fin_reserva"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/reserved_image"
+            app:layout_constraintTop_toBottomOf="@+id/autor_reserva"
+            tools:text="Precio total: 0.005 ETH" />
 
         <TextView
             android:id="@+id/fecha_inicio_reserva"
@@ -107,16 +126,16 @@
             style="@style/Widget.MaterialComponents.Button.TextButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:onClick="@{() -> aceptarListener.onClick(property)}"
             android:text="@string/aceptar_reserva_btn"
             android:visibility="@{property.isPendiente() ? View.VISIBLE : View.GONE}"
             app:icon="@drawable/ic_aceptar"
             app:iconTint="@color/primaryColor"
-            android:onClick="@{() -> aceptarListener.onClick(property)}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/autor_reserva" />
+            app:layout_constraintTop_toBottomOf="@+id/precio_reserva" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
