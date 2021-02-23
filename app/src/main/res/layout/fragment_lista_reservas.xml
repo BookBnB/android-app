@@ -18,7 +18,7 @@
             android:layout_height="match_parent"
             app:layoutManager="LinearLayoutManager"
             app:reservasListData="@{viewModel.reservas}"
-            tools:context=".ui.reservas.ListaReservasFragment"
+            tools:context=".ui.reservas.AnfitrionReservasFragment"
             tools:listitem="@layout/reserva_item"/>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

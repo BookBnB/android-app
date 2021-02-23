@@ -78,6 +78,8 @@
     <string name="rango_precio_format">(Entre %s ETH/Noche y %s ETH/Noche)</string>
     <string name="nombre_huesped_reserva">Huesped: %s</string>
     <string name="precio_total_reserva">Precio total: %s ETH</string>
+    <string name="codigo_reserva">Código reserva: %s</string>
+    <string name="estado_reserva">Estado: %s</string>
     <string name="precio_total_format">El precio total es %s ETH</string>
     <string name="precio_detail_format">$ %s por noche</string>
     <string name="google_register_format">Bienvenido %s, como es tu primera vez necesitamos saber ¿Querés ser huesped o anfitrión?</string>
@@ -129,5 +131,7 @@
     <string name="checkin_hint">Check In</string>
     <string name="checkout_hint">Check Out</string>
     <string name="seleccion_fechas_text">Seleccione la fecha de llegada y de salida</string>
-
+    <string name="reservas_proximas_tab_text">Próximas</string>
+    <string name="reservas_anteriores_tab_text">Anteriores</string>
+    <string name="calificar_text">Calificar</string>
 </resources>

@@ -17,7 +17,8 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/margin_big">
 
                 <include android:id="@+id/detallePublicacion"
                     layout="@layout/detalle_publicacion"

@@ -1,40 +1,26 @@
 package com.example.bookbnb
 
-import android.annotation.SuppressLint
 import android.content.res.ColorStateList
-import android.graphics.Color
-import android.util.Log
-import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.ImageView
-import android.widget.ListAdapter
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import androidx.core.widget.ImageViewCompat
 import androidx.databinding.BindingAdapter
-import androidx.databinding.InverseBindingAdapter
-import androidx.databinding.InverseBindingListener
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.bookbnb.adapters.ChatMessagesRecyclerViewAdapter
 import com.example.bookbnb.adapters.ChatsRecyclerViewAdapter
+import com.example.bookbnb.adapters.HuespedReservasRecyclerViewAdapter
 import com.example.bookbnb.adapters.PreguntasRecyclerViewAdapter
-import com.example.bookbnb.models.CustomLocation
-import com.example.bookbnb.models.Pregunta
-import com.example.bookbnb.models.Publicacion
-import com.example.bookbnb.models.Reserva
-import com.example.bookbnb.models.Reserva.Companion.ESTADO_ACEPTADA
-import com.example.bookbnb.models.Reserva.Companion.ESTADO_PENDIENTE
-import com.example.bookbnb.models.Reserva.Companion.ESTADO_RECHAZADA
-import com.example.bookbnb.models.chat.FirebaseChat
+import com.example.bookbnb.models.*
 import com.example.bookbnb.models.chat.FirebaseChatMessage
 import com.example.bookbnb.ui.publicaciones.PublicacionRecyclerViewAdapter
-import com.example.bookbnb.ui.reservas.HuespedReservasRecyclerViewAdapter
-import com.example.bookbnb.ui.reservas.ReservaRecyclerViewAdapter
+import com.example.bookbnb.adapters.ReservaRecyclerViewAdapter
 import com.example.bookbnb.viewmodels.FirebaseChatVM
-import com.google.android.material.slider.RangeSlider
+import com.example.bookbnb.viewmodels.ReservaVM
 import com.google.android.material.textfield.TextInputLayout
 import java.text.SimpleDateFormat
 import java.util.*
@@ -76,9 +62,10 @@ fun bindReservaRecyclerView(recyclerView: RecyclerView,
 
 @BindingAdapter("huespedReservasListData")
 fun bindHuespedReservaRecyclerView(recyclerView: RecyclerView,
-                            data: List<Reserva>?) {
+                            data: List<ReservaVM>?) {
     val adapter = recyclerView.adapter as HuespedReservasRecyclerViewAdapter
     adapter.submitList(data)
+    adapter.notifyDataSetChanged()
 }
 
 @BindingAdapter("messagesListData")
@@ -122,9 +109,10 @@ fun bindShortDate(txtView: TextView, date: Date?){
 @BindingAdapter("reservaDrawableTint")
 fun setReservaDrawableTint(image: ImageView, estado: String){
     val color = when (estado){
-        ESTADO_PENDIENTE -> ContextCompat.getColor(image.context, R.color.reservaPendiente)
-        ESTADO_ACEPTADA -> ContextCompat.getColor(image.context, R.color.reservaAceptada)
-        ESTADO_RECHAZADA -> ContextCompat.getColor(image.context, R.color.error)
+        EstadoReserva.PENDIENTE.estado -> ContextCompat.getColor(image.context, R.color.reservaPendiente)
+        EstadoReserva.ACEPTADA.estado -> ContextCompat.getColor(image.context, R.color.reservaAceptada)
+        EstadoReserva.RECHAZADA.estado -> ContextCompat.getColor(image.context, R.color.error)
+        EstadoReserva.CANCELADA.estado -> ContextCompat.getColor(image.context, R.color.error)
         else -> ContextCompat.getColor(image.context, R.color.primaryDarkColor)
     }
     ImageViewCompat.setImageTintList(image, ColorStateList.valueOf(color))

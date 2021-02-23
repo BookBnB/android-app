@@ -8,7 +8,7 @@
         <import type="android.view.View" />
         <variable
             name="aceptarListener"
-            type="com.example.bookbnb.ui.reservas.ReservaListener" />
+            type="com.example.bookbnb.adapters.ReservaListener" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

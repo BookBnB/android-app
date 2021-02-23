@@ -1,8 +1,10 @@
 package com.example.bookbnb.network
 
 
+import android.app.Application
 import android.content.Context
 import android.util.Log
+import com.example.bookbnb.R
 import com.example.bookbnb.models.*
 import com.example.bookbnb.utils.SessionManager
 import com.squareup.moshi.Moshi
@@ -220,6 +222,21 @@ class BookBnBApi(var context: Context) {
             throw Exception("No hay una sesión establecida")
         }
         return safeApiCall(Dispatchers.IO) { retrofitService.getUsersInfoById(token, usersId) }
+    }
+
+    suspend fun getPublicacionesInfoById(publicacionesIds: List<String>): ResultWrapper<List<Publicacion>> {
+        val token = SessionManager(context).fetchAuthToken()
+        if (token.isNullOrEmpty()) {
+            throw Exception("No hay una sesión establecida")
+        }
+        // TODO: Replace with bulk call to avoid multiple GETS
+        val publicaciones = mutableListOf<Publicacion>()
+        publicacionesIds.forEach{
+            when (val response = getPublicacionById(it)) {
+                is ResultWrapper.Success -> publicaciones.add(response.value)
+            }
+        }
+        return ResultWrapper.Success<List<Publicacion>>(publicaciones)
     }
 
     suspend fun aceptarReserva(reservaId: String) : ResultWrapper<ReservaAceptadaResponse>{

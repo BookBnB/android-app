@@ -11,13 +11,15 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.example.bookbnb.R
+import com.example.bookbnb.adapters.ReservaListener
+import com.example.bookbnb.adapters.ReservaRecyclerViewAdapter
 import com.example.bookbnb.databinding.DialogConfirmacionReservaBinding
 import com.example.bookbnb.databinding.DialogReservaAceptadaBinding
 import com.example.bookbnb.databinding.FragmentListaReservasBinding
 import com.example.bookbnb.ui.BaseFragment
 import com.example.bookbnb.viewmodels.ListaReservasViewModel
 
-class ListaReservasFragment(val publicacionId: String, val estadoReserva: String) : BaseFragment() {
+class AnfitrionReservasFragment(val publicacionId: String, val estadoReserva: String) : BaseFragment() {
 
     private val viewModel: ListaReservasViewModel by lazy {
         ViewModelProvider(this).get(ListaReservasViewModel::class.java)
@@ -39,7 +41,7 @@ class ListaReservasFragment(val publicacionId: String, val estadoReserva: String
 
         binding.viewModel = viewModel
 
-        setReservasList(binding)
+        setReservasListAdapter(binding)
         publicacionId.let { viewModel.getReservasByEstado(it, estadoReserva) }
 
         setSnackbarMessageObserver(viewModel, binding.root)
@@ -50,11 +52,12 @@ class ListaReservasFragment(val publicacionId: String, val estadoReserva: String
         return binding.root
     }
 
-    private fun setReservasList(binding: FragmentListaReservasBinding) {
+    private fun setReservasListAdapter(binding: FragmentListaReservasBinding) {
         binding.reservasList.adapter =
-            ReservaRecyclerViewAdapter(ReservaListener { reservaId ->
-                viewModel.onAceptacionReserva(reservaId)
-            }) as ReservaRecyclerViewAdapter
+            ReservaRecyclerViewAdapter(
+                ReservaListener { reservaId ->
+                    viewModel.onAceptacionReserva(reservaId)
+                }) as ReservaRecyclerViewAdapter
 
         binding.reservasList.addItemDecoration(
             DividerItemDecoration(

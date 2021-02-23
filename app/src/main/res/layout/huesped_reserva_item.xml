@@ -4,11 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools">
     <data>
         <variable name="property"
-            type="com.example.bookbnb.models.Reserva" />
+            type="com.example.bookbnb.viewmodels.ReservaVM" />
         <import type="android.view.View" />
         <variable
-            name="aceptarListener"
-            type="com.example.bookbnb.ui.reservas.ReservaListener" />
+            name="calificarListener"
+            type="com.example.bookbnb.adapters.ReservaVMListener" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -28,7 +28,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:reservaDrawableTint="@{property.estado}"/>
+            app:reservaDrawableTint="@{property.reserva.estado}"/>
 
         <TextView
             android:id="@+id/titulo_reserva"
@@ -37,33 +37,86 @@
             android:layout_marginStart="@dimen/margin_small"
             android:layout_marginTop="@dimen/margin_small"
             android:layout_marginEnd="@dimen/margin_small"
-            android:text="@{property.id}"
+            android:text="@{property.publicacionTitulo}"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/autor_reserva"
-            app:layout_constraintEnd_toStartOf="@+id/fecha_inicio_reserva"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/reserved_image"
             app:layout_constraintTop_toTopOf="parent"
             tools:ignore="MissingConstraints"
-            tools:text="AX98B2" />
-
+            tools:text="Cabañas de Mendoza" />
 
         <TextView
-            android:id="@+id/autor_reserva"
+            android:id="@+id/codigo_reserva"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_small"
             android:layout_marginTop="@dimen/margin_small"
             android:layout_marginEnd="@dimen/margin_small"
+            android:layout_marginBottom="@dimen/margin_small"
             android:drawablePadding="@dimen/margin_min"
             android:gravity="center_vertical"
-            android:text="@{property.estado.toUpperCase()}"
+            android:text="@{@string/codigo_reserva(property.reserva.id)}"
             app:layout_constraintEnd_toStartOf="@+id/fecha_fin_reserva"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/reserved_image"
             app:layout_constraintTop_toBottomOf="@+id/titulo_reserva"
-            tools:text="RECHAZADA" />
+            tools:text="Código reserva: AX98B2" />
+
+        <TextView
+            android:id="@+id/estado_reserva"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_small"
+            android:layout_marginTop="@dimen/margin_small"
+            android:layout_marginEnd="@dimen/margin_small"
+            android:layout_marginBottom="@dimen/margin_small"
+            android:drawablePadding="@dimen/margin_min"
+            android:gravity="center_vertical"
+            android:text="@{@string/estado_reserva(property.reserva.convertEstado())}"
+            app:layout_constraintEnd_toStartOf="@+id/fecha_fin_reserva"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/reserved_image"
+            app:layout_constraintTop_toBottomOf="@+id/codigo_reserva"
+            tools:text="Estado: Finalizada" />
+
+        <TextView
+            android:id="@+id/precio_reserva"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_small"
+            android:layout_marginTop="@dimen/margin_small"
+            android:layout_marginEnd="@dimen/margin_small"
+            android:layout_marginBottom="@dimen/margin_small"
+            android:drawablePadding="@dimen/margin_min"
+            android:gravity="center_vertical"
+            android:text="@{@string/precio_total_reserva(property.reserva.calcularPrecioTotal())}"
+            app:layout_constraintBottom_toTopOf="@+id/materialButton2"
+            app:layout_constraintEnd_toStartOf="@+id/fecha_fin_reserva"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/reserved_image"
+            app:layout_constraintTop_toBottomOf="@+id/estado_reserva"
+            tools:text="Precio total: 0.005 ETH" />
+
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/materialButton2"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            app:strokeColor="@color/primaryColor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="@{() -> calificarListener.onClick(property)}"
+            android:text="@string/calificar_text"
+            android:visibility="@{property.reserva.isGradable() ? View.VISIBLE : View.GONE}"
+            app:icon="@drawable/ic_star_24"
+            app:iconTint="@color/primaryColor"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/precio_reserva" />
 
         <TextView
             android:id="@+id/fecha_inicio_reserva"
@@ -71,14 +124,14 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_small"
             android:layout_marginEnd="@dimen/margin_small"
-            android:drawableTint="@color/primaryDarkColor"
             android:gravity="center"
-            android:text="@{property.fechaInicio}"
+            android:text="@{property.reserva.fechaInicio}"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
             app:drawableStartCompat="@drawable/ic_check_in"
+            app:drawableTint="@color/primaryDarkColor"
             app:layout_constraintBottom_toTopOf="@+id/fecha_fin_reserva"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/titulo_reserva"
             app:layout_constraintVertical_chainStyle="packed"
             tools:ignore="MissingConstraints"
             tools:text="20/11/2020" />
@@ -90,12 +143,12 @@
             android:layout_marginTop="@dimen/margin_small"
             android:layout_marginEnd="@dimen/margin_small"
             android:layout_marginBottom="@dimen/margin_small"
-            android:drawableTint="@color/primaryDarkColor"
             android:gravity="center"
-            android:text="@{property.fechaFin}"
+            android:text="@{property.reserva.fechaFin}"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
             app:drawableStartCompat="@drawable/ic_check_out"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:drawableTint="@color/primaryDarkColor"
+            app:layout_constraintBottom_toTopOf="@+id/materialButton2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/fecha_inicio_reserva"
             tools:text="27/11/2020" />

@@ -1,7 +1,6 @@
 package com.example.bookbnb.ui.reservas
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,11 +8,12 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.example.bookbnb.R
+import com.example.bookbnb.adapters.HuespedReservasRecyclerViewAdapter
+import com.example.bookbnb.adapters.ReservaVMListener
 import com.example.bookbnb.databinding.FragmentHuespedReservasBinding
-import com.example.bookbnb.databinding.FragmentListaReservasBinding
 import com.example.bookbnb.ui.BaseFragment
 import com.example.bookbnb.viewmodels.HuespedReservasViewModel
-import com.example.bookbnb.viewmodels.ListaReservasViewModel
+import com.google.android.material.tabs.TabLayout
 
 class HuespedReservasFragment : BaseFragment() {
 
@@ -41,18 +41,36 @@ class HuespedReservasFragment : BaseFragment() {
 
         binding.viewModel = viewModel
 
-        setReservasList(binding)
-
         setSnackbarMessageObserver(viewModel, binding.root)
 
-        viewModel.setReservasList()
+        viewModel.fetchReservasList { viewModel.setSelectedReservasList(requireContext().getString(R.string.reservas_proximas_tab_text)) }
+        setReservasRecyclerView(binding)
+
+        setTabLayoutOnSelectedTab()
 
         return binding.root
     }
 
-    private fun setReservasList(binding: FragmentHuespedReservasBinding) {
+    private fun setTabLayoutOnSelectedTab() {
+        binding.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                viewModel.setSelectedReservasList(tab?.text.toString())
+            }
+
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+                // Handle tab reselect
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+                // Handle tab unselect
+            }
+        })
+    }
+
+    private fun setReservasRecyclerView(binding: FragmentHuespedReservasBinding) {
         binding.reservasList.adapter =
-            HuespedReservasRecyclerViewAdapter(ReservaListener { reservaId ->
+            HuespedReservasRecyclerViewAdapter(ReservaVMListener { reservaId ->
             }) as HuespedReservasRecyclerViewAdapter
 
         binding.reservasList.addItemDecoration(
