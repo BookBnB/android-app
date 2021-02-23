@@ -109,7 +109,7 @@
             android:layout_height="wrap_content"
             android:onClick="@{() -> calificarListener.onClick(property)}"
             android:text="@string/calificar_text"
-            android:visibility="@{property.reserva.isGradable() ? View.VISIBLE : View.GONE}"
+            android:visibility="@{property.isGradable() ? View.VISIBLE : View.GONE}"
             app:icon="@drawable/ic_star_24"
             app:iconTint="@color/primaryColor"
             app:layout_constraintBottom_toBottomOf="parent"

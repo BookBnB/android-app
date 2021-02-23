@@ -49,6 +49,22 @@ class SessionManager (context: Context) {
         return prefs.getString(USER_TOKEN, null)
     }
 
+    fun saveReservaCalificada(reservaId: String){
+        var currCaificaciones = prefs.getString("Calificaciones", "")!!
+        val editor = prefs.edit()
+        currCaificaciones = if (currCaificaciones.isEmpty()){
+            reservaId
+        } else{
+            "$currCaificaciones,$reservaId"
+        }
+        editor.putString("Calificaciones", currCaificaciones)
+        editor.apply()
+    }
+
+    fun getReservasCalificadas() : List<String> {
+        return prefs.getString("Calificaciones", "")!!.split(",")
+    }
+
     fun getUserId(): String?{
         val token = fetchAuthToken() ?: return null
         val jwtToken = JWT(token)

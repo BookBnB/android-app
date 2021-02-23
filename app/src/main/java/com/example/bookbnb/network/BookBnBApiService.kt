@@ -1,10 +1,8 @@
 package com.example.bookbnb.network
 
 
-import android.app.Application
 import android.content.Context
 import android.util.Log
-import com.example.bookbnb.R
 import com.example.bookbnb.models.*
 import com.example.bookbnb.utils.SessionManager
 import com.squareup.moshi.Moshi
@@ -123,6 +121,14 @@ interface BookBnBApiService {
         @Header("Authorization") token: String,
         @Body reservaDTO: ReservaDTO
     ): ReservarPublicacionResponse
+
+
+    @POST("publicaciones/{idPublicacion}/calificaciones")
+    suspend fun calificarPublicacion(
+        @Header("Authorization") token: String,
+        @Path("idPublicacion") publicacionId: String,
+        @Body calificacionDTO: Calificacion
+    ): Unit
 }
 
 class BookBnBApi(var context: Context) {
@@ -295,6 +301,15 @@ class BookBnBApi(var context: Context) {
         return safeApiCall(Dispatchers.IO) { retrofitService.getPublicationById(token, publicacionId) }
     }
 
+    suspend fun calificarPublicacion(publicacionId: String, rating: Float) : ResultWrapper<Unit> {
+        val token = SessionManager(context).fetchAuthToken()
+        if (token.isNullOrEmpty()){
+            throw Exception("No hay una sesión establecida")
+        }
+        val calificacionDTO = Calificacion(rating, "Not implemented")
+        return safeApiCall(Dispatchers.IO) { retrofitService.calificarPublicacion(token, publicacionId, calificacionDTO) }
+    }
+
     suspend fun searchPublicaciones(coordenadas: Coordenada,
                                     tipoAlojamiento: String?,
                                     cantHuespedes: Int,
@@ -407,5 +422,4 @@ class BookBnBApi(var context: Context) {
             null
         }
     }
-
 }

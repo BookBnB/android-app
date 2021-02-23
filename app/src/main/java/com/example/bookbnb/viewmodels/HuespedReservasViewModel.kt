@@ -42,12 +42,16 @@ class HuespedReservasViewModel(application: Application) : BaseAndroidViewModel(
             val reservasAux = fetchReservasFromServer()
             if (reservasAux.isNotEmpty()){
                 val idPublicaciones = reservasAux.map { it.publicacionId }
+                val reservasCalificadas = SessionManager(getApplication()).getReservasCalificadas()
                 val publicaciones = getNombresPublicaciones(idPublicaciones)
                 val publicacionesById = publicaciones.map { it.id to it }.toMap()
-                val reservasVMList = reservasAux.map { ReservaVM(it, publicacionesById[it.publicacionId]?.titulo!!) }
+                val reservasVMList = reservasAux.map {
+                    ReservaVM(it, publicacionesById[it.publicacionId]?.titulo!!, MutableLiveData(reservasCalificadas.contains(it.id)))
+                }
                 val format = SimpleDateFormat("yyyy-MM-dd", Locale.US)
-                reservasProximas.value = reservasVMList.filter { !it.reserva.isFinished() }.sortedBy { format.parse(it.reserva.fechaInicio)!!.time }
-                reservasAnteriores.value = reservasVMList.filter { it.reserva.isFinished() }.sortedByDescending { format.parse(it.reserva.fechaFin)!!.time }
+                val (anteriores, proximas) = reservasVMList.partition { it.reserva.isFinished() }
+                reservasProximas.value = proximas.sortedBy { format.parse(it.reserva.fechaInicio)!!.time }
+                reservasAnteriores.value = anteriores.sortedByDescending { format.parse(it.reserva.fechaFin)!!.time }
             }
             onSuccess()
         }
@@ -88,5 +92,22 @@ class HuespedReservasViewModel(application: Application) : BaseAndroidViewModel(
             }
         }
         return publicaciones
+    }
+
+    fun enviarCalificacion(reserva: Reserva, rating: Float) {
+        viewModelScope.launch {
+            when (val reservasResponse =BookBnBApi(getApplication()).calificarPublicacion(reserva.publicacionId, rating)) {
+                is ResultWrapper.NetworkError -> showSnackbarErrorMessage(
+                    getApplication<Application>().getString(
+                        R.string.network_error_msg
+                    )
+                )
+                is ResultWrapper.GenericError -> showGenericError(reservasResponse)
+                is ResultWrapper.Success -> {
+                    SessionManager(getApplication()).saveReservaCalificada(reserva.id)
+                    showSnackbarSuccessMessage("Su calificación fue enviada correctamente. ¡Muchas gracias!")
+                }
+            }
+        }
     }
 }
