@@ -1,19 +1,14 @@
 package com.example.bookbnb.ui.busqueda
 
-import android.app.Activity
-import android.content.Context
 import android.os.Bundle
 import android.text.InputType
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
@@ -27,9 +22,6 @@ import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.DateValidatorPointForward
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.slider.LabelFormatter.LABEL_GONE
-import com.google.android.material.slider.RangeSlider
-import com.google.android.material.slider.Slider
-import java.util.*
 
 class BusquedaLocationFragment : BaseFragment() {
 
