@@ -1,5 +1,6 @@
 package com.example.bookbnb.models
 
+import com.example.bookbnb.viewmodels.round
 import com.squareup.moshi.JsonClass
 
 class TipoDeAlojamientoProvider{
@@ -29,5 +30,14 @@ class Publicacion(var id: String? = null,
                   var tipoDeAlojamiento: String,
                   var anfitrion: Anfitrion? = null,
                   val estado: String? = null,
+                  var calificaciones: List<Calificacion>? = null,
                   var calificacion: Float? = null
-)
+){
+    fun calificacionAsString() : String {
+        val currCalificacionAsString = if (calificacion == null)
+            "-"
+        else
+             calificacion?.round(2)?.toFloat().toString()
+        return "$currCalificacionAsString (${calificaciones?.size})"
+    }
+}

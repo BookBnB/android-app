@@ -1,5 +1,7 @@
 package com.example.bookbnb.ui.reservas
 
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,9 +12,12 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import com.example.bookbnb.R
 import com.example.bookbnb.adapters.HuespedReservasRecyclerViewAdapter
 import com.example.bookbnb.adapters.ReservaVMListener
+import com.example.bookbnb.databinding.DialogCalificacionAlojamientoBinding
 import com.example.bookbnb.databinding.FragmentHuespedReservasBinding
 import com.example.bookbnb.ui.BaseFragment
+import com.example.bookbnb.utils.notifyObserver
 import com.example.bookbnb.viewmodels.HuespedReservasViewModel
+import com.example.bookbnb.viewmodels.ReservaVM
 import com.google.android.material.tabs.TabLayout
 
 class HuespedReservasFragment : BaseFragment() {
@@ -70,7 +75,8 @@ class HuespedReservasFragment : BaseFragment() {
 
     private fun setReservasRecyclerView(binding: FragmentHuespedReservasBinding) {
         binding.reservasList.adapter =
-            HuespedReservasRecyclerViewAdapter(ReservaVMListener { reservaId ->
+            HuespedReservasRecyclerViewAdapter(ReservaVMListener { reservaVM ->
+                showDialogCalificacion(reservaVM)
             }) as HuespedReservasRecyclerViewAdapter
 
         binding.reservasList.addItemDecoration(
@@ -79,5 +85,41 @@ class HuespedReservasFragment : BaseFragment() {
                 DividerItemDecoration.VERTICAL
             )
         )
+    }
+
+    private fun showDialogCalificacion(
+        reservaVM: ReservaVM
+    ) {
+        val builder = AlertDialog.Builder(context)
+        val bindingDialog: DialogCalificacionAlojamientoBinding = DataBindingUtil.inflate(
+            LayoutInflater.from(context),
+            R.layout.dialog_calificacion_alojamiento,
+            null,
+            false
+        )
+        bindingDialog.reservaViewModel = reservaVM
+        val calificacionDialog = builder
+            .setPositiveButton(
+                "Calificar"
+            ) { _: DialogInterface?, _: Int ->
+                run {
+                    bindingDialog.reservaViewModel.let {
+                        if (it?.rating?.value == null){
+                            viewModel.showSnackbarErrorMessage("¡Oops! No se ingresó calificación para el alojamiento.")
+                        }
+                        else {
+                            viewModel.enviarCalificacion(it.reserva, it.rating.value!!, it.resenia.value!!)
+                            it.isCalificada.value = true
+                            viewModel.reservas.notifyObserver()
+                        }
+                    }
+                }
+            }
+            .setNegativeButton(
+                "Cancelar"
+            ) { _: DialogInterface?, _: Int -> bindingDialog.reservaViewModel = null }
+            .create()
+        calificacionDialog.setView(bindingDialog.root)
+        calificacionDialog.show()
     }
 }

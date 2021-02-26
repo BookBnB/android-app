@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable name="property"
+            type="com.example.bookbnb.viewmodels.CalificacionVM" />
+        <import type="android.view.View" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/publicacion_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/margin_normal">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/puntos"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableStart="@drawable/ic_star_24"
+            android:drawablePadding="@dimen/margin_small"
+            android:text="@{property.puntosAsString()}"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
+            android:textStyle="bold"
+            app:drawableTint="@color/yellowStar"
+            app:layout_constraintBottom_toTopOf="@+id/respuesta"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="5" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/huesped"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_normal"
+            android:text="@{property.huesped}"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/puntos"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Franco Huesped" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/respuesta"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@{property.detalle}"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/huesped"
+            tools:text="Muy bueno el alojamiento, los dueños son unas excelentes personas." />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

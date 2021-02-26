@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.example.bookbnb.R
+import com.example.bookbnb.adapters.CalificacionesRecyclerViewAdapter
 import com.example.bookbnb.adapters.PreguntasRecyclerViewAdapter
 import com.example.bookbnb.adapters.ResponderPreguntaListener
 import com.example.bookbnb.databinding.DialogResponderPreguntaBinding
@@ -55,6 +56,7 @@ class DetallePublicacionAnfitrionFragment : BaseFragment() {
 
         val publicacionId = arguments?.getString("publicacionId")
         setPreguntasListAdapter()
+        setCalificacionesListAdapter()
 
         viewModel.onGetDetail(publicacionId!!)
 
@@ -63,6 +65,17 @@ class DetallePublicacionAnfitrionFragment : BaseFragment() {
         setNavigateToReservasListObserver(publicacionId)
 
         return binding.root
+    }
+
+    private fun setCalificacionesListAdapter() {
+        binding.valoracionesPublicacion.calificacionesList.adapter =
+            CalificacionesRecyclerViewAdapter() as CalificacionesRecyclerViewAdapter
+        binding.valoracionesPublicacion.calificacionesList.addItemDecoration(
+            DividerItemDecoration(
+                context,
+                DividerItemDecoration.VERTICAL
+            )
+        )
     }
 
     private fun setPreguntasListAdapter() {

@@ -11,14 +11,11 @@ import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.example.bookbnb.adapters.ChatMessagesRecyclerViewAdapter
-import com.example.bookbnb.adapters.ChatsRecyclerViewAdapter
-import com.example.bookbnb.adapters.HuespedReservasRecyclerViewAdapter
-import com.example.bookbnb.adapters.PreguntasRecyclerViewAdapter
+import com.example.bookbnb.adapters.*
 import com.example.bookbnb.models.*
 import com.example.bookbnb.models.chat.FirebaseChatMessage
 import com.example.bookbnb.ui.publicaciones.PublicacionRecyclerViewAdapter
-import com.example.bookbnb.adapters.ReservaRecyclerViewAdapter
+import com.example.bookbnb.viewmodels.CalificacionVM
 import com.example.bookbnb.viewmodels.FirebaseChatVM
 import com.example.bookbnb.viewmodels.ReservaVM
 import com.google.android.material.textfield.TextInputLayout
@@ -88,6 +85,13 @@ fun bindChatsRecyclerView(recyclerView: RecyclerView,
 fun bindPreguntasRecyclerView(recyclerView: RecyclerView,
                      data: List<Pregunta>?) {
     val adapter = recyclerView.adapter as PreguntasRecyclerViewAdapter
+    adapter.submitList(data)
+}
+
+@BindingAdapter("calificacionesListData")
+fun bindCalificacionesRecyclerView(recyclerView: RecyclerView,
+                              data: List<CalificacionVM>?) {
+    val adapter = recyclerView.adapter as CalificacionesRecyclerViewAdapter
     adapter.submitList(data)
 }
 

@@ -3,6 +3,7 @@ package com.example.bookbnb.viewmodels
 import android.app.Application
 import androidx.lifecycle.*
 import com.example.bookbnb.R
+import com.example.bookbnb.models.Calificacion
 import com.example.bookbnb.models.Pregunta
 import com.example.bookbnb.models.Publicacion
 import com.example.bookbnb.network.BookBnBApi
@@ -15,6 +16,10 @@ open class DetallePublicacionViewModel(application: Application) : BaseAndroidVi
 
     val publicacion : LiveData<Publicacion>
         get() = _publicacion
+
+    private val _calificaciones = MutableLiveData<List<CalificacionVM>>()
+    val calificaciones : MutableLiveData<List<CalificacionVM>>
+        get() = _calificaciones
 
     private val _preguntas = MutableLiveData<List<Pregunta>>()
     val preguntas : MutableLiveData<List<Pregunta>>
@@ -38,6 +43,7 @@ open class DetallePublicacionViewModel(application: Application) : BaseAndroidVi
                 _showLoadingSpinner.value = true
                 loadPublicacion(publicacionId)
                 loadPreguntas(publicacionId)
+                loadCalificaciones(publicacionId)
             }
             finally {
                 _showLoadingSpinner.value = false
@@ -69,6 +75,19 @@ open class DetallePublicacionViewModel(application: Application) : BaseAndroidVi
             is ResultWrapper.GenericError -> showGenericError(preguntasResponse)
             is ResultWrapper.Success -> onGetPreguntasSuccess(preguntasResponse)
         }
+    }
+
+    protected suspend fun loadCalificaciones(publicacionId: String){
+        when (val calificacionesResponse = BookBnBApi(getApplication()).getCalificaciones(publicacionId)){
+            is ResultWrapper.NetworkError -> showSnackbarErrorMessage(getApplication<Application>().getString(
+                R.string.network_error_msg))
+            is ResultWrapper.GenericError -> showGenericError(calificacionesResponse)
+            is ResultWrapper.Success -> onGetCalificacionesSuccess(calificacionesResponse)
+        }
+    }
+
+    private fun onGetCalificacionesSuccess(calificacionesResponse: ResultWrapper.Success<List<Calificacion>>) {
+        _calificaciones.value = calificacionesResponse.value.map { CalificacionVM(it.puntos.toInt(), it.detalle, "Anónimo") }
     }
 
     private fun onGetPreguntasSuccess(preguntasResponse: ResultWrapper.Success<List<Pregunta>>) {

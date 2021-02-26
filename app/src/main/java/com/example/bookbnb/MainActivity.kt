@@ -55,20 +55,6 @@ class MainActivity : AppCompatActivity() {
                 val intent = Intent(this, HuespedActivity::class.java)
                 startActivity(intent)
             }
-            FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
-                if (!task.isSuccessful) {
-                    Log.w("FIREBASE TOKEN", "Fetching FCM registration token failed", task.exception)
-                    return@OnCompleteListener
-                }
-
-                // Get new FCM registration token
-                val token = task.result
-
-                // Log and toast
-                val msg = token
-                Log.d("FIREBASE TOKEN", msg!!)
-                Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
-            })
         }
         finish()
     }

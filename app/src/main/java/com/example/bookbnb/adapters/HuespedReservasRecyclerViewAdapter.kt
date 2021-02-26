@@ -43,6 +43,6 @@ class HuespedReservasRecyclerViewAdapter(val clickListener: ReservaVMListener) :
     }
 }
 
-class ReservaVMListener(val clickListener: (reservaId: String) -> Unit) {
-    fun onClick(reservaVM: ReservaVM) = clickListener(reservaVM.reserva.id)
+class ReservaVMListener(val clickListener: (reservaId: ReservaVM) -> Unit) {
+    fun onClick(reservaVM: ReservaVM) = clickListener(reservaVM)
 }

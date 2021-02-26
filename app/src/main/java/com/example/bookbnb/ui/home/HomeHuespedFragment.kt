@@ -1,15 +1,21 @@
 package com.example.bookbnb.ui.home
 
+import android.content.Context
 import android.os.Bundle
+import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
+import com.example.bookbnb.R
 import com.example.bookbnb.databinding.FragmentHomeHuespedBinding
 import com.example.bookbnb.viewmodels.HomeHuespedViewModel
+import com.google.android.material.appbar.AppBarLayout
+
 
 class HomeHuespedFragment : Fragment() {
 
@@ -29,7 +35,6 @@ class HomeHuespedFragment : Fragment() {
         binding.lifecycleOwner = this
         binding.homeHuespedViewModel = viewModel
         setNavigateToBusquedaObserver()
-
         return binding.root
     }
 
