@@ -76,19 +76,26 @@ class BusquedaViewModel(application: Application) : BaseAndroidViewModel(applica
     }
 
     fun getResults() {
-        viewModelScope.launch {
+        if (_publicaciones.value == null) {
+            viewModelScope.launch {
 
-            when (val searchResponse = BookBnBApi(getApplication()).searchPublicaciones(
-                _selectedLocation.value!!.coordenadas, _selectedTipoAlojamiento.value!!, _selectedCantHuespedes.value!!,
-                _selectedMinPrice.value!!, selectedMaxPrice.value!!, _startDate.value, _endDate.value
-            )) {
-                is ResultWrapper.NetworkError -> showSnackbarErrorMessage(
-                    getApplication<Application>().getString(
-                        R.string.network_error_msg
+                when (val searchResponse = BookBnBApi(getApplication()).searchPublicaciones(
+                    _selectedLocation.value!!.coordenadas,
+                    _selectedTipoAlojamiento.value!!,
+                    _selectedCantHuespedes.value!!,
+                    _selectedMinPrice.value!!,
+                    selectedMaxPrice.value!!,
+                    _startDate.value,
+                    _endDate.value
+                )) {
+                    is ResultWrapper.NetworkError -> showSnackbarErrorMessage(
+                        getApplication<Application>().getString(
+                            R.string.network_error_msg
+                        )
                     )
-                )
-                is ResultWrapper.GenericError -> showGenericError(searchResponse)
-                is ResultWrapper.Success -> onSearchSuccess(searchResponse)
+                    is ResultWrapper.GenericError -> showGenericError(searchResponse)
+                    is ResultWrapper.Success -> onSearchSuccess(searchResponse)
+                }
             }
         }
     }

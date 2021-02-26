@@ -13,6 +13,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.example.bookbnb.R
+import com.example.bookbnb.adapters.CalificacionesRecyclerViewAdapter
 import com.example.bookbnb.adapters.PreguntasRecyclerViewAdapter
 import com.example.bookbnb.databinding.DialogReservaBinding
 import com.example.bookbnb.databinding.FragmentDetallePublicacionHuespedBinding
@@ -73,6 +74,7 @@ class DetallePublicacionHuespedFragment : BaseFragment() {
             viewModel.setDisponibilidadElegida(start, end)
         } }
         setPreguntasListAdapter()
+        setCalificacionesListAdapter()
 
         setNavigateToChatObserver()
 
@@ -81,6 +83,17 @@ class DetallePublicacionHuespedFragment : BaseFragment() {
         binding.detallePublicacionViewModel = viewModel
 
         return binding.root
+    }
+
+    private fun setCalificacionesListAdapter() {
+        binding.valoracionesPublicacion.calificacionesList.adapter =
+            CalificacionesRecyclerViewAdapter() as CalificacionesRecyclerViewAdapter
+        binding.valoracionesPublicacion.calificacionesList.addItemDecoration(
+            DividerItemDecoration(
+                context,
+                DividerItemDecoration.VERTICAL
+            )
+        )
     }
 
     private fun setNavigateToChatObserver() {

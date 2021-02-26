@@ -94,9 +94,9 @@ class HuespedReservasViewModel(application: Application) : BaseAndroidViewModel(
         return publicaciones
     }
 
-    fun enviarCalificacion(reserva: Reserva, rating: Float) {
+    fun enviarCalificacion(reserva: Reserva, rating: Float, resenia: String) {
         viewModelScope.launch {
-            when (val reservasResponse =BookBnBApi(getApplication()).calificarPublicacion(reserva.publicacionId, rating)) {
+            when (val reservasResponse =BookBnBApi(getApplication()).calificarPublicacion(reserva.publicacionId, rating, resenia)) {
                 is ResultWrapper.NetworkError -> showSnackbarErrorMessage(
                     getApplication<Application>().getString(
                         R.string.network_error_msg

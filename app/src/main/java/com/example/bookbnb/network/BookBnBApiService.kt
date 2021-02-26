@@ -101,6 +101,10 @@ interface BookBnBApiService {
     suspend fun getPreguntasPublicacion(@Header("Authorization") token: String,
                                         @Path("id") publicacionId: String) : List<Pregunta>
 
+    @GET("publicaciones/{id}/calificaciones")
+    suspend fun getCalificacionesPublicacion(@Header("Authorization") token: String,
+                                        @Path("id") publicacionId: String) : List<Calificacion>
+
     @POST("publicaciones/{id}/preguntas")
     suspend fun postPreguntaPublicacion(
         @Header("Authorization") token: String,
@@ -167,6 +171,14 @@ class BookBnBApi(var context: Context) {
             throw Exception("No hay una sesión establecida")
         }
         return safeApiCall(Dispatchers.IO) { retrofitService.getUser(token, userId) }
+    }
+
+    suspend fun getCalificaciones(publicacionId: String) : ResultWrapper<List<Calificacion>>{
+        val token = SessionManager(context).fetchAuthToken()
+        if (token.isNullOrEmpty()) {
+            throw Exception("No hay una sesión establecida")
+        }
+        return safeApiCall(Dispatchers.IO) { retrofitService.getCalificacionesPublicacion(token, publicacionId) }
     }
 
     suspend fun getPreguntas(publicacionId: String) : ResultWrapper<List<Pregunta>>{
@@ -301,12 +313,12 @@ class BookBnBApi(var context: Context) {
         return safeApiCall(Dispatchers.IO) { retrofitService.getPublicationById(token, publicacionId) }
     }
 
-    suspend fun calificarPublicacion(publicacionId: String, rating: Float) : ResultWrapper<Unit> {
+    suspend fun calificarPublicacion(publicacionId: String, rating: Float, resenia: String) : ResultWrapper<Unit> {
         val token = SessionManager(context).fetchAuthToken()
         if (token.isNullOrEmpty()){
             throw Exception("No hay una sesión establecida")
         }
-        val calificacionDTO = Calificacion(rating, "Not implemented")
+        val calificacionDTO = Calificacion(rating, resenia)
         return safeApiCall(Dispatchers.IO) { retrofitService.calificarPublicacion(token, publicacionId, calificacionDTO) }
     }
 
@@ -322,8 +334,8 @@ class BookBnBApi(var context: Context) {
         if (token.isNullOrEmpty()){
             throw Exception("No hay una sesión establecida")
         }
-        val startDate = fechaInicio?.let { SimpleDateFormat(DATE_ISO_FORMAT).format(fechaInicio) }
-        val endDate = fechaFin?.let { SimpleDateFormat(DATE_ISO_FORMAT).format(fechaFin) }
+        val startDate = fechaInicio?.let { SimpleDateFormat(DATE_ISO_FORMAT, Locale.ROOT).format(fechaInicio) }
+        val endDate = fechaFin?.let { SimpleDateFormat(DATE_ISO_FORMAT, Locale.ROOT).format(fechaFin) }
         return safeApiCall(Dispatchers.IO) { retrofitService.searchPublicaciones(token,
             coordenadas.latitud,
             coordenadas.longitud,

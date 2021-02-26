@@ -108,7 +108,7 @@ class HuespedReservasFragment : BaseFragment() {
                             viewModel.showSnackbarErrorMessage("¡Oops! No se ingresó calificación para el alojamiento.")
                         }
                         else {
-                            viewModel.enviarCalificacion(it.reserva, it.rating.value!!)
+                            viewModel.enviarCalificacion(it.reserva, it.rating.value!!, it.resenia.value!!)
                             it.isCalificada.value = true
                             viewModel.reservas.notifyObserver()
                         }

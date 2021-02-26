@@ -136,4 +136,8 @@
     <string name="calificar_text">Calificar</string>
     <string name="calificacion_dialog_title">Calificación</string>
     <string name="calificacion_dialog_explanation">Calificá este alojamiento en base a tu experiencia. Tené en cuenta que el anfitrión y otros huespedes podrán ver tu calificación.</string>
+    <string name="reseña_text">Reseña</string>
+    <string name="valoraciones_text">Calificaciones</string>
+    <string name="valoraciones_subtitle">En esta sección se podrán ver las valoraciones proporcionadas por otros huespedes</string>
+    <string name="no_hay_calificaciones_text">Por el momento no hay calificaciones.</string>
 </resources>

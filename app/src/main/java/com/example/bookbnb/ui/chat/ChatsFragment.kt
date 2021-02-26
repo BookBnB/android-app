@@ -84,9 +84,13 @@ class ChatsFragment() : BaseFragment() {
         val chatsListener = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 val chats = dataSnapshot.getValue<HashMap<String, FirebaseChat>>()
-                viewModel.chats.value = chats?.map{c ->
+                val mappedChats = chats?.map{c ->
                     val chatTitle = if (sessionMgr.isUserHost()) c.value.userHuespedName else c.value.userAnfitrionName
                     FirebaseChatVM(c.value.chatId, chatTitle)
+                }
+                // TODO: Replace with child event listener to avoid getting all the data everytime
+                if (viewModel.chats.value!! != mappedChats) {
+                    viewModel.chats.value = mappedChats
                 }
             }
 

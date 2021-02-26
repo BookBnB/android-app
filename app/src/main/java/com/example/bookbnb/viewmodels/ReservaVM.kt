@@ -11,6 +11,10 @@ data class ReservaVM(val reserva: Reserva,
     val rating : MutableLiveData<Float?>
         get() = _rating
 
+    private val _resenia = MutableLiveData<String?>()
+    val resenia: MutableLiveData<String?>
+        get() = _resenia
+
     val isCalificada : MutableLiveData<Boolean>
         get() = _isCalificada
 

@@ -14,6 +14,7 @@
     <color name="secondaryTextColor">#ffffff</color>
     <color name="reservaPendiente">#C39800</color>
     <color name="reservaAceptada">#00C371</color>
+    <color name="yellowStar">#FFC107</color>
     <drawable name="grayReservas">#BBBBBB</drawable>
 
 </resources>
