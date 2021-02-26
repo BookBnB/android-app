@@ -40,13 +40,13 @@ open class DetallePublicacionViewModel(application: Application) : BaseAndroidVi
     fun onGetDetail(publicacionId: String) {
         viewModelScope.launch {
             try {
-                _showLoadingSpinner.value = true
+                showLoadingSpinner()
                 loadPublicacion(publicacionId)
                 loadPreguntas(publicacionId)
                 loadCalificaciones(publicacionId)
             }
             finally {
-                _showLoadingSpinner.value = false
+                hideLoadingSpinner()
             }
         }
     }
@@ -109,7 +109,7 @@ open class DetallePublicacionViewModel(application: Application) : BaseAndroidVi
         }
         viewModelScope.launch {
             try {
-                _showLoadingSpinner.value = true
+                showLoadingSpinner(false)
                 val respuestaResponse = BookBnBApi(getApplication()).responderPregunta(publicacion.value?.id!!,
                     _selectedPregunta.value?.id!!,
                     _selectedPreguntaRespuesta.value!!)
@@ -123,7 +123,7 @@ open class DetallePublicacionViewModel(application: Application) : BaseAndroidVi
                 loadPreguntas(_publicacion.value?.id!!)
             }
             finally {
-                _showLoadingSpinner.value = false
+                hideLoadingSpinner()
             }
         }
     }

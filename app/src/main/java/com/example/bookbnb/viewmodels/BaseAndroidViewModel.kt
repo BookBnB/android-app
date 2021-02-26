@@ -14,6 +14,10 @@ open class BaseAndroidViewModel(application: Application) : AndroidViewModel(app
     val showLoadingSpinner: LiveData<Boolean>
         get() = _showLoadingSpinner
 
+    protected val _hideBackgroundView = MutableLiveData<Boolean>(true)
+    val hideBackgroundView: LiveData<Boolean>
+        get() = _hideBackgroundView
+
     protected val _snackbarMessage = MutableLiveData<String?>(null)
     val snackbarMessage: LiveData<String?>
         get() = _snackbarMessage
@@ -34,6 +38,16 @@ open class BaseAndroidViewModel(application: Application) : AndroidViewModel(app
         else{
             showSnackbarErrorMessage("Error: ${getApplication<Application>().getString(R.string.error_inesperado_txt)}")
         }
+    }
+
+    fun showLoadingSpinner(hideBackgroundView: Boolean = true){
+        _hideBackgroundView.value = hideBackgroundView
+        _showLoadingSpinner.value = true
+    }
+
+    fun hideLoadingSpinner(){
+        _hideBackgroundView.value = true // Por defecto true
+        _showLoadingSpinner.value = false
     }
 
     fun showSnackbarErrorMessage(msg: String){

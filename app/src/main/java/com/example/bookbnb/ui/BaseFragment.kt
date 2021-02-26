@@ -28,10 +28,13 @@ abstract class BaseFragment : Fragment() {
         })
     }
 
-    protected fun setSpinnerObserver(viewModel: BaseAndroidViewModel, spinnerHolder: View) {
+    protected fun setSpinnerObserver(viewModel: BaseAndroidViewModel, spinnerHolder: View?, viewToHide: View? = null) {
         viewModel.showLoadingSpinner.observe(viewLifecycleOwner, Observer { show ->
             hideKeyboard()
-            spinnerHolder.visibility = if (show) View.VISIBLE else View.GONE
+            if (viewModel.hideBackgroundView.value!!){
+                viewToHide?.visibility = if (show) View.GONE else View.VISIBLE
+            }
+            spinnerHolder?.visibility = if (show) View.VISIBLE else View.GONE
         })
     }
 

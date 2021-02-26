@@ -47,6 +47,7 @@ class HuespedReservasFragment : BaseFragment() {
         binding.viewModel = viewModel
 
         setSnackbarMessageObserver(viewModel, binding.root)
+        setSpinnerObserver(viewModel, requireActivity().findViewById(R.id.spinner_holder), binding.root)
 
         viewModel.fetchReservasList { viewModel.setSelectedReservasList(requireContext().getString(R.string.reservas_proximas_tab_text)) }
         setReservasRecyclerView(binding)
@@ -104,8 +105,8 @@ class HuespedReservasFragment : BaseFragment() {
             ) { _: DialogInterface?, _: Int ->
                 run {
                     bindingDialog.reservaViewModel.let {
-                        if (it?.rating?.value == null){
-                            viewModel.showSnackbarErrorMessage("¡Oops! No se ingresó calificación para el alojamiento.")
+                        if (it?.rating?.value == null || it.resenia.value.isNullOrEmpty()){
+                            viewModel.showSnackbarErrorMessage("¡Oops! No se ingresó calificación/reseña para el alojamiento.")
                         }
                         else {
                             viewModel.enviarCalificacion(it.reserva, it.rating.value!!, it.resenia.value!!)

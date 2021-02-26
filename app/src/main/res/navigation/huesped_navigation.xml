@@ -105,4 +105,8 @@
         android:id="@+id/huesped_reservas_fragment"
         android:name="com.example.bookbnb.ui.reservas.HuespedReservasFragment"
         android:label="Mis Reservas" />
+    <fragment
+        android:id="@+id/perfil_fragment"
+        android:name="com.example.bookbnb.ui.perfil.PerfilFragment"
+        android:label="Mi Perfil" />
 </navigation>
