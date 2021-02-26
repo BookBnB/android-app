@@ -47,12 +47,11 @@ class PublicacionesFragment : BaseFragment() {
 
         setSnackbarMessageObserver(viewModel, binding.root)
 
-        setSpinnerObserver(viewModel, requireActivity().findViewById(R.id.spinner_holder))
+        setSpinnerObserver(viewModel, requireActivity().findViewById(R.id.spinner_holder), binding.root)
 
         setPublicacionesList(binding)
 
         setNavigateToNewPublicacionObserver()
-
 
         return binding.root
     }

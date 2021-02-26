@@ -29,9 +29,6 @@ import com.google.firebase.ktx.Firebase
 import java.util.*
 import kotlin.collections.HashMap
 
-/**
- * A fragment representing a list of Items.
- */
 class ChatsFragment() : BaseFragment() {
 
     private val viewModel: ChatsViewModel by lazy {
@@ -69,6 +66,7 @@ class ChatsFragment() : BaseFragment() {
         binding.viewModel = viewModel
 
         setSnackbarMessageObserver(viewModel, binding.root)
+        setSpinnerObserver(viewModel, requireActivity().findViewById(R.id.spinner_holder), binding.root)
 
         setChatsListAdapter()
 
@@ -84,8 +82,9 @@ class ChatsFragment() : BaseFragment() {
         val chatsListener = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 val chats = dataSnapshot.getValue<HashMap<String, FirebaseChat>>()
-                val mappedChats = chats?.map{c ->
-                    val chatTitle = if (sessionMgr.isUserHost()) c.value.userHuespedName else c.value.userAnfitrionName
+                val mappedChats = chats?.map { c ->
+                    val chatTitle =
+                        if (sessionMgr.isUserHost()) c.value.userHuespedName else c.value.userAnfitrionName
                     FirebaseChatVM(c.value.chatId, chatTitle)
                 }
                 // TODO: Replace with child event listener to avoid getting all the data everytime

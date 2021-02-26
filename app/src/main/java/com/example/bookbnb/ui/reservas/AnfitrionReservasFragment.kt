@@ -41,10 +41,11 @@ class AnfitrionReservasFragment(val publicacionId: String, val estadoReserva: St
 
         binding.viewModel = viewModel
 
+        setSnackbarMessageObserver(viewModel, binding.root)
+        setSpinnerObserver(viewModel, requireActivity().findViewById(R.id.spinner_holder), binding.root)
+
         setReservasListAdapter(binding)
         publicacionId.let { viewModel.getReservasByEstado(it, estadoReserva) }
-
-        setSnackbarMessageObserver(viewModel, binding.root)
 
         setConfirmacionReservaObserver()
         setReservaAceptadaObserver()

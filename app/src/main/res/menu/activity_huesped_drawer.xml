@@ -8,17 +8,17 @@
             android:id="@+id/nav_home_huesped"
             android:icon="@drawable/ic_home_24"
             android:title="@string/menu_home" />
-    </group>
-    <group android:checkableBehavior="single">
         <item
-            android:id="@+id/chats_fragment"
-            android:icon="@drawable/ic_email_24"
-            android:title="@string/messages_lbl" />
-    </group>
-    <group android:checkableBehavior="single">
+            android:id="@+id/perfil_fragment"
+            android:icon="@drawable/ic_user_24"
+            android:title="@string/perfil_text" />
         <item
             android:id="@+id/huesped_reservas_fragment"
             android:icon="@drawable/ic_hotel_24"
             android:title="@string/mis_reservas_text" />
+        <item
+            android:id="@+id/chats_fragment"
+            android:icon="@drawable/ic_email_24"
+            android:title="@string/messages_lbl" />
     </group>
 </menu>

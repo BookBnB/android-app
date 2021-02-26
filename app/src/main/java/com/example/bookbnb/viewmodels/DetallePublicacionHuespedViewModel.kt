@@ -86,7 +86,7 @@ class DetallePublicacionHuespedViewModel(application: Application) : DetallePubl
     fun endReservation(){
         viewModelScope.launch {
             try {
-                _showLoadingSpinner.value = true
+                showLoadingSpinner(false)
                 val reservaResponse = BookBnBApi(getApplication()).reservarPublicacion(publicacion.value!!.id!!,
                     startDate.value!!,
                     endDate.value!!)
@@ -98,7 +98,7 @@ class DetallePublicacionHuespedViewModel(application: Application) : DetallePubl
                 }
             }
             finally {
-                _showLoadingSpinner.value = false
+                hideLoadingSpinner()
             }
         }
     }
@@ -119,7 +119,7 @@ class DetallePublicacionHuespedViewModel(application: Application) : DetallePubl
         }
         viewModelScope.launch {
             try {
-                _showLoadingSpinner.value = true
+                showLoadingSpinner(false)
                 val preguntaResponse = BookBnBApi(getApplication()).realizarPregunta(
                     publicacion.value!!.id!!,
                     pregunta.value!!
@@ -134,12 +134,12 @@ class DetallePublicacionHuespedViewModel(application: Application) : DetallePubl
                     is ResultWrapper.Success -> onPreguntaSuccess(preguntaResponse)
                 }
             } finally {
-                _showLoadingSpinner.value = false
+                hideLoadingSpinner()
             }
         }
     }
 
-    private fun onPreguntaSuccess(reservaResponse: ResultWrapper.Success<Pregunta>) {
+    private fun onPreguntaSuccess(preguntaResponse: ResultWrapper.Success<Pregunta>) {
         showSnackbarSuccessMessage("¡Su pregunta fue realizada con éxito!")
         _pregunta.value = null
         viewModelScope.launch {

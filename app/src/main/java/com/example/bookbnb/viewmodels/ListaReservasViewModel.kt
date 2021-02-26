@@ -35,18 +35,24 @@ class ListaReservasViewModel(application: Application) : BaseAndroidViewModel(ap
 
     fun confirmarReserva() {
         viewModelScope.launch {
-            val sessionManager = SessionManager(getApplication())
-            when (val reservasResponse =
-                BookBnBApi(getApplication()).aceptarReserva(
-                    ultimaReservaAceptada.value!!
-                )) {
-                is ResultWrapper.NetworkError -> showSnackbarErrorMessage(
-                    getApplication<Application>().getString(
-                        R.string.network_error_msg
+            try {
+                showLoadingSpinner(false)
+                val sessionManager = SessionManager(getApplication())
+                when (val reservasResponse =
+                    BookBnBApi(getApplication()).aceptarReserva(
+                        ultimaReservaAceptada.value!!
+                    )) {
+                    is ResultWrapper.NetworkError -> showSnackbarErrorMessage(
+                        getApplication<Application>().getString(
+                            R.string.network_error_msg
+                        )
                     )
-                )
-                is ResultWrapper.GenericError -> showGenericError(reservasResponse)
-                is ResultWrapper.Success -> onReservaAceptada()
+                    is ResultWrapper.GenericError -> showGenericError(reservasResponse)
+                    is ResultWrapper.Success -> onReservaAceptada()
+                }
+            }
+            finally {
+                hideLoadingSpinner()
             }
         }
     }
@@ -61,14 +67,20 @@ class ListaReservasViewModel(application: Application) : BaseAndroidViewModel(ap
 
     fun getReservasByEstado(publicacionId: String, estadoReserva: String) {
         viewModelScope.launch {
-            val reservasAux: List<Reserva> = getReservasList(publicacionId, estadoReserva)
-            if (reservasAux.isNotEmpty()){
-                val idUsuarios = reservasAux.map { it.huespedId }
-                val usuarios = getNombresUsuarios(idUsuarios)
-                setNombreHuespedes(usuarios, reservasAux)
+            try{
+                showLoadingSpinner()
+                val reservasAux: List<Reserva> = getReservasList(publicacionId, estadoReserva)
+                if (reservasAux.isNotEmpty()){
+                    val idUsuarios = reservasAux.map { it.huespedId }
+                    val usuarios = getNombresUsuarios(idUsuarios)
+                    setNombreHuespedes(usuarios, reservasAux)
+                }
+                val sortedReservas = Reserva.sortReservas(reservasAux)
+                reservas.value = sortedReservas
             }
-            val sortedReservas = Reserva.sortReservas(reservasAux)
-            reservas.value = sortedReservas
+            finally {
+                hideLoadingSpinner()
+            }
         }
     }
 

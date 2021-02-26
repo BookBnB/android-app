@@ -7,6 +7,7 @@
         <variable
             name="viewModel"
             type="com.example.bookbnb.viewmodels.PublicacionesViewModel" />
+        <import type="android.view.View"/>
     </data>
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
@@ -20,6 +21,19 @@
             app:publicacionesListData="@{viewModel.publicaciones}"
             tools:context=".ui.publicaciones.PublicacionesFragment"
             tools:listitem="@layout/publicacion_item" />
+        <TextView
+            android:id="@+id/no_hay_publicaciones"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_normal"
+            android:layout_marginTop="@dimen/margin_normal"
+            android:layout_marginEnd="@dimen/margin_normal"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+            android:textColor="@color/error"
+            android:textAlignment="center"
+            android:visibility="@{viewModel.publicaciones.size() > 0 ? View.GONE : View.VISIBLE}"
+            tools:visibility="gone"
+            android:text="@string/no_hay_publicaciones_text" />
 
         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
             android:id="@+id/nuevaPublicacionBtn"

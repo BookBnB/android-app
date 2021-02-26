@@ -23,6 +23,8 @@ import com.example.bookbnb.utils.ImagesSliderAdapter
 import com.example.bookbnb.utils.SessionManager
 import com.example.bookbnb.viewmodels.DetallePublicacionHuespedViewModel
 import com.example.bookbnb.viewmodels.DetallePublicacionHuespedViewModelFactory
+import com.google.android.material.datepicker.CalendarConstraints
+import com.google.android.material.datepicker.DateValidatorPointForward
 import com.google.android.material.datepicker.MaterialDatePicker
 import java.util.*
 
@@ -63,8 +65,8 @@ class DetallePublicacionHuespedFragment : BaseFragment() {
 
         setSnackbarMessageObserver(viewModel, binding.root)
 
-        // TODO: AGregar spinner a la activity
-        //setSpinnerObserver(viewModel, binding.root) Esto bugea la vista porque no existe un spinner
+        setSnackbarMessageObserver(viewModel, binding.root)
+        setSpinnerObserver(viewModel, requireActivity().findViewById(R.id.spinner_holder), binding.root)
 
         val args = requireArguments()
         val publicacionId = args.getString("publicacionId")
@@ -151,6 +153,9 @@ class DetallePublicacionHuespedFragment : BaseFragment() {
                 }
                 else {
                     val builder = MaterialDatePicker.Builder.dateRangePicker()
+                    val calendarConstraintsBuilder = CalendarConstraints.Builder()
+                    calendarConstraintsBuilder.setValidator(DateValidatorPointForward.now())
+                    builder.setCalendarConstraints(calendarConstraintsBuilder.build())
                     builder.setTitleText("Seleccione la fecha de llegada y de salida")
                     val picker = builder.build()
                     picker.show(childFragmentManager, picker.toString())

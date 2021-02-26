@@ -55,11 +55,12 @@ class ResultadosBusquedaFragment : BaseFragment(){
             )
         )
 
+        setSnackbarMessageObserver(viewModel, binding.root)
+        setSpinnerObserver(viewModel, requireActivity().findViewById(R.id.spinner_holder), binding.root)
+
         viewModel.getResults()
 
         binding.resultadosBusquedaViewModel = viewModel
-
-        setSnackbarMessageObserver(viewModel, binding.root)
 
         return binding.root
     }

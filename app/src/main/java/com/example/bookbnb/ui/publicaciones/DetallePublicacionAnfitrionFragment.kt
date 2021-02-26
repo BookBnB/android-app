@@ -53,6 +53,7 @@ class DetallePublicacionAnfitrionFragment : BaseFragment() {
         setImageSliderObserver()
 
         setSnackbarMessageObserver(viewModel, binding.root)
+        setSpinnerObserver(viewModel, requireActivity().findViewById(R.id.spinner_holder), binding.root)
 
         val publicacionId = arguments?.getString("publicacionId")
         setPreguntasListAdapter()
