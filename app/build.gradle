@@ -31,8 +31,8 @@ android {
             buildConfigField("String", "SERVER_URL", "\"https://bookbnb-develop.herokuapp.com/v1/\"")
         }
         debug {
-            buildConfigField("String", "SERVER_URL", "\"https://bookbnb-develop.herokuapp.com/v1/\"")
-            //buildConfigField("String", "SERVER_URL", "\"https://bookbnb-core-service-seblaz.cloud.okteto.net/v1/\"")
+            //buildConfigField("String", "SERVER_URL", "\"https://bookbnb-develop.herokuapp.com/v1/\"")
+            buildConfigField("String", "SERVER_URL", "\"https://bookbnb-core-service-seblaz.cloud.okteto.net/v1/\"")
         }
     }
     buildFeatures {
