@@ -9,6 +9,9 @@
         <variable
             name="calificarListener"
             type="com.example.bookbnb.adapters.ReservaVMListener" />
+        <variable
+            name="cancelarListener"
+            type="com.example.bookbnb.adapters.ReservaVMListener" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -40,7 +43,6 @@
             android:text="@{property.publicacionTitulo}"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
             android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/autor_reserva"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/reserved_image"
@@ -93,13 +95,30 @@
             android:drawablePadding="@dimen/margin_min"
             android:gravity="center_vertical"
             android:text="@{@string/precio_total_reserva(property.reserva.calcularPrecioTotal())}"
-            app:layout_constraintBottom_toTopOf="@+id/materialButton2"
             app:layout_constraintEnd_toStartOf="@+id/fecha_fin_reserva"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/reserved_image"
             app:layout_constraintTop_toBottomOf="@+id/estado_reserva"
             tools:text="Precio total: 0.005 ETH" />
 
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button_cancelar"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            app:strokeColor="@color/error"
+            android:layout_marginTop="@dimen/margin_small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="@{() -> cancelarListener.onClick(property)}"
+            android:text="@string/cancelar_text_btn"
+            android:visibility="@{property.isCancelable() ? View.VISIBLE : View.GONE}"
+            app:icon="@drawable/ic_close_24"
+            app:iconTint="@color/error"
+            android:textColor="@color/error"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/precio_reserva" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/materialButton2"
@@ -116,7 +135,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/precio_reserva" />
+            app:layout_constraintTop_toBottomOf="@+id/precio_reserva"
+            tools:visibility="gone"/>
 
         <TextView
             android:id="@+id/fecha_inicio_reserva"

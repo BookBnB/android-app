@@ -5,7 +5,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import com.example.bookbnb.R
-import com.example.bookbnb.models.Reserva
+import com.example.bookbnb.models.EstadoReserva
 import com.example.bookbnb.ui.reservas.AnfitrionReservasFragment
 
 
@@ -21,8 +21,8 @@ class ReservasPagerAdapter(
 
     override fun getItem(position: Int): Fragment {
         return if (position == 0) {
-            AnfitrionReservasFragment(publicacionId, Reserva.ESTADO_ACEPTADA)
-        } else AnfitrionReservasFragment(publicacionId, Reserva.ESTADO_PENDIENTE)
+            AnfitrionReservasFragment(publicacionId, EstadoReserva.ACEPTADA.estado)
+        } else AnfitrionReservasFragment(publicacionId, EstadoReserva.PENDIENTE.estado)
     }
 
     override fun getPageTitle(position: Int): CharSequence? {

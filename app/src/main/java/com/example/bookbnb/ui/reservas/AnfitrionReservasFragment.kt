@@ -17,6 +17,7 @@ import com.example.bookbnb.databinding.DialogConfirmacionReservaBinding
 import com.example.bookbnb.databinding.DialogReservaAceptadaBinding
 import com.example.bookbnb.databinding.FragmentListaReservasBinding
 import com.example.bookbnb.ui.BaseFragment
+import com.example.bookbnb.utils.ReservaDialogConfirmProvider
 import com.example.bookbnb.viewmodels.ListaReservasViewModel
 
 class AnfitrionReservasFragment(val publicacionId: String, val estadoReserva: String) : BaseFragment() {
@@ -47,7 +48,7 @@ class AnfitrionReservasFragment(val publicacionId: String, val estadoReserva: St
         setReservasListAdapter(binding)
         publicacionId.let { viewModel.getReservasByEstado(it, estadoReserva) }
 
-        setConfirmacionReservaObserver()
+        //setConfirmacionReservaObserver()
         setReservaAceptadaObserver()
 
         return binding.root
@@ -56,8 +57,13 @@ class AnfitrionReservasFragment(val publicacionId: String, val estadoReserva: St
     private fun setReservasListAdapter(binding: FragmentListaReservasBinding) {
         binding.reservasList.adapter =
             ReservaRecyclerViewAdapter(
-                ReservaListener { reservaId ->
-                    viewModel.onAceptacionReserva(reservaId)
+                ReservaListener { reserva ->
+                    ReservaDialogConfirmProvider.showDialogConfirm(
+                        requireContext(),
+                        String.format(resources.getString(R.string.cancelar_reserva_format), reserva.id),
+                        reserva,
+                        viewModel::confirmarReserva
+                    )
                 }) as ReservaRecyclerViewAdapter
 
         binding.reservasList.addItemDecoration(
@@ -68,7 +74,7 @@ class AnfitrionReservasFragment(val publicacionId: String, val estadoReserva: St
         )
         binding.reservasList.itemAnimator = null;
     }
-
+/*
     private fun setConfirmacionReservaObserver() {
         viewModel.showConfirmacionReserva.observe(viewLifecycleOwner, Observer { display ->
             if (display) {
@@ -94,6 +100,7 @@ class AnfitrionReservasFragment(val publicacionId: String, val estadoReserva: St
             }
         })
     }
+ */
 
     private fun setReservaAceptadaObserver() {
         viewModel.showReservaAceptada.observe(viewLifecycleOwner, Observer { display ->

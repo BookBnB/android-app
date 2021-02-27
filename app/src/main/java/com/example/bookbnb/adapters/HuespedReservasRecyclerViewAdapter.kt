@@ -10,7 +10,8 @@ import com.example.bookbnb.models.Reserva
 import com.example.bookbnb.viewmodels.ReservaVM
 
 
-class HuespedReservasRecyclerViewAdapter(val clickListener: ReservaVMListener) :
+class HuespedReservasRecyclerViewAdapter(val calificarClickListener: ReservaVMListener,
+                                         val cancelarClickListener: ReservaVMListener) :
     ListAdapter<ReservaVM, HuespedReservasRecyclerViewAdapter.HuespedReservaViewHolder>(DiffCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HuespedReservaViewHolder {
@@ -21,13 +22,15 @@ class HuespedReservasRecyclerViewAdapter(val clickListener: ReservaVMListener) :
 
     override fun onBindViewHolder(holder: HuespedReservaViewHolder, position: Int) {
         val reservaVM = getItem(position)
-        holder.bind(reservaVM, clickListener)
+        holder.bind(reservaVM, calificarClickListener, cancelarClickListener)
     }
 
     class HuespedReservaViewHolder(private var binding: HuespedReservaItemBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(reservaVM: ReservaVM, clickListener: ReservaVMListener) {
+        fun bind(reservaVM: ReservaVM, calificarClickListener: ReservaVMListener,
+                 cancelarClickListener: ReservaVMListener) {
             binding.property = reservaVM
-            binding.calificarListener = clickListener
+            binding.calificarListener = calificarClickListener
+            binding.cancelarListener = cancelarClickListener
             binding.executePendingBindings()
         }
     }

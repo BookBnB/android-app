@@ -55,6 +55,6 @@ class ReservaRecyclerViewAdapter(val clickListener: ReservaListener) :
     }
 }
 
-class ReservaListener(val clickListener: (reservaId: String) -> Unit) {
-    fun onClick(reserva: Reserva) = clickListener(reserva.id)
+class ReservaListener(val clickListener: (reserva: Reserva) -> Unit) {
+    fun onClick(reserva: Reserva) = clickListener(reserva)
 }

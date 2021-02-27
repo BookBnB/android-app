@@ -4,21 +4,20 @@
     xmlns:tools="http://schemas.android.com/tools">
     <data>
         <variable
-            type="com.example.bookbnb.viewmodels.ListaReservasViewModel"
-            name="reservasViewModel" />
+            type="com.example.bookbnb.models.Reserva"
+            name="viewModel" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <TextView
-            android:id="@+id/texto_confirmacion_reserva"
+            android:id="@+id/dialog_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_small"
             android:layout_marginEnd="@dimen/margin_small"
             android:padding="24dp"
-            android:text="@{@string/aceptar_reserva_format(reservasViewModel.ultimaReservaAceptada)}"
             android:textAlignment="center"
             android:textSize="18sp"
             android:textStyle="bold"

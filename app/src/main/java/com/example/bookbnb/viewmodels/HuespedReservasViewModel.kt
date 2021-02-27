@@ -5,12 +5,14 @@ import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.bookbnb.R
+import com.example.bookbnb.models.EstadoReserva
 import com.example.bookbnb.models.Publicacion
 import com.example.bookbnb.models.Reserva
 import com.example.bookbnb.models.Usuario
 import com.example.bookbnb.network.BookBnBApi
 import com.example.bookbnb.network.ResultWrapper
 import com.example.bookbnb.utils.SessionManager
+import com.example.bookbnb.utils.notifyObserver
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
@@ -105,6 +107,29 @@ class HuespedReservasViewModel(application: Application) : BaseAndroidViewModel(
             }
         }
         return publicaciones
+    }
+
+    fun cancelarReserva(reserva: Reserva) {
+        viewModelScope.launch {
+            try {
+                showLoadingSpinner(false)
+                when (val cancelarReservaResponse = BookBnBApi(getApplication())
+                    .cancelarReserva(reserva.id)) {
+                    is ResultWrapper.NetworkError -> showSnackbarErrorMessage(
+                        getApplication<Application>().getString(
+                            R.string.network_error_msg
+                        )
+                    )
+                    is ResultWrapper.GenericError -> showGenericError(cancelarReservaResponse)
+                    is ResultWrapper.Success -> {
+                        showSnackbarSuccessMessage("La reserva fue cancelada correctamente.")
+                    }
+                }
+            }
+            finally {
+                hideLoadingSpinner()
+            }
+        }
     }
 
     fun enviarCalificacion(reserva: Reserva, rating: Float, resenia: String) {

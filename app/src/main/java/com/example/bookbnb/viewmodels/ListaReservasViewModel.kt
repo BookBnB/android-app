@@ -33,14 +33,14 @@ class ListaReservasViewModel(application: Application) : BaseAndroidViewModel(ap
     val ultimaReservaAceptada: MutableLiveData<String>
         get() = _ultimaReservaAceptada
 
-    fun confirmarReserva() {
+    fun confirmarReserva(reserva: Reserva) {
         viewModelScope.launch {
             try {
                 showLoadingSpinner(false)
                 val sessionManager = SessionManager(getApplication())
                 when (val reservasResponse =
                     BookBnBApi(getApplication()).aceptarReserva(
-                        ultimaReservaAceptada.value!!
+                        reserva.id
                     )) {
                     is ResultWrapper.NetworkError -> showSnackbarErrorMessage(
                         getApplication<Application>().getString(

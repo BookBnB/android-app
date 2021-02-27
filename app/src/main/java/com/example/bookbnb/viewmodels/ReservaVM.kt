@@ -22,4 +22,8 @@ data class ReservaVM(val reserva: Reserva,
     fun isGradable() : Boolean{
         return reserva.isGradable() && !isCalificada.value!!
     }
+
+    fun isCancelable() : Boolean{
+        return !reserva.isStarted() && reserva.isPendiente()
+    }
 }

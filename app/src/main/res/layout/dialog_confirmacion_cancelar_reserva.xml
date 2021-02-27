@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools">
     <data>
         <variable
-            type="com.example.bookbnb.viewmodels.ListaReservasViewModel"
-            name="reservasViewModel" />
+            type="com.example.bookbnb.models.Reserva"
+            name="viewModel" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -17,14 +17,14 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_small"
             android:layout_marginEnd="@dimen/margin_small"
-            android:padding="24dp"
-            android:text="@{@string/aceptar_reserva_format(reservasViewModel.ultimaReservaAceptada)}"
+            android:padding="@dimen/margin_big"
+            android:text="@{@string/cancelar_reserva_format(viewModel.id)}"
             android:textAlignment="center"
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            tools:text="¿Está seguro que desea aceptar la reserva ABCDEFG? Esto rechazará todas las pendientes que se solapen con la aceptada."
+            tools:text="¿Está seguro que desea cancelar la reserva ABCDEFG? No podrá deshacer esta decisión."
             tools:ignore="MissingConstraints" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -23,10 +23,6 @@ class Reserva(var id: String,
               var nombreHuesped: String?
 ) {
     companion object{
-        val ESTADO_ACEPTADA = "aceptada"
-        val ESTADO_PENDIENTE = "creada"
-        val ESTADO_RECHAZADA = "rechazada"
-        val ESTADO_CANCELADA = "cancelada"
 
         fun sortReservas(reservas: List<Reserva>) : List<Reserva>{
             val pastReservas = mutableListOf<Reserva>()
@@ -57,12 +53,11 @@ class Reserva(var id: String,
     }
 
     fun isPendiente() : Boolean{
-        return estado == ESTADO_PENDIENTE && !isFinished()
+        return estado == EstadoReserva.PENDIENTE.estado && !isFinished()
     }
 
     fun calcularPrecioTotal() : Float {
         val format = SimpleDateFormat("yyyy-MM-dd", Locale.US)
-        var convertedDate = format.parse(fechaInicio)
         val diff = format.parse(fechaFin)!!.time - format.parse(fechaInicio)!!.time
         val nights = TimeUnit.MILLISECONDS.toDays(diff)
         return nights * precioPorNoche
@@ -70,9 +65,14 @@ class Reserva(var id: String,
 
     fun isFinished() : Boolean{
         val format = SimpleDateFormat("yyyy-MM-dd", Locale.US)
-        var convertedDate = format.parse(fechaInicio)
         val endDateTimestamp = format.parse(fechaFin)!!.time
         return endDateTimestamp < Date().time
+    }
+
+    fun isStarted() : Boolean{
+        val format = SimpleDateFormat("yyyy-MM-dd", Locale.US)
+        val startDateTimestamp = format.parse(fechaInicio)!!.time
+        return startDateTimestamp < Date().time
     }
 
     fun isGradable() : Boolean{

@@ -12,9 +12,10 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import com.example.bookbnb.R
 import com.example.bookbnb.adapters.HuespedReservasRecyclerViewAdapter
 import com.example.bookbnb.adapters.ReservaVMListener
-import com.example.bookbnb.databinding.DialogCalificacionAlojamientoBinding
-import com.example.bookbnb.databinding.FragmentHuespedReservasBinding
+import com.example.bookbnb.databinding.*
+import com.example.bookbnb.models.Reserva
 import com.example.bookbnb.ui.BaseFragment
+import com.example.bookbnb.utils.ReservaDialogConfirmProvider
 import com.example.bookbnb.utils.notifyObserver
 import com.example.bookbnb.viewmodels.HuespedReservasViewModel
 import com.example.bookbnb.viewmodels.ReservaVM
@@ -78,6 +79,8 @@ class HuespedReservasFragment : BaseFragment() {
         binding.reservasList.adapter =
             HuespedReservasRecyclerViewAdapter(ReservaVMListener { reservaVM ->
                 showDialogCalificacion(reservaVM)
+            }, ReservaVMListener { reservaVM ->
+                showDialogConfirmCancelacion(reservaVM.reserva)
             }) as HuespedReservasRecyclerViewAdapter
 
         binding.reservasList.addItemDecoration(
@@ -122,5 +125,34 @@ class HuespedReservasFragment : BaseFragment() {
             .create()
         calificacionDialog.setView(bindingDialog.root)
         calificacionDialog.show()
+    }
+
+    private fun showDialogConfirmCancelacion(selectedReserva : Reserva) {
+        ReservaDialogConfirmProvider.showDialogConfirm(
+            requireContext(),
+            String.format(resources.getString(R.string.cancelar_reserva_format), selectedReserva.id),
+            selectedReserva,
+            viewModel::cancelarReserva
+        )
+/*
+        val builder = AlertDialog.Builder(context)
+        val bindingDialog: DialogConfirmacionCancelarReservaBinding = DataBindingUtil.inflate(
+            LayoutInflater.from(context),
+            R.layout.dialog_confirmacion_cancelar_reserva,
+            null,
+            false
+        )
+        bindingDialog.viewModel = selectedReserva
+        val reservaAceptadaDialog = builder
+            .setPositiveButton(
+                "Confirmar"
+            ) { _: DialogInterface?, _: Int -> viewModel.cancelarReserva(selectedReserva) }
+            .setNegativeButton(
+                "Cancelar"
+            ) { _: DialogInterface?, _: Int -> bindingDialog.viewModel = null }
+            .create()
+        reservaAceptadaDialog.setView(bindingDialog.root)
+        reservaAceptadaDialog.show()
+        */
     }
 }

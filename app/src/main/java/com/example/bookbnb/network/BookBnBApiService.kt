@@ -126,6 +126,17 @@ interface BookBnBApiService {
         @Body reservaDTO: ReservaDTO
     ): ReservarPublicacionResponse
 
+    @PUT("reservas/{id}/cancelacion")
+    suspend fun cancelarReserva(
+        @Header("Authorization") token: String,
+        @Path("id") reservaId: String
+    ): Unit
+
+    @PUT("reservas/{id}/rechazo")
+    suspend fun rechazarReserva(
+        @Header("Authorization") token: String,
+        @Path("id") reservaId: String
+    ): Unit
 
     @POST("publicaciones/{idPublicacion}/calificaciones")
     suspend fun calificarPublicacion(
@@ -278,6 +289,22 @@ class BookBnBApi(var context: Context) {
             throw Exception("No hay una sesión establecida")
         }
         return safeApiCall(Dispatchers.IO) { retrofitService.reservarPublicacion(token, reservaDTO) }
+    }
+
+    suspend fun cancelarReserva(id: String): ResultWrapper<Unit> {
+        val token = SessionManager(context).fetchAuthToken()
+        if (token.isNullOrEmpty()) {
+            throw Exception("No hay una sesión establecida")
+        }
+        return safeApiCall(Dispatchers.IO) { retrofitService.cancelarReserva(token, id) }
+    }
+
+    suspend fun rechazarReserva(id: String): ResultWrapper<Unit> {
+        val token = SessionManager(context).fetchAuthToken()
+        if (token.isNullOrEmpty()) {
+            throw Exception("No hay una sesión establecida")
+        }
+        return safeApiCall(Dispatchers.IO) { retrofitService.rechazarReserva(token, id) }
     }
 
     suspend fun createPublicacion(
