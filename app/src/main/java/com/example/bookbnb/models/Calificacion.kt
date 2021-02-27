@@ -1,3 +1,3 @@
 package com.example.bookbnb.models
 
-data class Calificacion (val puntos: Float, val detalle: String)
+data class Calificacion (val puntos: Float, val detalle: String, val huespedId: String? = null)

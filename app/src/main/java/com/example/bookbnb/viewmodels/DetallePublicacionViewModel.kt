@@ -6,6 +6,7 @@ import com.example.bookbnb.R
 import com.example.bookbnb.models.Calificacion
 import com.example.bookbnb.models.Pregunta
 import com.example.bookbnb.models.Publicacion
+import com.example.bookbnb.models.Usuario
 import com.example.bookbnb.network.BookBnBApi
 import com.example.bookbnb.network.ResultWrapper
 import kotlinx.coroutines.launch
@@ -86,8 +87,38 @@ open class DetallePublicacionViewModel(application: Application) : BaseAndroidVi
         }
     }
 
-    private fun onGetCalificacionesSuccess(calificacionesResponse: ResultWrapper.Success<List<Calificacion>>) {
-        _calificaciones.value = calificacionesResponse.value.map { CalificacionVM(it.puntos.toInt(), it.detalle, "Anónimo") }
+    private suspend fun getNombresUsuarios(idUsuarios: List<String>) : List<Usuario>
+    {
+        var usuarios: List<Usuario> = listOf<Usuario>()
+        if (idUsuarios.isNotEmpty()) {
+            when (val usuariosResponse =
+                BookBnBApi(getApplication()).getUsersInfoById(idUsuarios.distinct())) {
+                is ResultWrapper.NetworkError -> showSnackbarErrorMessage(
+                    getApplication<Application>().getString(
+                        R.string.network_error_msg
+                    )
+                )
+                is ResultWrapper.GenericError -> showGenericError(usuariosResponse)
+                is ResultWrapper.Success -> usuarios = usuariosResponse.value
+            }
+        }
+        return usuarios
+    }
+
+
+    private suspend fun onGetCalificacionesSuccess(calificacionesResponse: ResultWrapper.Success<List<Calificacion>>) {
+        calificacionesResponse.value.let { it ->
+            val idUsuarios = it.map { it.huespedId!! }
+            val usuarios = getNombresUsuarios(idUsuarios)
+            val usuariosById = usuarios.map { it.id to it }.toMap()
+            _calificaciones.value = it.map {
+                CalificacionVM(
+                    it.puntos.toInt(),
+                    it.detalle,
+                    "${usuariosById[it.huespedId]?.name} ${usuariosById[it.huespedId]?.surname}"
+                )
+            }
+        }
     }
 
     private fun onGetPreguntasSuccess(preguntasResponse: ResultWrapper.Success<List<Pregunta>>) {
