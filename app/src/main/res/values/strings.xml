@@ -122,6 +122,7 @@
     <string name="reserva_aceptada_format">¡Hecho! La reserva con código %s fue aceptada. Tenga en cuenta que esto podría demorar unos minutos para impactar en nuestras bases de datos.</string>
     <string name="aceptar_reserva_format">¿Está seguro que desea aceptar la reserva %s? Esto rechazará todas las pendientes que se solapen con la aceptada.</string>
     <string name="cancelar_reserva_format">¿Está seguro que desea cancelar la reserva %s? En caso de confirmar, no podrá revertir esta acción.</string>
+    <string name="rechazar_reserva_format">¿Está seguro que desea rechazar la reserva %s? En caso de confirmar, no podrá revertir esta acción y el huesped será informado.</string>
     <string name="messages_lbl">Mensajes</string>
     <string name="emptyBusquedaText">¡Oops! No se encontraron alojamientos publicados con esos criterios... ¿Quizás es el destino que quiere que vaya a otro destino?</string>
     <string name="emptyChatsText">Todavia no hay conversaciones mediante mensajes directos...</string>
@@ -148,4 +149,5 @@
     <string name="ciudad_perfil">Ciudad</string>
     <string name="no_hay_publicaciones_text">No hay publicaciones añadidas</string>
     <string name="cancelar_text_btn">Cancelar</string>
+    <string name="rechazar_btn_text">Rechazar</string>
 </resources>

@@ -9,6 +9,9 @@
         <variable
             name="aceptarListener"
             type="com.example.bookbnb.adapters.ReservaListener" />
+        <variable
+            name="rechazarListener"
+            type="com.example.bookbnb.adapters.ReservaListener" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -122,21 +125,44 @@
             tools:text="27/11/2020" />
 
         <com.google.android.material.button.MaterialButton
+            android:id="@+id/button_cancelar"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_small"
+            android:layout_marginEnd="@dimen/margin_small"
+            android:onClick="@{() -> rechazarListener.onClick(property)}"
+            android:text="@string/rechazar_btn_text"
+            android:textColor="@color/error"
+            android:visibility="@{property.isPendiente() ? View.VISIBLE : View.GONE}"
+            app:icon="@drawable/ic_close_24"
+            app:iconTint="@color/error"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/materialButton2"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toEndOf="@+id/reserved_image"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/precio_reserva"
+            app:strokeColor="@color/error" />
+
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/materialButton2"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-            app:strokeColor="@color/primaryColor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="@{() -> aceptarListener.onClick(property)}"
             android:text="@string/aceptar_reserva_btn"
             android:visibility="@{property.isPendiente() ? View.VISIBLE : View.GONE}"
-            app:icon="@drawable/ic_aceptar"
+            app:icon="@drawable/ic_check_24"
             app:iconTint="@color/primaryColor"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/precio_reserva" />
+            app:layout_constraintStart_toEndOf="@+id/button_cancelar"
+            app:layout_constraintTop_toBottomOf="@+id/precio_reserva"
+            app:strokeColor="@color/primaryColor" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

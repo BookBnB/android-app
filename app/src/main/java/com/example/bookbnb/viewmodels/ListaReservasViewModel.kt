@@ -48,7 +48,7 @@ class ListaReservasViewModel(application: Application) : BaseAndroidViewModel(ap
                         )
                     )
                     is ResultWrapper.GenericError -> showGenericError(reservasResponse)
-                    is ResultWrapper.Success -> onReservaAceptada()
+                    is ResultWrapper.Success -> onReservaAceptada(reserva)
                 }
             }
             finally {
@@ -57,8 +57,33 @@ class ListaReservasViewModel(application: Application) : BaseAndroidViewModel(ap
         }
     }
 
-    fun onReservaAceptada() {
+    fun rechazarReserva(reserva: Reserva) {
+        viewModelScope.launch {
+            try {
+                showLoadingSpinner(false)
+                val sessionManager = SessionManager(getApplication())
+                when (val reservasResponse =
+                    BookBnBApi(getApplication()).rechazarReserva(
+                        reserva.id
+                    )) {
+                    is ResultWrapper.NetworkError -> showSnackbarErrorMessage(
+                        getApplication<Application>().getString(
+                            R.string.network_error_msg
+                        )
+                    )
+                    is ResultWrapper.GenericError -> showGenericError(reservasResponse)
+                    is ResultWrapper.Success -> showSnackbarSuccessMessage("La reserva fue rechazada correctamente.")
+                }
+            }
+            finally {
+                hideLoadingSpinner()
+            }
+        }
+    }
+
+    fun onReservaAceptada(reserva: Reserva) {
         showReservaAceptada.value = true
+        _ultimaReservaAceptada.value = reserva.id
     }
 
     fun cerrarDialog(){

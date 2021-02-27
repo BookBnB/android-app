@@ -48,7 +48,6 @@ class AnfitrionReservasFragment(val publicacionId: String, val estadoReserva: St
         setReservasListAdapter(binding)
         publicacionId.let { viewModel.getReservasByEstado(it, estadoReserva) }
 
-        //setConfirmacionReservaObserver()
         setReservaAceptadaObserver()
 
         return binding.root
@@ -60,9 +59,17 @@ class AnfitrionReservasFragment(val publicacionId: String, val estadoReserva: St
                 ReservaListener { reserva ->
                     ReservaDialogConfirmProvider.showDialogConfirm(
                         requireContext(),
-                        String.format(resources.getString(R.string.cancelar_reserva_format), reserva.id),
+                        String.format(resources.getString(R.string.aceptar_reserva_format), reserva.id),
                         reserva,
                         viewModel::confirmarReserva
+                    )
+                },
+                ReservaListener { reserva ->
+                    ReservaDialogConfirmProvider.showDialogConfirm(
+                        requireContext(),
+                        String.format(resources.getString(R.string.rechazar_reserva_format), reserva.id),
+                        reserva,
+                        viewModel::rechazarReserva
                     )
                 }) as ReservaRecyclerViewAdapter
 
@@ -74,33 +81,6 @@ class AnfitrionReservasFragment(val publicacionId: String, val estadoReserva: St
         )
         binding.reservasList.itemAnimator = null;
     }
-/*
-    private fun setConfirmacionReservaObserver() {
-        viewModel.showConfirmacionReserva.observe(viewLifecycleOwner, Observer { display ->
-            if (display) {
-                val builder = AlertDialog.Builder(context)
-                val binding: DialogConfirmacionReservaBinding = DataBindingUtil.inflate(
-                    LayoutInflater.from(context),
-                    R.layout.dialog_confirmacion_reserva,
-                    null,
-                    false
-                )
-                binding.reservasViewModel = viewModel
-                val reservaAceptadaDialog = builder
-                    .setPositiveButton(
-                        "Si"
-                    ) { _: DialogInterface?, _: Int -> viewModel.confirmarReserva() }
-                    .setNegativeButton(
-                        "No"
-                    ) { _: DialogInterface?, _: Int -> viewModel.cerrarDialog() }
-                    .create()
-                reservaAceptadaDialog.setView(binding.root)
-                reservaAceptadaDialog.show()
-                viewModel.onDoneShowingConfirmacionReserva()
-            }
-        })
-    }
- */
 
     private fun setReservaAceptadaObserver() {
         viewModel.showReservaAceptada.observe(viewLifecycleOwner, Observer { display ->

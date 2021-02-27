@@ -134,25 +134,5 @@ class HuespedReservasFragment : BaseFragment() {
             selectedReserva,
             viewModel::cancelarReserva
         )
-/*
-        val builder = AlertDialog.Builder(context)
-        val bindingDialog: DialogConfirmacionCancelarReservaBinding = DataBindingUtil.inflate(
-            LayoutInflater.from(context),
-            R.layout.dialog_confirmacion_cancelar_reserva,
-            null,
-            false
-        )
-        bindingDialog.viewModel = selectedReserva
-        val reservaAceptadaDialog = builder
-            .setPositiveButton(
-                "Confirmar"
-            ) { _: DialogInterface?, _: Int -> viewModel.cancelarReserva(selectedReserva) }
-            .setNegativeButton(
-                "Cancelar"
-            ) { _: DialogInterface?, _: Int -> bindingDialog.viewModel = null }
-            .create()
-        reservaAceptadaDialog.setView(bindingDialog.root)
-        reservaAceptadaDialog.show()
-        */
     }
 }

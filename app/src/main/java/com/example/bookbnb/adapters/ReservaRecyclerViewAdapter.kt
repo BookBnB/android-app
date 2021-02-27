@@ -10,7 +10,8 @@ import com.example.bookbnb.R
 import com.example.bookbnb.databinding.ReservaItemBinding
 import com.example.bookbnb.models.Reserva
 
-class ReservaRecyclerViewAdapter(val clickListener: ReservaListener) :
+class ReservaRecyclerViewAdapter(val aceptarClickListener: ReservaListener,
+                                 val rechazarClickListener: ReservaListener) :
     ListAdapter<Reserva, ReservaRecyclerViewAdapter.ReservaViewHolder>(
         DiffCallback
     ) {
@@ -25,7 +26,7 @@ class ReservaRecyclerViewAdapter(val clickListener: ReservaListener) :
 
     override fun onBindViewHolder(holder: ReservaViewHolder, position: Int) {
         val reserva = getItem(position)
-        holder.bind(reserva, clickListener)
+        holder.bind(reserva, aceptarClickListener, rechazarClickListener)
         if (reserva.isFinished()) {
             holder.itemView.let {
                 it.background =
@@ -37,9 +38,10 @@ class ReservaRecyclerViewAdapter(val clickListener: ReservaListener) :
 
     class ReservaViewHolder(private var binding: ReservaItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(reserva: Reserva, clickListener: ReservaListener) {
+        fun bind(reserva: Reserva, aceptarClickListener: ReservaListener, rechazarClickListener: ReservaListener) {
             binding.property = reserva
-            binding.aceptarListener = clickListener
+            binding.aceptarListener = aceptarClickListener
+            binding.rechazarListener = rechazarClickListener
             binding.executePendingBindings()
         }
     }
