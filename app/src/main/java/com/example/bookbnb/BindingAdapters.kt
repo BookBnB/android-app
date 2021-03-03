@@ -1,11 +1,17 @@
 package com.example.bookbnb
 
 import android.content.res.ColorStateList
+import android.se.omapi.Session
+import android.view.Gravity
+import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
+import androidx.core.view.marginEnd
 import androidx.core.widget.ImageViewCompat
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -15,6 +21,7 @@ import com.example.bookbnb.adapters.*
 import com.example.bookbnb.models.*
 import com.example.bookbnb.models.chat.FirebaseChatMessage
 import com.example.bookbnb.ui.publicaciones.PublicacionRecyclerViewAdapter
+import com.example.bookbnb.utils.SessionManager
 import com.example.bookbnb.viewmodels.CalificacionVM
 import com.example.bookbnb.viewmodels.FirebaseChatVM
 import com.example.bookbnb.viewmodels.ReservaVM
@@ -120,4 +127,35 @@ fun setReservaDrawableTint(image: ImageView, estado: String){
         else -> ContextCompat.getColor(image.context, R.color.primaryDarkColor)
     }
     ImageViewCompat.setImageTintList(image, ColorStateList.valueOf(color))
+}
+
+@BindingAdapter("chatTitleColor")
+fun setChatTitleColor(view: TextView, senderId: String){
+    if (SessionManager(view.context).getUserId() == senderId) {
+        view.setTextColor(ContextCompat.getColor(view.context, R.color.primaryColor))
+    }
+    else {
+        view.setTextColor(ContextCompat.getColor(view.context, R.color.reservaAceptada))
+    }
+}
+
+@BindingAdapter("messageGravity")
+fun setMessageGravity(view: LinearLayout, senderId: String){
+    if (SessionManager(view.context).getUserId() == senderId) {
+        view.gravity = Gravity.START
+    }
+    else {
+        view.gravity = Gravity.END
+    }
+}
+
+@BindingAdapter("chatMessageDrawable")
+fun setChatDrawable(view: ConstraintLayout, senderId: String){
+    if (SessionManager(view.context).getUserId() == senderId) {
+        view.setBackgroundResource(R.drawable.sender_msg_rounded_shape)
+        //view.background = ContextCompat.getDrawable(view.context, R.drawable.sender_msg_rounded_shape)
+    } else{
+        view.setBackgroundResource(R.drawable.receiver_msg_rounded_shape)
+        //view.background = ContextCompat.getDrawable(view.context, R.drawable.receiver_msg_rounded_shape)
+    }
 }

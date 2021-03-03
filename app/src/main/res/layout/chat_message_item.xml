@@ -8,39 +8,52 @@
         <import type="android.view.View" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/publicacion_container"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/margin_small">
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/title_msg"
+        app:messageGravity="@{property.senderId}">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/publicacion_container"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/roboto"
-            android:text="@{property.getMsgTitle()}"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:textStyle="bold"
-            android:textColor="@color/primaryColor"
-            tools:text="Franco Fusaro (20/04/2020 14:34):" />
+            android:layout_marginHorizontal="@dimen/margin_normal"
+            android:layout_marginTop="@dimen/margin_small"
+            android:layout_marginBottom="@dimen/margin_small"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="@dimen/margin_small"
+            app:chatMessageDrawable="@{property.senderId}"
+            android:background="@drawable/sender_msg_rounded_shape">
 
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/pregunta"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/roboto"
-            android:padding="@dimen/margin_small"
-            android:text="@{property.message}"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
-            android:textColor="@color/black"
-            app:fontFamily="@font/roboto"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintHorizontal_chainStyle="packed"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/title_msg"
-            tools:text="Hola! Como estas? Largo el mensaje eeh jajaja pero a ver que pasa si se va para abajo" />
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/title_msg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+                android:text="@{property.getMsgTitle()}"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:textStyle="bold"
+                app:chatTitleColor="@{property.senderId}"
+                tools:textColor="@color/primaryColor"
+                tools:text="Franco Fusaro (20/04/2020 14:34):" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/pregunta"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/roboto"
+                android:paddingTop="@dimen/margin_min"
+                android:text="@{property.message}"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+                android:textColor="@color/black"
+                app:fontFamily="@font/roboto"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/title_msg"
+                tools:text="Hola! Como estas? " />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
 </layout>

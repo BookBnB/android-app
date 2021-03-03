@@ -106,6 +106,22 @@
             app:layout_constraintTop_toBottomOf="@+id/cant_huespedes"
             tools:text="Habitación de hotel" />
 
+
+        <TextView
+            android:id="@+id/valoracion_promedio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_normal"
+            android:layout_marginTop="@dimen/margin_small"
+            android:text="@{property.calificacionAsString()}"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tipo_alojamiento"
+            tools:text="4.85"
+            app:drawableStartCompat="@drawable/ic_star_24"
+            app:drawableTint="@color/yellowStar" />
+
         <TextView
             android:id="@+id/precio"
             android:layout_width="wrap_content"

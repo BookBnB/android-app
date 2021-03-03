@@ -1,16 +1,13 @@
 package com.example.bookbnb.ui.chat
 
+import android.R.attr
 import android.os.Bundle
-import android.util.LayoutDirection
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.DividerItemDecoration
 import com.example.bookbnb.R
 import com.example.bookbnb.adapters.ChatMessagesRecyclerViewAdapter
 import com.example.bookbnb.databinding.FragmentChatBinding
@@ -26,9 +23,7 @@ import com.google.firebase.database.*
 import com.google.firebase.database.ktx.database
 import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
-import kotlinx.android.synthetic.main.fragment_chat.view.*
-import java.util.*
-import kotlin.collections.HashMap
+
 
 class ChatFragment : BaseFragment() {
 
@@ -72,9 +67,28 @@ class ChatFragment : BaseFragment() {
         val firebaseDbSvc = FirebaseDBService()
         firebaseDbSvc.updateChat(viewModel.huespedId, viewModel.anfitrionId)
 
-        childMessagesReference = Firebase.database.reference.child("messages").child(viewModel.chatId)
+        addFirebaseListeners()
 
-        val childMessagesListener = object : ChildEventListener{
+        binding.messageRecyclerView.adapter = ChatMessagesRecyclerViewAdapter()
+
+        binding.messageRecyclerView.addOnLayoutChangeListener { v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom ->
+            if (bottom < oldBottom) {
+                binding.messageRecyclerView.postDelayed(Runnable {
+                    binding.messageRecyclerView.smoothScrollToPosition(
+                        viewModel.messages.value?.size?.minus(1)!!
+                    )
+                }, 100)
+            }
+        }
+
+        return binding.root
+    }
+
+    private fun addFirebaseListeners() {
+        childMessagesReference =
+            Firebase.database.reference.child("messages").child(viewModel.chatId)
+
+        val childMessagesListener = object : ChildEventListener {
             override fun onCancelled(error: DatabaseError) {
             }
 
@@ -98,23 +112,21 @@ class ChatFragment : BaseFragment() {
         this.childListener = childMessagesListener
 
 
-        Firebase.database.reference.child("chats").child(viewModel.chatId).addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onCancelled(error: DatabaseError) {
-                TODO("Not yet implemented")
-            }
+        Firebase.database.reference.child("chats").child(viewModel.chatId)
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onCancelled(error: DatabaseError) {
+                    TODO("Not yet implemented")
+                }
 
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                val sessMgr = SessionManager(requireContext())
-                (requireActivity() as? AppCompatActivity)?.supportActionBar?.title = if (sessMgr.isUserHost())
-                    dataSnapshot.getValue<FirebaseChat>()!!.userHuespedName
-                else
-                    dataSnapshot.getValue<FirebaseChat>()!!.userAnfitrionName
-            }
-        })
-
-        binding.messageRecyclerView.adapter = ChatMessagesRecyclerViewAdapter()
-
-        return binding.root
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    val sessMgr = SessionManager(requireContext())
+                    (requireActivity() as? AppCompatActivity)?.supportActionBar?.title =
+                        if (sessMgr.isUserHost())
+                            dataSnapshot.getValue<FirebaseChat>()!!.userHuespedName
+                        else
+                            dataSnapshot.getValue<FirebaseChat>()!!.userAnfitrionName
+                }
+            })
     }
 
     override fun onStop() {

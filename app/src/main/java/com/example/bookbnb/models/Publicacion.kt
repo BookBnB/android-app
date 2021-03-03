@@ -38,6 +38,7 @@ class Publicacion(var id: String? = null,
             "-"
         else
              calificacion?.round(2)?.toFloat().toString()
-        return "$currCalificacionAsString (${calificaciones?.size})"
+        val cantCalificaciones = if (calificaciones.isNullOrEmpty()) 0 else calificaciones?.size
+        return "$currCalificacionAsString (${cantCalificaciones})"
     }
 }
