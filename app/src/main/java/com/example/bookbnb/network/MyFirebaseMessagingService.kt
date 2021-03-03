@@ -5,11 +5,16 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.content.Intent.ACTION_VIEW
 import android.media.RingtoneManager
+import android.net.Uri
 import android.os.Build
+import android.os.Bundle
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavDeepLinkBuilder
+import com.example.bookbnb.AnfitrionActivity
 import com.example.bookbnb.MainActivity
 import com.example.bookbnb.R
 import com.google.firebase.iid.FirebaseInstanceId
@@ -37,6 +42,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         runBlocking {
             coroutineScope { // Creates a coroutine scope
                 launch {
+                    Log.d(TAG, "Token: $token")
                     BookBnBApi(application).saveNotificationToken(token)
                 }
             }
@@ -44,28 +50,44 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     }
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
-        // TODO(developer): Handle FCM messages here.
-        // Not getting messages here? See why this may be: https://goo.gl/39bRNJ
         Log.d(TAG, "From: ${remoteMessage.from}")
 
-        // Check if message contains a data payload.
-        if (remoteMessage.data.isNotEmpty()) {
-            Log.d(TAG, "Message data payload: ${remoteMessage.data}")
-            //handleNow()
-        }
 
         // Check if message contains a notification payload.
         remoteMessage.notification?.let {
-            sendNotification(remoteMessage.notification!!.title!!, remoteMessage.notification!!.body!!);
+
+            // Check if message contains a data payload.
+            if (remoteMessage.data.isNotEmpty()) {
+                Log.d(TAG, "Message data payload: ${remoteMessage.data}")
+                //handleNow()
+            }
+
+            sendNotification(remoteMessage.notification!!.title!!, remoteMessage.notification!!.body!!, remoteMessage.data["deeplink"]);
             Log.d(TAG, "Message Notification Body: ${it.body}")
         }
     }
 
-    private fun sendNotification(title: String, messageBody: String) {
+    private fun sendNotification(title: String, messageBody: String, deepLink: String?) {
+        val args = Bundle()
+        args.putString("publicacionId", "42a1eb5d-4646-4ed2-ba3a-3018dd8c0609")
+/*
+        var intent = NavDeepLinkBuilder(applicationContext)
+            .setComponentName(AnfitrionActivity::class.java)
+            .setGraph(R.navigation.anfitrion_navigation)
+            .setDestination(R.id.pagerListasReservasFragment)
+            .setArguments(args)
+            .createPendingIntent()
+*/
+
         val intent = Intent(this, MainActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        intent.action = ACTION_VIEW
+        intent.putExtras(args)
+        deepLink?.let {
+            intent.data = Uri.parse(deepLink)
+        }
         val pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
-            PendingIntent.FLAG_ONE_SHOT)
+            PendingIntent.FLAG_CANCEL_CURRENT)
 
         val channelId = "GeneralChannel"
         val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)

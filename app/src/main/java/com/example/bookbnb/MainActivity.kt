@@ -1,32 +1,20 @@
 package com.example.bookbnb
 
-import android.app.Application
 import android.content.Intent
-import android.content.SharedPreferences
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
-import android.view.Menu
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
-import androidx.drawerlayout.widget.DrawerLayout
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.viewModelScope
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.navigateUp
-import androidx.navigation.ui.setupActionBarWithNavController
-import androidx.navigation.ui.setupWithNavController
-import com.auth0.android.jwt.JWT
 import com.example.bookbnb.models.User
 import com.example.bookbnb.network.BookBnBApi
 import com.example.bookbnb.network.FirebaseDBService
 import com.example.bookbnb.network.MyFirebaseMessagingService
 import com.example.bookbnb.network.ResultWrapper
 import com.example.bookbnb.utils.SessionManager
-import com.google.android.gms.tasks.OnCompleteListener
-import com.google.android.material.navigation.NavigationView
-import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.coroutines.launch
 
 
@@ -40,6 +28,14 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         val sessionManager = SessionManager(this)
         val token = sessionManager.fetchAuthToken()
+
+        if (intent.hasExtra("deeplink")){
+            intent.data = Uri.parse(intent.extras!!.getString("deeplink"))
+        }
+        if (intent.data != null){
+            Log.e("ASD", intent.data.toString())
+        }
+
         if (token.isNullOrEmpty()) {
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
@@ -48,8 +44,11 @@ class MainActivity : AppCompatActivity() {
             createFirebaseUser(sessionManager.getUserId()!!)
             MyFirebaseMessagingService().enableFCM() // Enables notification token
             if (sessionManager.isUserHost()){
-                val intent = Intent(this, AnfitrionActivity::class.java)
-                startActivity(intent)
+                val newIntent = Intent(this, AnfitrionActivity::class.java)
+                if (intent.data != null) {
+                    newIntent.data = intent.data
+                }
+                startActivity(newIntent)
             }
             else {
                 val intent = Intent(this, HuespedActivity::class.java)
@@ -57,6 +56,11 @@ class MainActivity : AppCompatActivity() {
             }
         }
         finish()
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        Log.d("ASD", "NEW INTENT")
     }
 
     fun createFirebaseUser(userId: String){

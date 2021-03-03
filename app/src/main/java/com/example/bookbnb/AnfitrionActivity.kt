@@ -49,6 +49,10 @@ class AnfitrionActivity : AppCompatActivity() {
             }
 
             val navController = findNavController(R.id.nav_host_fragment_anfitrion)
+            if (intent.data != null) {
+                navController.handleDeepLink(intent)
+            }
+
             // Passing each menu ID as a set of Ids because each
             // menu should be considered as top level destinations.
             appBarConfiguration = AppBarConfiguration(setOf(
@@ -61,6 +65,10 @@ class AnfitrionActivity : AppCompatActivity() {
             }
 
         }
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

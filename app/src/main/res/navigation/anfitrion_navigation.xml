@@ -23,11 +23,15 @@
             app:popExitAnim="@android:anim/slide_out_right" />
         <action
             android:id="@+id/action_nav_publicaciones_to_detallePublicacionAnfitrionFragment"
-            app:destination="@id/detallePublicacionAnfitrionFragment"
+            app:destination="@id/navigation"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@android:anim/slide_in_left"
-            app:popExitAnim="@android:anim/slide_out_right"/>
+            app:popExitAnim="@android:anim/slide_out_right">
+            <argument
+                android:name="publicacionId"
+                app:argType="string" />
+        </action>
     </fragment>
     <fragment
         android:id="@+id/nuevaPublicacionFragment"
@@ -82,26 +86,6 @@
             app:popExitAnim="@android:anim/slide_out_right"/>
     </fragment>
     <fragment
-        android:id="@+id/detallePublicacionAnfitrionFragment"
-        android:name="com.example.bookbnb.ui.publicaciones.DetallePublicacionAnfitrionFragment"
-        android:label="@string/detalle_publicacion_anfitrion_title"
-        tools:layout="@layout/fragment_detalle_publicacion_anfitrion">
-        <argument
-            android:name="publicacionId"
-            app:argType="string" />
-        <action
-            android:id="@+id/action_detallePublicacionAnfitrionFragment_to_pagerListasReservasFragment"
-            app:destination="@id/pagerListasReservasFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/pagerListasReservasFragment"
-        android:name="com.example.bookbnb.ui.reservas.PagerListasReservasFragment"
-        android:label="Reservas">
-        <argument
-            android:name="publicacionId"
-            app:argType="string" />
-    </fragment>
-    <fragment
         android:id="@+id/chats_fragment"
         android:name="com.example.bookbnb.ui.chat.ChatsFragment"
         android:label="Chats">
@@ -124,4 +108,32 @@
         android:name="com.example.bookbnb.ui.perfil.PerfilFragment"
         android:label="Mi Perfil"
         tools:layout="@layout/fragment_perfil" />
+    <navigation
+        android:id="@+id/navigation"
+        app:startDestination="@id/detallePublicacionAnfitrionFragment">
+        <fragment
+            android:id="@+id/detallePublicacionAnfitrionFragment"
+            android:name="com.example.bookbnb.ui.publicaciones.DetallePublicacionAnfitrionFragment"
+            android:label="@string/detalle_publicacion_anfitrion_title"
+            tools:layout="@layout/fragment_detalle_publicacion_anfitrion">
+            <argument
+                android:name="publicacionId"
+                app:argType="string" />
+            <action
+                android:id="@+id/action_detallePublicacionAnfitrionFragment_to_pagerListasReservasFragment"
+                app:destination="@id/pagerListasReservasFragment" />
+        </fragment>
+        <fragment
+            android:id="@+id/pagerListasReservasFragment"
+            android:name="com.example.bookbnb.ui.reservas.PagerListasReservasFragment"
+            android:label="Reservas">
+            <argument
+                android:name="publicacionId"
+                app:argType="string" />
+            <deepLink
+                android:id="@+id/deepLink"
+                app:action="ACTION_VIEW"
+                app:uri="www.bookbnb.com/anfitrion/publicacion/{publicacionId}/reservas" />
+        </fragment>
+    </navigation>
 </navigation>
