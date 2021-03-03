@@ -38,9 +38,9 @@ interface BookBnBApiService {
     suspend fun getUser(@Header("Authorization") token: String,
                         @Path("id") userId: String): User
 
-    @PUT("usuarios/{id}/tokens_notificacion")
+    @PUT("usuarios/{id}/dispositivos")
     suspend fun saveNotificationToken(@Header("Authorization") userToken: String,
-                        @Path("id") userId: String,
+                                      @Path("id") userId: String,
                                       @Body token: NotificationTokenDTO)
 
     @POST("lugares/direcciones/consulta")
