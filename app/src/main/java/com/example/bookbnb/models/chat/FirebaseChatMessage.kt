@@ -9,6 +9,7 @@ import kotlin.collections.HashMap
 data class FirebaseChatMessage(
     val chatId: String = "",
     val senderId: String = "",
+    val receiverId: String = "",
     val senderName: String = "",
     val message: String = "",
     var timestamp: HashMap<String, Any> = HashMap()

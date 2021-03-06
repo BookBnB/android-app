@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_login_fragment_to_registerFragment"
             app:destination="@id/register_fragment" />
+        <action
+            android:id="@+id/action_login_fragment_to_forgotPassword"
+            app:destination="@id/forgotPassword" />
     </fragment>
     <fragment
         android:id="@+id/register_fragment"
@@ -24,4 +27,19 @@
             app:destination="@id/login_fragment"
             app:popUpTo="@id/login_fragment" />
     </fragment>
+    <fragment
+        android:id="@+id/forgotPassword"
+        android:name="com.example.bookbnb.ui.login.ForgotPasswordFragment"
+        android:label="Recuperar Contraseña" >
+        <action
+            android:id="@+id/action_forgotPassword_to_emailSentFragment"
+            app:destination="@id/emailSentFragment"
+            app:popUpTo="@id/login_navigation"
+            app:popUpToInclusive="false" />
+    </fragment>
+    <fragment
+        android:id="@+id/emailSentFragment"
+        android:name="com.example.bookbnb.ui.login.EmailSentFragment"
+        android:label="Recuperar Contraseña"
+        tools:layout="@layout/fragment_email_sent" />
 </navigation>

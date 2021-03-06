@@ -86,6 +86,7 @@ class LoginFragment : BaseFragment(){
 
         setNavigateToMainActivityObserver()
         setNavigateToRegisterObserver()
+        setNavigateToForgotPasswordObserver()
         setSignInWithGoogleObserver()
         setSignUpWithGoogleObserver()
         setSpinnerObserver(viewModel, requireActivity().findViewById(R.id.spinner_holder))
@@ -120,6 +121,17 @@ class LoginFragment : BaseFragment(){
                     LoginFragmentDirections.actionLoginFragmentToRegisterFragment()
                 )
                 viewModel.onDoneNavigateToRegister()
+            }
+        })
+    }
+
+    private fun setNavigateToForgotPasswordObserver() {
+        viewModel.navigateToForgotPassword.observe(viewLifecycleOwner, Observer { navigate ->
+            if (navigate) {
+                NavHostFragment.findNavController(this).navigate(
+                    LoginFragmentDirections.actionLoginFragmentToForgotPassword()
+                )
+                viewModel.onDoneNavigatingToForgotPassword()
             }
         })
     }

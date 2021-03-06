@@ -28,6 +28,10 @@ class LoginViewModel(application: Application) : BaseAndroidViewModel(applicatio
     val navigateToRegister: LiveData<Boolean>
         get() = _navigateToRegister
 
+    private val _navigateToForgotPassword = MutableLiveData<Boolean>(false)
+    val navigateToForgotPassword: LiveData<Boolean>
+        get() = _navigateToForgotPassword
+
     private val _showGoogleSignIn = MutableLiveData<Boolean>(false)
     val showGoogleSignIn: LiveData<Boolean>
         get() = _showGoogleSignIn
@@ -50,6 +54,14 @@ class LoginViewModel(application: Application) : BaseAndroidViewModel(applicatio
 
     fun onDoneShowingGoogleSignUpWithGoogle(){
         _showGoogleSignUp.value = false
+    }
+
+    fun onNavigateToForgotPassword(){
+        _navigateToForgotPassword.value = true //Trigger navigate to main activity
+    }
+
+    fun onDoneNavigatingToForgotPassword(){
+        _navigateToForgotPassword.value = false
     }
 
     fun onNavigateToRegister(){

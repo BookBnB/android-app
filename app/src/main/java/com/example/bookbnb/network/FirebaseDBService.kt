@@ -44,7 +44,7 @@ class FirebaseDBService {
 
     }
 
-    fun updateChat(huespedUserId: String, anfitrionUserId: String){
+    fun updateChat(huespedUserId: String, anfitrionUserId: String, onSuccess: () -> Unit){
         database.child(USERS_KEY).addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onCancelled(error: DatabaseError) {
             }
@@ -63,12 +63,13 @@ class FirebaseDBService {
                     anfitrionUserId
                 )
                 database.child(CHATS_KEY).child(chatId).setValue(chat)
+                onSuccess()
             }
         })
     }
 
-    fun saveMessage(chatId: String, senderId: String, senderName: String, msg: String){
-        val chatMsg = FirebaseChatMessage(chatId, senderId, senderName, msg)
+    fun saveMessage(chatId: String, senderId: String, receiverId: String, senderName: String, msg: String){
+        val chatMsg = FirebaseChatMessage(chatId, senderId, receiverId, senderName, msg)
         database.child(MESSAGES_KEY).child(chatId).push().setValue(chatMsg);
     }
 

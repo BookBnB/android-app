@@ -150,4 +150,8 @@
     <string name="no_hay_publicaciones_text">No hay publicaciones añadidas</string>
     <string name="cancelar_text_btn">Cancelar</string>
     <string name="rechazar_btn_text">Rechazar</string>
+    <string name="forgot_password_text">¿Olvidó su contraseña? Haga click aquí</string>
+    <string name="email_hint">Email</string>
+    <string name="forgot_password_body_2">¡No se preocupe! Se le enviarán instrucciones para recuperar su contraseña, por favor ingrese su email</string>
+    <string name="forgot_password_body_1">¿Se encuentra usted pensando como Homero dado que olvidó su contraseña?</string>
 </resources>

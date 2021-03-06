@@ -65,7 +65,7 @@ class ChatFragment : BaseFragment() {
         setSnackbarMessageObserver(viewModel, binding.root)
 
         val firebaseDbSvc = FirebaseDBService()
-        firebaseDbSvc.updateChat(viewModel.huespedId, viewModel.anfitrionId)
+        firebaseDbSvc.updateChat(viewModel.huespedId, viewModel.anfitrionId, this::updateFragmentTitle)
 
         addFirebaseListeners()
 
@@ -74,14 +74,36 @@ class ChatFragment : BaseFragment() {
         binding.messageRecyclerView.addOnLayoutChangeListener { v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom ->
             if (bottom < oldBottom) {
                 binding.messageRecyclerView.postDelayed(Runnable {
-                    binding.messageRecyclerView.smoothScrollToPosition(
-                        viewModel.messages.value?.size?.minus(1)!!
-                    )
+                    val cantMsgs = viewModel.messages.value?.size
+                    cantMsgs?.let {
+                        val pos = if (it > 0) it - 1 else it
+                        binding.messageRecyclerView.smoothScrollToPosition(
+                            pos
+                        )
+                    }
                 }, 100)
             }
         }
 
         return binding.root
+    }
+
+    private fun updateFragmentTitle(){
+        Firebase.database.reference.child("chats").child(viewModel.chatId)
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onCancelled(error: DatabaseError) {
+                    TODO("Not yet implemented")
+                }
+
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    val sessMgr = SessionManager(requireContext())
+                    (requireActivity() as? AppCompatActivity)?.supportActionBar?.title =
+                        if (sessMgr.isUserHost())
+                            dataSnapshot.getValue<FirebaseChat>()?.userHuespedName
+                        else
+                            dataSnapshot.getValue<FirebaseChat>()?.userAnfitrionName
+                }
+            })
     }
 
     private fun addFirebaseListeners() {
@@ -110,23 +132,6 @@ class ChatFragment : BaseFragment() {
         }
         childMessagesReference.addChildEventListener(childMessagesListener)
         this.childListener = childMessagesListener
-
-
-        Firebase.database.reference.child("chats").child(viewModel.chatId)
-            .addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onCancelled(error: DatabaseError) {
-                    TODO("Not yet implemented")
-                }
-
-                override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    val sessMgr = SessionManager(requireContext())
-                    (requireActivity() as? AppCompatActivity)?.supportActionBar?.title =
-                        if (sessMgr.isUserHost())
-                            dataSnapshot.getValue<FirebaseChat>()!!.userHuespedName
-                        else
-                            dataSnapshot.getValue<FirebaseChat>()!!.userAnfitrionName
-                }
-            })
     }
 
     override fun onStop() {

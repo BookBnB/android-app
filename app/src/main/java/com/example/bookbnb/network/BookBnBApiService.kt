@@ -43,6 +43,9 @@ interface BookBnBApiService {
                                       @Path("id") userId: String,
                                       @Body token: NotificationTokenDTO)
 
+    @PUT("usuarios/{email}/recuperacion")
+    suspend fun sendEmailRecuperacion(@Path("email") email: String)
+
     @POST("lugares/direcciones/consulta")
     suspend fun getLocations(
         @Header("Authorization") token: String,
@@ -174,6 +177,10 @@ class BookBnBApi(var context: Context) {
             throw Exception("No hay una sesión establecida")
         }
         safeApiCall(Dispatchers.IO) { retrofitService.saveNotificationToken(userToken, userId!!, NotificationTokenDTO(notificationToken)) }
+    }
+
+    suspend fun sendEmailRecuperacion(email: String): ResultWrapper<Unit> {
+        return safeApiCall(Dispatchers.IO) { retrofitService.sendEmailRecuperacion(email) }
     }
 
     suspend fun getUser(userId: String) : ResultWrapper<User>{

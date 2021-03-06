@@ -71,6 +71,18 @@
                     />
             </com.google.android.material.textfield.TextInputLayout>
 
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="viewEnd"
+                android:layout_marginStart="@dimen/margin_normal"
+                android:layout_marginTop="@dimen/margin_min"
+                android:layout_marginEnd="@dimen/margin_normal"
+                android:textColor="@color/primaryColor"
+                android:textStyle="bold"
+                android:text="@string/forgot_password_text"
+                android:onClick="@{() -> loginViewModel.onNavigateToForgotPassword()}"/>
+
             <Button
                 android:layout_gravity="center_horizontal"
                 android:id="@+id/login_button"

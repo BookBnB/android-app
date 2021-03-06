@@ -22,8 +22,10 @@ class ChatViewModel(application: Application, var huespedId: String, var anfitri
 
     fun onSendClick(){
         val sessionMgr = SessionManager(getApplication())
+        val receiverId = if (sessionMgr.isUserHost()) { huespedId } else { anfitrionId }
         FirebaseDBService().saveMessage(chatId,
             sessionMgr.getUserId()!!,
+            receiverId,
             sessionMgr.getUserFullName()!!,
             messageText.value!!)
         _messageText.value = ""
