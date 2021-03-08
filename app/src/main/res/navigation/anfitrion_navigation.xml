@@ -96,12 +96,17 @@
     <fragment
         android:id="@+id/chatFragment"
         android:name="com.example.bookbnb.ui.chat.ChatFragment"
-        android:label="Chat" >
+        android:label="Chat">
         <argument
             android:name="userHuespedId"
             app:argType="string" />
-        <argument android:name="userAnfitrionId"
+        <argument
+            android:name="userAnfitrionId"
             app:argType="string" />
+        <deepLink
+            android:id="@+id/deepLink3"
+            app:action="ACTION_VIEW"
+            app:uri="https://www.bookbnb.com/chat/{chatId}" />
     </fragment>
     <fragment
         android:id="@+id/perfil_fragment"

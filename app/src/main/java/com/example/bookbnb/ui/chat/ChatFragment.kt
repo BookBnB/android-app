@@ -31,9 +31,15 @@ class ChatFragment : BaseFragment() {
         val activity = requireNotNull(this.activity) {
             "You can only access the viewModel after onActivityCreated()"
         }
+        val args = requireArguments()
+        val (huespedId, anfitrionId) = if (args.containsKey("chatId")){
+            FirebaseDBService().getUserIdsFromChatId(args.getString("chatId")!!)
+        } else {
+            listOf(args.getString("userHuespedId")!!, args.getString("userAnfitrionId")!!)
+        }
         ViewModelProvider(this, ChatViewModelViewModelFactory(activity.application,
-            requireArguments().getString("userHuespedId")!!,
-            requireArguments().getString("userAnfitrionId")!!))
+            huespedId,
+            anfitrionId))
             .get(ChatViewModel::class.java)
     }
 

@@ -91,6 +91,10 @@
         <argument
             android:name="userAnfitrionId"
             app:argType="string" />
+        <deepLink
+            android:id="@+id/deepLink4"
+            app:action="ACTION_VIEW"
+            app:uri="https://www.bookbnb.com/chat/{chatId}" />
     </fragment>
     <fragment
         android:id="@+id/chats_fragment"
@@ -104,7 +108,12 @@
     <fragment
         android:id="@+id/huesped_reservas_fragment"
         android:name="com.example.bookbnb.ui.reservas.HuespedReservasFragment"
-        android:label="Mis Reservas" />
+        android:label="Mis Reservas">
+        <deepLink
+            android:id="@+id/deepLink2"
+            app:action="ACTION_VIEW"
+            app:uri="https://www.bookbnb.com/huesped/reservas" />
+    </fragment>
     <fragment
         android:id="@+id/perfil_fragment"
         android:name="com.example.bookbnb.ui.perfil.PerfilFragment"

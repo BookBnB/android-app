@@ -68,21 +68,9 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     }
 
     private fun sendNotification(title: String, messageBody: String, deepLink: String?) {
-        val args = Bundle()
-        args.putString("publicacionId", "42a1eb5d-4646-4ed2-ba3a-3018dd8c0609")
-/*
-        var intent = NavDeepLinkBuilder(applicationContext)
-            .setComponentName(AnfitrionActivity::class.java)
-            .setGraph(R.navigation.anfitrion_navigation)
-            .setDestination(R.id.pagerListasReservasFragment)
-            .setArguments(args)
-            .createPendingIntent()
-*/
-
         val intent = Intent(this, MainActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         intent.action = ACTION_VIEW
-        intent.putExtras(args)
         deepLink?.let {
             intent.data = Uri.parse(deepLink)
         }

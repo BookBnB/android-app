@@ -1,5 +1,6 @@
 package com.example.bookbnb.network
 
+import com.example.bookbnb.models.chat.ChatMessageNotification
 import com.example.bookbnb.models.chat.FirebaseChat
 import com.example.bookbnb.models.chat.FirebaseChatMessage
 import com.example.bookbnb.models.chat.FirebaseUser
@@ -17,6 +18,7 @@ class FirebaseDBService {
     private val CHATS_KEY: String = "chats"
     private val MESSAGES_KEY: String = "messages"
     private val CHAT_ID_DELIMITER = "_"
+    private val NOTIFICATIONS_KEY = "notifications"
 
     fun createUserIfNotExists(userId: String, name: String, email: String?,
                              onSuccess: () -> Unit, onFailure: (Exception) -> Unit) {
@@ -70,7 +72,9 @@ class FirebaseDBService {
 
     fun saveMessage(chatId: String, senderId: String, receiverId: String, senderName: String, msg: String){
         val chatMsg = FirebaseChatMessage(chatId, senderId, receiverId, senderName, msg)
+        val notification = ChatMessageNotification(chatId, receiverId, senderName, msg)
         database.child(MESSAGES_KEY).child(chatId).push().setValue(chatMsg);
+        database.child(NOTIFICATIONS_KEY).push().setValue(notification)
     }
 
     fun getChatId(huespedUserId: String, anfitrionUserId: String) : String{

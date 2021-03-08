@@ -51,8 +51,11 @@ class MainActivity : AppCompatActivity() {
                 startActivity(newIntent)
             }
             else {
-                val intent = Intent(this, HuespedActivity::class.java)
-                startActivity(intent)
+                val newIntent = Intent(this, HuespedActivity::class.java)
+                if (intent.data != null) {
+                    newIntent.data = intent.data
+                }
+                startActivity(newIntent)
             }
         }
         finish()
