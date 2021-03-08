@@ -131,7 +131,7 @@
     <fragment
         android:id="@+id/editarPerfilFragment"
         android:name="com.example.bookbnb.ui.perfil.EditarPerfilFragment"
-        android:label="EditarPerfilFragment" >
+        android:label="Editar Perfil">
         <action
             android:id="@+id/action_editarPerfilFragment_to_perfil_fragment"
             app:destination="@id/perfil_fragment"
