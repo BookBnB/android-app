@@ -1,9 +1,7 @@
 package com.example.bookbnb
 
 import android.content.res.ColorStateList
-import android.se.omapi.Session
 import android.view.Gravity
-import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -11,7 +9,6 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
-import androidx.core.view.marginEnd
 import androidx.core.widget.ImageViewCompat
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -20,7 +17,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.bookbnb.adapters.*
 import com.example.bookbnb.models.*
 import com.example.bookbnb.models.chat.FirebaseChatMessage
-import com.example.bookbnb.ui.publicaciones.PublicacionRecyclerViewAdapter
+import com.example.bookbnb.adapters.PublicacionRecyclerViewAdapter
 import com.example.bookbnb.utils.SessionManager
 import com.example.bookbnb.viewmodels.CalificacionVM
 import com.example.bookbnb.viewmodels.FirebaseChatVM
@@ -54,6 +51,12 @@ fun setErrorMessage(view: TextInputLayout, errorMessage: String) {
 fun bindRecyclerView(recyclerView: RecyclerView,
                      data: List<Publicacion>?) {
     val adapter = recyclerView.adapter as PublicacionRecyclerViewAdapter
+    adapter.submitList(data)
+}
+
+@BindingAdapter("recomendacionesListData")
+fun bindRecomendacionesRecyclerView(recyclerView: RecyclerView, data: List<Publicacion>?){
+    val adapter = recyclerView.adapter as RecomendacionesRecyclerViewAdapter
     adapter.submitList(data)
 }
 

@@ -8,7 +8,7 @@
             type="com.example.bookbnb.models.Publicacion" />
         <variable
             name="clickListener"
-            type="com.example.bookbnb.ui.publicaciones.PublicacionListener" />
+            type="com.example.bookbnb.adapters.PublicacionListener" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

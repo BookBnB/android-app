@@ -1,4 +1,4 @@
-package com.example.bookbnb.ui.publicaciones
+package com.example.bookbnb.adapters
 
 import android.net.Uri
 import androidx.recyclerview.widget.RecyclerView
@@ -11,12 +11,17 @@ import com.example.bookbnb.models.Publicacion
 import com.example.bookbnb.utils.CustomImageUri
 import com.example.bookbnb.utils.ImagesSliderAdapter
 
-class PublicacionRecyclerViewAdapter(val clickListener: PublicacionListener, val loadImgsFromFireBase: Boolean = false) : ListAdapter<Publicacion, PublicacionRecyclerViewAdapter.PublicacionViewHolder>(DiffCallback){
+class PublicacionRecyclerViewAdapter(val clickListener: PublicacionListener, val loadImgsFromFireBase: Boolean = false) : ListAdapter<Publicacion, PublicacionRecyclerViewAdapter.PublicacionViewHolder>(
+    DiffCallback
+){
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PublicacionRecyclerViewAdapter.PublicacionViewHolder {
-        return PublicacionViewHolder(PublicacionItemBinding.inflate(
-            LayoutInflater.from(parent.context), parent, false),
-            loadImgsFromFireBase)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PublicacionViewHolder {
+        return PublicacionViewHolder(
+            PublicacionItemBinding.inflate(
+                LayoutInflater.from(parent.context), parent, false
+            ),
+            loadImgsFromFireBase
+        )
     }
 
     override fun onBindViewHolder(holder: PublicacionViewHolder, position: Int) {

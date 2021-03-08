@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <import type="com.example.bookbnb.viewmodels.PerfilViewModel.FormErrors" />
+        <variable
+            name="viewModel"
+            type="com.example.bookbnb.viewmodels.PerfilViewModel" />
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.perfil.PerfilFragment">
+
+        <RelativeLayout
+            android:id="@+id/perfil_img"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="@dimen/margin_normal"
+            android:layout_marginTop="@dimen/margin_normal"
+            android:layout_marginEnd="@dimen/margin_normal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_centerInParent="true"
+                android:background="@drawable/perfil_rounded_shape"
+                android:gravity="center"
+                android:text="@{viewModel.user.name.substring(0,1)}"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline4"
+                android:textColor="#FFFFFF"
+                tools:text="F" />
+        </RelativeLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/nombre_text_field"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginStart="@dimen/margin_normal"
+            android:layout_marginTop="@dimen/margin_normal"
+            android:layout_marginEnd="@dimen/margin_normal"
+            android:ems="10"
+            android:hint="@string/nombre_lbl"
+            app:errorEnabled="true"
+            app:errorText='@{viewModel.formErrors.contains(FormErrors.MISSING_NOMBRE) ? "Ingrese un nombre" : ""}'
+            app:helperText="@string/required_helper_text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/perfil_img">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/register_nombre"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:text="@={viewModel.user.name}" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/apellido_text_field"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginStart="@dimen/margin_normal"
+            android:layout_marginTop="@dimen/margin_normal"
+            android:layout_marginEnd="@dimen/margin_normal"
+            android:ems="10"
+            android:hint="@string/apellido_lbl"
+            app:errorEnabled="true"
+            app:errorText='@{viewModel.formErrors.contains(FormErrors.MISSING_APELLIDO) ? "Ingrese un apellido" : ""}'
+            app:helperText="@string/required_helper_text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/nombre_text_field">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/register_apellido"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:text="@={viewModel.user.surname}" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/telefono_text_field"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginStart="@dimen/margin_normal"
+            android:layout_marginTop="@dimen/margin_normal"
+            android:layout_marginEnd="@dimen/margin_normal"
+            android:ems="10"
+            android:hint="@string/telefono_lbl"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/apellido_text_field">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/register_telefono"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:text="@={viewModel.user.phone}" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/ciudad_text_field"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginStart="@dimen/margin_normal"
+            android:layout_marginTop="@dimen/margin_normal"
+            android:layout_marginEnd="@dimen/margin_normal"
+            android:ems="10"
+            android:hint="@string/ciudad_lbl"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/telefono_text_field">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/register_ciudad"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:text="@={viewModel.user.city}" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.button.MaterialButton
+            style="@style/PrimaryButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_normal"
+            android:layout_marginTop="@dimen/margin_normal"
+            android:layout_marginEnd="@dimen/margin_normal"
+            android:text="Guardar"
+            android:onClick="@{() -> viewModel.onSavePerfilClick()}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ciudad_text_field" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

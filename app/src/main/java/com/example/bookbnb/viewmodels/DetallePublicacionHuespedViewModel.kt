@@ -19,6 +19,10 @@ class DetallePublicacionHuespedViewModel(application: Application) : DetallePubl
     val navigateToChat : MutableLiveData<Boolean>
         get() = _navigateToChat
 
+    private val _navigateToPerfil = MutableLiveData<Boolean>(false)
+    val navigateToPerfil : MutableLiveData<Boolean>
+        get() = _navigateToPerfil
+
     private val _displayDisponibilidadDialog = MutableLiveData<Boolean>(false)
     val displayDisponibilidadDialog : MutableLiveData<Boolean>
         get() = _displayDisponibilidadDialog
@@ -151,6 +155,14 @@ class DetallePublicacionHuespedViewModel(application: Application) : DetallePubl
                 _showLoadingSpinner.value = false
             }
         }
+    }
+
+    fun onNavigateToPerfil(){
+        _navigateToPerfil.value = true
+    }
+
+    fun onDoneNavigatingToPerfil(){
+        _navigateToPerfil.value = false
     }
 
     fun onNavigateToChat(){

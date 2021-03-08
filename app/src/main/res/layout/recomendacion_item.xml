@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:onClick="@{() -> clickListener.onClick(property)}">
+    <data>
+        <variable name="property"
+            type="com.example.bookbnb.models.Publicacion" />
+        <variable
+            name="clickListener"
+            type="com.example.bookbnb.adapters.RecomendacionPublicacionListener" />
+    </data>
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:elevation="16dp"
+        app:cardCornerRadius="16dp"
+        android:layout_marginBottom="@dimen/margin_normal">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/publicacion_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="@{() -> clickListener.onClick(property)}"
+            android:paddingBottom="@dimen/margin_normal">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardView"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <com.smarteist.autoimageslider.SliderView
+                    android:id="@+id/imageSlider"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:sliderAnimationDuration="600"
+                    app:sliderAutoCycleDirection="back_and_forth"
+                    app:sliderIndicatorAnimationDuration="600"
+                    app:sliderIndicatorGravity="center_horizontal|bottom"
+                    app:sliderIndicatorMargin="15dp"
+                    app:sliderIndicatorOrientation="horizontal"
+                    app:sliderIndicatorPadding="3dp"
+                    app:sliderIndicatorRadius="2dp"
+                    app:sliderIndicatorSelectedColor="#5A5A5A"
+                    app:sliderIndicatorUnselectedColor="#FFF"
+                    app:sliderScrollTimeInSec="1"
+                    app:sliderStartAutoCycle="false"/>
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:id="@+id/titulo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:text="@{property.titulo}"
+                tools:text="Cabañas de las Sierras"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/cardView" />
+
+
+            <TextView
+                android:id="@+id/ubicacion"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_normal"
+                android:layout_marginTop="@dimen/margin_small"
+                android:layout_marginEnd="@dimen/margin_normal"
+                android:text="@{property.direccion.toString()}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/titulo"
+                tools:text="Paseo Colón 850"
+                android:drawablePadding="@dimen/margin_min"
+                android:gravity="center_vertical"
+                app:drawableStartCompat="@drawable/ic_location_24" />
+
+            <TextView
+                android:id="@+id/cant_huespedes"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_normal"
+                android:layout_marginTop="@dimen/margin_small"
+                android:layout_marginEnd="@dimen/margin_normal"
+                android:drawablePadding="@dimen/margin_min"
+                android:gravity="center_vertical"
+                app:drawableStartCompat="@drawable/ic_family_24"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/ubicacion"
+                tools:text="Hasta 4 huespedes"
+                android:text="@{@string/cant_huespedes_format(property.cantidadDeHuespedes)}"/>
+
+            <TextView
+                android:id="@+id/tipo_alojamiento"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_normal"
+                android:layout_marginTop="@dimen/margin_small"
+                android:layout_marginEnd="@dimen/margin_normal"
+                android:drawablePadding="@dimen/margin_min"
+                android:gravity="center_vertical"
+                android:text="@{property.tipoDeAlojamiento}"
+                app:drawableStartCompat="@drawable/ic_homework_24"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/cant_huespedes"
+                tools:text="Habitación de hotel" />
+
+
+            <TextView
+                android:id="@+id/valoracion_promedio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_normal"
+                android:layout_marginTop="@dimen/margin_small"
+                android:text="@{property.calificacionAsString()}"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tipo_alojamiento"
+                tools:text="4.85"
+                app:drawableStartCompat="@drawable/ic_star_24"
+                app:drawableTint="@color/yellowStar" />
+
+            <TextView
+                android:id="@+id/precio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_small"
+                android:layout_marginEnd="@dimen/margin_normal"
+                android:text="@{@string/precio_format(property.precioPorNoche)}"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tipo_alojamiento"
+                tools:text="0.0015 ETH/Noche" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+</layout>

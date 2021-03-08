@@ -9,14 +9,14 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
 import com.example.bookbnb.R
+import com.example.bookbnb.databinding.FragmentEditarPerfilBinding
 import com.example.bookbnb.databinding.FragmentPerfilBinding
 import com.example.bookbnb.ui.BaseFragment
-import com.example.bookbnb.ui.busqueda.BusquedaLocationFragmentDirections
 import com.example.bookbnb.utils.SessionManager
 import com.example.bookbnb.viewmodels.PerfilViewModel
 import com.example.bookbnb.viewmodels.PerfilViewModelFactory
 
-class PerfilFragment : BaseFragment() {
+class EditarPerfilFragment : BaseFragment() {
 
     private val viewModel: PerfilViewModel by lazy {
         val activity = requireNotNull(this.activity) {
@@ -26,7 +26,7 @@ class PerfilFragment : BaseFragment() {
             .get(PerfilViewModel::class.java)
     }
 
-    private lateinit var binding: FragmentPerfilBinding
+    private lateinit var binding: FragmentEditarPerfilBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,7 +35,7 @@ class PerfilFragment : BaseFragment() {
 
         binding = DataBindingUtil.inflate(
             inflater,
-            R.layout.fragment_perfil,
+            R.layout.fragment_editar_perfil,
             container,
             false
         )
@@ -43,25 +43,23 @@ class PerfilFragment : BaseFragment() {
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
 
-        viewModel.setUser(SessionManager(requireContext()).getUserId()!!)
+        //viewModel.setUser(SessionManager(requireContext()).getUserId()!!)
 
         setSnackbarMessageObserver(viewModel, binding.root)
         setSpinnerObserver(viewModel, requireActivity().findViewById(R.id.spinner_holder), binding.root)
 
-        setNavigateToEditarPerfilObserver()
+        viewModel.navigateToPerfil.observe(viewLifecycleOwner, Observer {navigate ->
+            if (navigate){
+                hideKeyboard()
+                NavHostFragment.findNavController(this).navigate(
+                    EditarPerfilFragmentDirections.actionEditarPerfilFragmentToPerfilFragment()
+                )
+                viewModel.onDoneNavigatingToPerfil()
+            }
+
+        })
 
         return binding.root
 
-    }
-
-    private fun setNavigateToEditarPerfilObserver() {
-        viewModel.navigateToEditarPerfil.observe(viewLifecycleOwner, Observer { navigate ->
-            if (navigate) {
-                NavHostFragment.findNavController(this).navigate(
-                    PerfilFragmentDirections.actionPerfilFragmentToEditarPerfilFragment()
-                )
-                viewModel.onDoneNavigatingToEditarPerfil()
-            }
-        })
     }
 }

@@ -11,8 +11,8 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import com.example.bookbnb.R
 import com.example.bookbnb.databinding.FragmentResultadosBusquedaBinding
 import com.example.bookbnb.ui.BaseFragment
-import com.example.bookbnb.ui.publicaciones.PublicacionListener
-import com.example.bookbnb.ui.publicaciones.PublicacionRecyclerViewAdapter
+import com.example.bookbnb.adapters.PublicacionListener
+import com.example.bookbnb.adapters.PublicacionRecyclerViewAdapter
 import com.example.bookbnb.viewmodels.BusquedaViewModel
 import com.example.bookbnb.viewmodels.BusquedaViewModelFactory
 
@@ -41,12 +41,17 @@ class ResultadosBusquedaFragment : BaseFragment(){
         // Allows Data Binding to Observe LiveData with the lifecycle of this Fragment
         binding.lifecycleOwner = this
 
-        binding.resultadosBusqueda.adapter = PublicacionRecyclerViewAdapter(PublicacionListener { publicacionId ->
-            NavHostFragment.findNavController(this).navigate(
-                    ResultadosBusquedaFragmentDirections.actionResultadosBusquedaFragmentToDetallePublicacionFragment(publicacionId,
-                        viewModel.startDate.value, viewModel.endDate.value)
+        binding.resultadosBusqueda.adapter = PublicacionRecyclerViewAdapter(
+            PublicacionListener { publicacionId ->
+                NavHostFragment.findNavController(this).navigate(
+                    ResultadosBusquedaFragmentDirections.actionResultadosBusquedaFragmentToDetallePublicacionFragment(
+                        publicacionId,
+                        viewModel.startDate.value, viewModel.endDate.value
+                    )
                 )
-        }, true) as PublicacionRecyclerViewAdapter
+            },
+            true
+        ) as PublicacionRecyclerViewAdapter
 
         binding.resultadosBusqueda.addItemDecoration(
             DividerItemDecoration(

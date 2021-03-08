@@ -112,7 +112,11 @@
         android:id="@+id/perfil_fragment"
         android:name="com.example.bookbnb.ui.perfil.PerfilFragment"
         android:label="Mi Perfil"
-        tools:layout="@layout/fragment_perfil" />
+        tools:layout="@layout/fragment_perfil" >
+        <action
+            android:id="@+id/action_perfil_fragment_to_editarPerfilFragment"
+            app:destination="@id/editarPerfilFragment" />
+    </fragment>
     <navigation
         android:id="@+id/navigation"
         app:startDestination="@id/detallePublicacionAnfitrionFragment">
@@ -141,4 +145,13 @@
                 app:uri="www.bookbnb.com/anfitrion/publicacion/{publicacionId}/reservas" />
         </fragment>
     </navigation>
+    <fragment
+        android:id="@+id/editarPerfilFragment"
+        android:name="com.example.bookbnb.ui.perfil.EditarPerfilFragment"
+        android:label="Editar Perfil" >
+        <action
+            android:id="@+id/action_editarPerfilFragment_to_perfil_fragment"
+            app:destination="@id/perfil_fragment"
+            app:popUpTo="@id/perfil_fragment" />
+    </fragment>
 </navigation>

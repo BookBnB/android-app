@@ -38,10 +38,15 @@ interface BookBnBApiService {
     suspend fun getUser(@Header("Authorization") token: String,
                         @Path("id") userId: String): User
 
+    @PUT("usuarios/{id}")
+    suspend fun editPerfil(@Header("Authorization") userToken: String,
+                                      @Path("id") userId: String,
+                                      @Body token: User)
+
     @PUT("usuarios/{id}/dispositivos")
     suspend fun saveNotificationToken(@Header("Authorization") userToken: String,
                                       @Path("id") userId: String,
-                                      @Body token: NotificationTokenDTO)
+                                      @Body user: NotificationTokenDTO)
 
     @PUT("usuarios/{email}/recuperacion")
     suspend fun sendEmailRecuperacion(@Path("email") email: String)
@@ -87,6 +92,10 @@ interface BookBnBApiService {
     @PUT("reservas/{id}/aprobacion")
     suspend fun aceptarReserva(@Header("Authorization") token: String,
                                  @Path("id") reservaId: String) : ReservaAceptadaResponse
+
+    @GET("usuarios/{id}/recomendaciones")
+    suspend fun getRecomendaciones(@Header("Authorization") token: String,
+                                   @Path("id") userId : String) : List<Publicacion>
 
     @GET("publicaciones")
     suspend fun searchPublicaciones(@Header("Authorization") token: String,
@@ -181,6 +190,16 @@ class BookBnBApi(var context: Context) {
 
     suspend fun sendEmailRecuperacion(email: String): ResultWrapper<Unit> {
         return safeApiCall(Dispatchers.IO) { retrofitService.sendEmailRecuperacion(email) }
+    }
+
+    suspend fun editPerfil(user: User) : ResultWrapper<Unit>{
+        val sessMsg = SessionManager(context)
+        val token = sessMsg.fetchAuthToken()
+        if (token.isNullOrEmpty()) {
+            throw Exception("No hay una sesión establecida")
+        }
+        return safeApiCall(Dispatchers.IO) { retrofitService.editPerfil(token,
+            sessMsg.getUserId()!!, user) }
     }
 
     suspend fun getUser(userId: String) : ResultWrapper<User>{
@@ -354,6 +373,15 @@ class BookBnBApi(var context: Context) {
         }
         val calificacionDTO = Calificacion(rating, resenia)
         return safeApiCall(Dispatchers.IO) { retrofitService.calificarPublicacion(token, publicacionId, calificacionDTO) }
+    }
+
+    suspend fun getRecomendaciones(): ResultWrapper<List<Publicacion>>{
+        val sessMsg = SessionManager(context)
+        val token = sessMsg.fetchAuthToken()
+        if (token.isNullOrEmpty()){
+            throw Exception("No hay una sesión establecida")
+        }
+        return safeApiCall(Dispatchers.IO) { retrofitService.getRecomendaciones(token, sessMsg.getUserId()!!) }
     }
 
     suspend fun searchPublicaciones(coordenadas: Coordenada,

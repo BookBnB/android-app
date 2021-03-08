@@ -10,13 +10,14 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
 import com.example.bookbnb.R
 import com.example.bookbnb.databinding.FragmentPerfilBinding
+import com.example.bookbnb.databinding.PerfilBindingImpl
 import com.example.bookbnb.ui.BaseFragment
 import com.example.bookbnb.ui.busqueda.BusquedaLocationFragmentDirections
 import com.example.bookbnb.utils.SessionManager
 import com.example.bookbnb.viewmodels.PerfilViewModel
 import com.example.bookbnb.viewmodels.PerfilViewModelFactory
 
-class PerfilFragment : BaseFragment() {
+class PerfilPublicoFragment : BaseFragment() {
 
     private val viewModel: PerfilViewModel by lazy {
         val activity = requireNotNull(this.activity) {
@@ -26,7 +27,7 @@ class PerfilFragment : BaseFragment() {
             .get(PerfilViewModel::class.java)
     }
 
-    private lateinit var binding: FragmentPerfilBinding
+    private lateinit var binding: PerfilBindingImpl
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,7 +36,7 @@ class PerfilFragment : BaseFragment() {
 
         binding = DataBindingUtil.inflate(
             inflater,
-            R.layout.fragment_perfil,
+            R.layout.perfil,
             container,
             false
         )
@@ -43,7 +44,11 @@ class PerfilFragment : BaseFragment() {
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
 
-        viewModel.setUser(SessionManager(requireContext()).getUserId()!!)
+        val args = requireArguments()
+
+        args.getString("userId")?.let {
+            viewModel.setUser(it)
+        }
 
         setSnackbarMessageObserver(viewModel, binding.root)
         setSpinnerObserver(viewModel, requireActivity().findViewById(R.id.spinner_holder), binding.root)

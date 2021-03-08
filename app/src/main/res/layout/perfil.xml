@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="viewModel"
+            type="com.example.bookbnb.viewmodels.PerfilViewModel" />
+    </data>
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.perfil.PerfilFragment">
+        <RelativeLayout
+            android:id="@+id/perfil_img"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="@dimen/margin_normal"
+            android:layout_marginTop="@dimen/margin_normal"
+            android:layout_marginEnd="@dimen/margin_normal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_centerInParent="true"
+                android:background="@drawable/perfil_rounded_shape"
+                android:gravity="center"
+                android:text="@{viewModel.user.name.substring(0,1)}"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline4"
+                android:textColor="#FFFFFF"
+                tools:text="F" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/nombre_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_normal"
+            android:layout_marginTop="@dimen/margin_normal"
+            android:layout_marginEnd="@dimen/margin_normal"
+            android:text="@string/nombre_perfil"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/perfil_img" />
+
+        <TextView
+            android:id="@+id/nombre"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_normal"
+            android:layout_marginTop="@dimen/margin_small"
+            android:layout_marginEnd="@dimen/margin_normal"
+            android:text="@{viewModel.user.fullName}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/nombre_label"
+            app:layout_constraintTop_toBottomOf="@+id/nombre_label"
+            tools:text="Jorge Raul Gimenez" />
+
+        <TextView
+            android:id="@+id/email_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_normal"
+            android:text="@string/email_perfil"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/nombre" />
+
+        <TextView
+            android:id="@+id/userEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_small"
+            android:layout_marginStart="@dimen/margin_normal"
+            android:layout_marginEnd="@dimen/margin_normal"
+            android:text="@{viewModel.user.email}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/email_label"
+            app:layout_constraintTop_toBottomOf="@+id/email_label"
+            tools:text="jorgito@gmail.com" />
+
+        <TextView
+            android:id="@+id/phone_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_normal"
+            android:text="@string/telefono_perfil"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/userEmail" />
+
+        <TextView
+            android:id="@+id/userPhone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_small"
+            android:layout_marginStart="@dimen/margin_normal"
+            android:layout_marginEnd="@dimen/margin_normal"
+            android:text="@{viewModel.user.phone}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/phone_label"
+            app:layout_constraintTop_toBottomOf="@+id/phone_label"
+            tools:text="4587 5858" />
+
+        <TextView
+            android:id="@+id/ciudad_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_normal"
+            android:text="@string/ciudad_perfil"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/userPhone" />
+
+        <TextView
+            android:id="@+id/userCiudad"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_small"
+            android:layout_marginStart="@dimen/margin_normal"
+            android:layout_marginEnd="@dimen/margin_normal"
+            android:text="@{viewModel.user.city}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/ciudad_label"
+            app:layout_constraintTop_toBottomOf="@+id/ciudad_label"
+            tools:text="Ciudad de Buenos Aires" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

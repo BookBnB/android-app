@@ -79,6 +79,7 @@ class DetallePublicacionHuespedFragment : BaseFragment() {
         setCalificacionesListAdapter()
 
         setNavigateToChatObserver()
+        setNavigateToPerfilObserver()
 
         viewModel.onGetDetail(publicacionId!!)
 
@@ -96,6 +97,20 @@ class DetallePublicacionHuespedFragment : BaseFragment() {
                 DividerItemDecoration.VERTICAL
             )
         )
+    }
+
+    private fun setNavigateToPerfilObserver() {
+        viewModel.navigateToPerfil.observe(viewLifecycleOwner, Observer { navigate ->
+            if (navigate) {
+                NavHostFragment.findNavController(this).navigate(
+                    DetallePublicacionHuespedFragmentDirections
+                        .actionDetallePublicacionFragmentToPerfilPublicoFragment(
+                            viewModel.publicacion.value?.anfitrion?.id!!
+                        )
+                )
+                viewModel.onDoneNavigatingToPerfil()
+            }
+        })
     }
 
     private fun setNavigateToChatObserver() {

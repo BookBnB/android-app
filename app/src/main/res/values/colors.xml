@@ -6,6 +6,7 @@
     <color name="black">#000000</color>
     <color name="white">#FFFFFF</color>
     <color name="primaryColor">#29b6f6</color>
+    <color name="homeColor">#0f355e</color>
     <color name="primaryLightColor">#73e8ff</color>
     <color name="primaryDarkColor">#0086c3</color>
     <color name="secondaryColor">#00708c</color>

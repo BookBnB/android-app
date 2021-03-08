@@ -3,10 +3,7 @@ package com.example.bookbnb.viewmodels
 import android.app.Application
 import androidx.lifecycle.*
 import com.example.bookbnb.R
-import com.example.bookbnb.models.Calificacion
-import com.example.bookbnb.models.Pregunta
-import com.example.bookbnb.models.Publicacion
-import com.example.bookbnb.models.Usuario
+import com.example.bookbnb.models.*
 import com.example.bookbnb.network.BookBnBApi
 import com.example.bookbnb.network.ResultWrapper
 import kotlinx.coroutines.launch
@@ -61,11 +58,14 @@ open class DetallePublicacionViewModel(application: Application) : BaseAndroidVi
     }
 
     protected suspend fun loadPublicacion(publicacionId: String){
-        when (val publicationResponse = BookBnBApi(getApplication()).getPublicacionById(publicacionId)) {
+        val api = BookBnBApi(getApplication())
+        when (val publicationResponse = api.getPublicacionById(publicacionId)) {
             is ResultWrapper.NetworkError -> showSnackbarErrorMessage(getApplication<Application>().getString(
                 R.string.network_error_msg))
             is ResultWrapper.GenericError -> showGenericError(publicationResponse)
-            is ResultWrapper.Success -> onDetailSuccess(publicationResponse)
+            is ResultWrapper.Success -> {
+                onDetailSuccess(publicationResponse)
+            }
         }
     }
 

@@ -154,4 +154,8 @@
     <string name="email_hint">Email</string>
     <string name="forgot_password_body_2">¡No se preocupe! Se le enviarán instrucciones para recuperar su contraseña, por favor ingrese su email</string>
     <string name="forgot_password_body_1">¿Se encuentra usted pensando como Homero dado que olvidó su contraseña?</string>
+    <string name="ver_perfil_anfitrion_btn">Ver perfil anfitrión</string>
+    <string name="home_huesped_escapate_desc">Encontra tu alojamiento ideal de manera sencilla, directa y en unos simples pasos.</string>
+    <string name="home_recomendaciones_title">Recomendaciones</string>
+    <string name="recomendaciones_desc">Te recomendamos algunas publicaciones basadas en diversos criterios</string>
 </resources>

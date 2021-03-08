@@ -8,96 +8,149 @@
             name="homeHuespedViewModel"
             type="com.example.bookbnb.viewmodels.HomeHuespedViewModel" />
     </data>
-<LinearLayout
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/secondaryLightColor"
-    >
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_normal_plus"
-        android:layout_marginTop="@dimen/margin_normal_plus"
-        android:layout_marginEnd="@dimen/margin_normal_plus"
-        android:layout_marginBottom="@dimen/margin_big"
-        android:text="BookBnB"
-        android:textAlignment="center"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline2"
-        android:textColor="#FFFFFF"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <com.google.android.material.card.MaterialCardView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:cardCornerRadius="30dp"
-        app:cardElevation="16dp"
-        android:layout_marginBottom="-30dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="parent">
-
-        <ImageView
-            android:src="@drawable/hotel_wallpaper"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="centerCrop"
-            android:contentDescription="TODO" />
-
-        <androidx.constraintlayout.widget.ConstraintLayout
+        android:background="@drawable/wallpaper">
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="@dimen/margin_normal">
+            >
 
-            <TextView
-                android:id="@+id/section_title"
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingVertical="@dimen/margin_big">
+
+                    <TextView
+                        android:id="@+id/section_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/margin_normal_plus"
+                        android:layout_marginEnd="@dimen/margin_normal_plus"
+                        android:text="Escapate"
+                        android:textAlignment="viewStart"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline2"
+                        android:textColor="@color/white"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/description"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/margin_normal_plus"
+                        android:layout_marginTop="@dimen/margin_small"
+                        android:layout_marginEnd="@dimen/margin_normal_plus"
+                        android:text="@string/home_huesped_escapate_desc"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+                        android:textColor="@color/white"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/section_title" />
+
+                    <Button
+                        android:id="@+id/homeHuespedbutton"
+                        style="@style/PrimaryButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="24dp"
+                        android:layout_marginTop="@dimen/margin_normal"
+                        android:layout_marginEnd="24dp"
+                        android:onClick="@{() -> homeHuespedViewModel.navigateToBusqueda()}"
+                        android:text="@string/explorar_btn_txt"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/description" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </FrameLayout>
+
+            <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/margin_normal_plus"
-                android:layout_marginTop="@dimen/margin_normal_plus"
-                android:layout_marginEnd="@dimen/margin_normal_plus"
-                android:text="Escapate"
-                android:textAlignment="viewStart"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline2"
-                android:textColor="#FFFFFF"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:layout_marginTop="@dimen/margin_big">
 
-            <TextView
-                android:id="@+id/description"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/margin_normal_plus"
-                android:layout_marginTop="@dimen/margin_small"
-                android:layout_marginEnd="@dimen/margin_normal_plus"
-                android:text="Encontra tu alojamiento ideal de manera sencilla, directa y en unos simples pasos."
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
-                android:textColor="#FFFFFF"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/section_title" />
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingVertical="@dimen/margin_big">
 
-            <Button
-                android:id="@+id/homeHuespedbutton"
-                style="@style/PrimaryButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
-                android:layout_marginTop="@dimen/margin_normal"
-                android:layout_marginEnd="24dp"
-                android:onClick="@{() -> homeHuespedViewModel.navigateToBusqueda()}"
-                android:text="@string/explorar_btn_txt"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/description" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </com.google.android.material.card.MaterialCardView>
-</LinearLayout>
+                    <TextView
+                        android:id="@+id/recomendaciones_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/margin_normal_plus"
+                        android:layout_marginEnd="@dimen/margin_normal_plus"
+                        android:text="@string/home_recomendaciones_title"
+                        android:textAlignment="viewStart"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline4"
+                        android:textColor="@color/white"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/description_recomendaciones"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/margin_normal_plus"
+                        android:layout_marginTop="@dimen/margin_small"
+                        android:layout_marginEnd="@dimen/margin_normal_plus"
+                        android:text="@string/recomendaciones_desc"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+                        android:textColor="@color/white"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/recomendaciones_title" />
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/description_recomendaciones">
+                        <RelativeLayout
+                            android:id="@+id/spinner_recomendaciones_holder"
+                            android:layout_width="match_parent"
+                            android:visibility="gone"
+                            android:layout_height="wrap_content">
+                            <ProgressBar
+                                android:id="@+id/spinner"
+                                android:indeterminate="true"
+                                android:indeterminateTint="@android:color/white"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="16dp"
+                                android:layout_marginEnd="16dp"
+                                android:layout_centerInParent="true" />
+                        </RelativeLayout>
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/recomendaciones"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/margin_normal"
+                            android:layout_marginTop="@dimen/margin_normal"
+                            android:layout_marginEnd="@dimen/margin_normal"
+                            app:layoutManager="LinearLayoutManager"
+                            app:recomendacionesListData="@{homeHuespedViewModel.recomendaciones}"
+                            tools:listitem="@layout/recomendacion_item"/>
+
+                    </RelativeLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </FrameLayout>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+    </LinearLayout>
 </layout>
