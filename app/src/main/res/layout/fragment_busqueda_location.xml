@@ -171,12 +171,12 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/number_picker">
 
-            <AutoCompleteTextView
+            <com.google.android.material.textfield.MaterialAutoCompleteTextView
                 android:id="@+id/tipo_alojamiento_type"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="none"
-                android:text="@={busquedaViewModel.selectedTipoAlojamiento}" />
+                android:text="@={busquedaViewModel.selectedTipoAlojamiento}"/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <TextView

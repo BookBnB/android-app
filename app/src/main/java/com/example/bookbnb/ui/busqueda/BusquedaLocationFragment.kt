@@ -36,9 +36,14 @@ class BusquedaLocationFragment : BaseFragment() {
             .get(BusquedaViewModel::class.java)
     }
 
+    private var tipoAlojamientoAdapter: ArrayAdapter<String>? = null
+
     private lateinit var binding: FragmentBusquedaLocationBinding
 
-    private var tiposAlojamientoAdapter: ArrayAdapter<String>? = null
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -124,14 +129,14 @@ class BusquedaLocationFragment : BaseFragment() {
     }
 
     private fun setPossibleTiposAlojamiento() {
-        val tipos = TipoDeAlojamientoProvider.tipos.toMutableList()
-        tipos.add(0, "Todos")
-        if (tiposAlojamientoAdapter == null) {
-            tiposAlojamientoAdapter = ArrayAdapter(requireContext(), R.layout.dropdown_item, tipos)
-        }
-        (binding.tipoAlojamientoType as? AutoCompleteTextView)?.setAdapter(tiposAlojamientoAdapter)
-        viewModel.selectedTipoAlojamiento.value = if (viewModel.selectedTipoAlojamiento.value != null) viewModel.selectedTipoAlojamiento.value else tipos[0]
-        (binding.tipoAlojamientoType as? AutoCompleteTextView)?.setText(viewModel.selectedTipoAlojamiento.value, false) //Defaults to first item in tipos
+        viewModel.setAutoCompleteTipoAlojamiento()
+        viewModel.autocompleteTipoAlojamientoAdapter.observe(viewLifecycleOwner, Observer {
+            binding.tipoAlojamientoType.setAdapter(it)
+            binding.tipoAlojamientoType.setText(
+                viewModel.selectedTipoAlojamiento.value,
+                false
+            ) //Defaults to first item in tipos
+        })
     }
 
     private fun onNavigateToSearchResults() {

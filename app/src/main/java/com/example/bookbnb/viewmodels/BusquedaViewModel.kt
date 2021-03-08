@@ -7,6 +7,7 @@ import com.example.bookbnb.R
 import com.example.bookbnb.models.Coordenada
 import com.example.bookbnb.models.CustomLocation
 import com.example.bookbnb.models.Publicacion
+import com.example.bookbnb.models.TipoDeAlojamientoProvider
 import com.example.bookbnb.network.BookBnBApi
 import com.example.bookbnb.network.ResultWrapper
 import kotlinx.coroutines.launch
@@ -50,6 +51,10 @@ class BusquedaViewModel(application: Application) : BaseAndroidViewModel(applica
     private val _autocompleteLocationAdapter = MutableLiveData<ArrayAdapter<CustomLocation?>>()
     val autocompleteLocationAdapter: MutableLiveData<ArrayAdapter<CustomLocation?>>
         get() = _autocompleteLocationAdapter
+
+    private val _autocompleteTipoAlojamientoAdapter = MutableLiveData<ArrayAdapter<String>>()
+    val autocompleteTipoAlojamientoAdapter: MutableLiveData<ArrayAdapter<String>>
+        get() = _autocompleteTipoAlojamientoAdapter
 
     private val _navigateToSearchResults = MutableLiveData<Boolean>(false)
     val navigateToSearchResults: MutableLiveData<Boolean>
@@ -153,6 +158,15 @@ class BusquedaViewModel(application: Application) : BaseAndroidViewModel(applica
             android.R.layout.simple_spinner_dropdown_item,
             locationsSuggestions
         )
+    }
+
+    fun setAutoCompleteTipoAlojamiento() {
+        val tipos = TipoDeAlojamientoProvider.tipos.toMutableList()
+        tipos.add(0, "Todos")
+        _autocompleteTipoAlojamientoAdapter.value =
+                ArrayAdapter(getApplication<Application>().applicationContext, android.R.layout.simple_spinner_dropdown_item, tipos)
+        selectedTipoAlojamiento.value =
+            if (selectedTipoAlojamiento.value != null) selectedTipoAlojamiento.value else tipos[0]
     }
 
     fun onGetResults() {
